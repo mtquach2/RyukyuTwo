@@ -37,11 +37,14 @@ function draw() {
 
 function staticRender() {
 	background(0, 0, 0);
-
+  shuffle(cards, true);
 	if (index < 52) {
 		if (mouse.pressed()) {
 			sprite = new Sprite(mouseX, mouseY, 64, 64);
 			sprite.addImage('face', cards[index]);
+
+			// Scale should be approx 1.5 ~ 1.75
+			sprite.scale = 1.5;
 			index++;
 		}
 	}
