@@ -36,7 +36,7 @@ function draw() {
 }
 
 function staticRender() {
-	background(0, 0, 0);
+	background(0, 0, 128);
   shuffle(cards, true);
 	if (index < 52) {
 		if (mouse.pressed()) {
