@@ -1,4 +1,8 @@
 export class Cards {
+	cards : []
+	index : number
+	suits : string[]
+	values : string[]
 	constructor() {
 		this.cards = [];
 		this.index = 0;
@@ -7,27 +11,27 @@ export class Cards {
 		this.suits = ['diamonds', 'hearts', 'spades', 'clubs'];
 	}
 
-	staticRender() {
-		shuffle(cards, true);
-		if (index < 52) {
-			if (mouse.pressed()) {
-				sprite = new Sprite(mouseX, mouseY, 64, 64);
-				sprite.addImage('face', cards[index]);
+	staticRender(p:p5) {
+		p.shuffle(this.cards, true);
+		if (this.index < 52) {
+			if (p.mouse.pressed()) {
+				let sprite = new p.Sprite(p.mouseX, p.mouseY, 64, 64);
+				sprite.addImage('face', this.cards[this.index]);
 
 				// Scale should be approx 1.5 ~ 1.75
 				sprite.scale = 1.5;
-				index++;
+				this.index++;
 			}
 		}
 		else {
-			index = 0;
+			this.index = 0;
 		}
 	}
 
-	load() {
-		for (const suit of suits) {
-			for (const value of values) {
-				cards.push(loadImage(`../cards/card_${suit}_${value}.png`));
+	load(p:p5) {
+		for (const suit of this.suits) {
+			for (const value of this.values) {
+				this.cards.push(p.loadImage(`../cards/card_${suit}_${value}.png`));
 			}
 		}
 	}
