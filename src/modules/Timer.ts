@@ -10,9 +10,10 @@ let board; //current state of the board?
 //should the timer class take care of the card dropping to the board???
 
 class Timer{
-  constructor(board){
+  board : Board
+  constructor(board:Board){
     this.board = board
   }
 }
 
-modules.export = Timer;
+export default Timer
