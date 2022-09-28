@@ -1,16 +1,22 @@
 import p5 from 'p5';
 import { Cards } from './Cards';
 
-let row = 0;
-let position = 0;
-
+/**
+ * Initializer class. Everything will get initialized/set up here before being put into main.ts
+ */
 export class Game {
     suits : string[] = ['diamonds', 'hearts', 'spades', 'clubs']
 	values : string[] = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
 			'J', 'Q', 'K']
     cards : Cards[] = []
     index : number = 0
-
+    row : number = 0;
+    position : number = 0;
+    
+    /**
+     * Method to preload images and initializes Card objects for an entire deck of cards
+     * @param p reference to p5
+     */
     load(p:p5) {
 		for (const suit of this.suits) {
 			for (const value of this.values) {
@@ -19,19 +25,22 @@ export class Game {
 		}
 	}
 
+    /**
+     * Displays an entire deck of cards in one row
+     * then repeats displaying a deck in the rest of the rows on screen/canvas
+     * @param p 
+     */
     staticRender(p:p5) {
-		
-		// Generates decks in order and makes each deck a new row of images
 		if (this.index < 52) {
-			this.cards[this.index].showImage(position, row, p);
+			this.cards[this.index].showImage(this.position, this.row, p); //Shows image for the given card (i.e. cards[index])
 		}
 		else {
 			this.index = -1;
-			row += 100;
-			position = -10;
+			this.row += 100;
+			this.position = -10;
 		}
 		this.index++;
-		position += 10;
+		this.position += 10;
 
 		// if (this.index < 52) {
 		// 	if (p5play.mouse.pressed()) {
