@@ -1,11 +1,9 @@
 import p5 from 'p5';
-import {Cards} from './modules/Cards';
+import { Game } from './modules/Game';
 // import Sprite from 'p5-play' IF ANYONE HAS EVER DONE THIS IN TS BEFORE
-// import Cards
 // import whatever code we need from ./modules
 
-let cards = new Cards();
-
+let game = new Game();
 import './style.css';
 
 function getWindow() {
@@ -26,7 +24,7 @@ const _app = new p5(p5Instance => {
   }
 
   p.preload = function preload() {
-    cards.load(p);
+    game.load(p);
   }
 
   p.setup = function setup() {
@@ -36,7 +34,7 @@ const _app = new p5(p5Instance => {
   };
 
   p.draw = function draw() {
-    cards.staticRender(p);
+    game.staticRender(p);
   };
 }, document.getElementById('app')!);
 
