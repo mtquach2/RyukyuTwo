@@ -5,19 +5,19 @@ import { Cards } from './Cards';
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
 export class Game {
-    suits : string[] = ['diamonds', 'hearts', 'spades', 'clubs']
-	values : string[] = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+    suits = ['diamonds', 'hearts', 'spades', 'clubs']
+	values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
 			'J', 'Q', 'K']
-    cards : Cards[] = []
-    index : number = 0
-    row : number = 0;
-    position : number = 0;
+    cards = []
+    index = 0
+    row = 0;
+    position = 0;
     
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
      * @param p reference to p5
      */
-    load(p:p5) {
+    load(p) {
 		for (const suit of this.suits) {
 			for (const value of this.values) {
 				this.cards.push(new Cards(`${suit}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
@@ -30,7 +30,7 @@ export class Game {
      * then repeats displaying a deck in the rest of the rows on screen/canvas
      * @param p 
      */
-    staticRender(p:p5) {
+    staticRender(p) {
 		if (this.index < 52) {
 			this.cards[this.index].showImage(this.position, this.row, p); //Shows image for the given card (i.e. cards[index])
 		}
@@ -57,7 +57,7 @@ export class Game {
 		// }
 	}
 
-    add(a : number, b : number) {
+    add(a, b) {
         return a + b;
     }
 };

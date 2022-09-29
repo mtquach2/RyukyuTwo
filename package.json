@@ -2,21 +2,15 @@
   "name": "ryukyutwo",
   "description": "# Objective of Game:    - Beat all 10 levels of the game to recieve the highest score!    - The game is a combination of poker and solitaire, where the player chooses from four piles to draw cards from then places them in one-of-five columns to form some sort of poker hand   - To beat a level, players are required to have a certain amount of points which is done by getting the best hands possible vertically, horizontally, and/or diagonally    - If a player does not pass the level, they are allowed to add another credit to continue playing     - They also get to randomly choose an omikuji (fortune slip) to receive bonus points for the next level (i.e. spin the wheel mechanism)      - If they put in another credit to continue, the player's progress and score is saved",
   "version": "1.0.0",
-  "main": "main.ts",
+  "main": "script.js",
   "type": "module",
   "dependencies": {
-    "@types/p5": "^1.4.3",
     "p5": "^1.4.2",
     "p5.play": "^3.0.106",
     "requirejs": "^2.3.6"
   },
   "devDependencies": {
-    "@types/jest": "^29.1.0",
-    "@types/node": "^18.7.23",
     "jest": "^29.1.1",
-    "ts-jest": "^29.0.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.8.4",
     "vite": "^3.1.4"
   },
   "scripts": {

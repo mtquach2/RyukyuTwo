@@ -6,13 +6,12 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 3rd->(2nd->4th, 4th->2nd)->(1st->5th, 5th->1st)
 */
 
-import {Board} from './Board';
+import {Board} from '/src/modules/Board.js';
 
 //should the timer class take care of the card dropping to the board???
 
 class Timer{
-  board : Board
-  constructor(board:Board){
+  constructor(board){
     this.board = board
   }
 }
