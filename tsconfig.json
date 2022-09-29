@@ -8,7 +8,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "node"],
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,5 +17,5 @@
   "include": [
     "./src",
     "node_modules/@types/p5/index.d.ts"
-  ]
+, "tests/Game.test.ts"  ]
 }

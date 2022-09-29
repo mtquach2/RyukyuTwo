@@ -56,4 +56,8 @@ export class Game {
 		// 	this.index = 0;
 		// }
 	}
+
+    add(a : number, b : number) {
+        return a + b;
+    }
 };
