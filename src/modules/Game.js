@@ -4,7 +4,7 @@ import { Cards } from './Cards';
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
-class Game {
+export class Game {
     suits = ['diamonds', 'hearts', 'spades', 'clubs']
 	values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
 			'J', 'Q', 'K']
@@ -61,4 +61,3 @@ class Game {
         return a + b;
     }
 };
-module.exports = Game;

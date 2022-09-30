@@ -1,6 +1,5 @@
 import p5 from 'p5';
 import { Game } from '/src/modules/Game.js';
-
 let game = new Game(); 
 
 function getWindow() {
