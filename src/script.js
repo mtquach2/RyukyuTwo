@@ -1,6 +1,6 @@
-// import { Cards } from './modules/Cards.js';
-console.log("AFTER IMPORT")
-// let deck = new Cards();
+import p5 from 'p5';
+import { Game } from '/src/modules/Game.js';
+let game = new Game(); 
 
 function getWindow() {
   let w = window,
@@ -12,21 +12,25 @@ function getWindow() {
   return { w: x, h: y };
 }
 
-function randColor() {
-  return color(random(255), random(255), random(255));
-}
+new p5(p => {
+  let bg, sprite;
 
-function preload() {
-  // deck.load();
-}
+  function randColor() {
+    return p.color(p.random(255), p.random(255), p.random(255));
+  };
 
-function setup() {
-  let win = getWindow();
-  console.log(`window is ${win}`)
-  createCanvas(win.w, win.h);
-  background(randColor())
-}
+  p.preload = function preload() {
+    game.load(p);
+  };
 
-function draw() {
-  // deck.staticRender();
-}
+  p.setup = function setup() {
+    let window = getWindow()
+    p.createCanvas(window.w, window.h);
+    p.background(randColor());
+  };
+
+  p.draw = function () {
+    game.staticRender(p);
+  };
+
+});

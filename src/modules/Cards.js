@@ -1,34 +1,31 @@
+import p5 from 'p5';
+
+/**
+ * Creates an object for each card in a deck of cards
+ */
 export class Cards {
-	constructor() {
-		this.cards = [];
-		this.index = 0;
-		this.values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
-			'J', 'Q', 'K'];
-		this.suits = ['diamonds', 'hearts', 'spades', 'clubs'];
+	
+	constructor(suit, value, img) {
+		this.suit = suit;
+		this.value = value;
+		this.img = img;
+	}	
+
+	/**
+	 * Displays the image associated with the given card 
+	 * @param position x-axis for where we want the card
+	 * @param row y-axis for where we want the card
+	 * @param p reference to p5
+	 */
+	showImage(position, row, p) {
+		p.image(this.img, position, row, 64, 64);	
 	}
 
-	staticRender() {
-		shuffle(cards, true);
-		if (index < 52) {
-			if (mouse.pressed()) {
-				sprite = new Sprite(mouseX, mouseY, 64, 64);
-				sprite.addImage('face', cards[index]);
-
-				// Scale should be approx 1.5 ~ 1.75
-				sprite.scale = 1.5;
-				index++;
-			}
-		}
-		else {
-			index = 0;
-		}
+	getSuit() {
+		return this.suit;
 	}
-
-	load() {
-		for (const suit of suits) {
-			for (const value of values) {
-				cards.push(loadImage(`../cards/card_${suit}_${value}.png`));
-			}
-		}
+	
+	getValue() {
+		return this.value;
 	}
 };

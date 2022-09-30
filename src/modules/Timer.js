@@ -5,7 +5,8 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 
 3rd->(2nd->4th, 4th->2nd)->(1st->5th, 5th->1st)
 */
-let board; //current state of the board?
+
+import {Board} from '/src/modules/Board.js';
 
 //should the timer class take care of the card dropping to the board???
 
@@ -15,4 +16,4 @@ class Timer{
   }
 }
 
-modules.export = Timer;
+export default Timer
