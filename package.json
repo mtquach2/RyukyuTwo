@@ -6,7 +6,7 @@
   "type": "module",
   "dependencies": {
     "p5": "^1.4.2",
-    "p5.play": "^3.0.106",
+    "p5.play": "^3.0.108",
     "requirejs": "^2.3.6"
   },
   "devDependencies": {

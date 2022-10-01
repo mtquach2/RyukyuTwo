@@ -1,6 +1,7 @@
 import p5 from 'p5';
+import { Board } from './modules/Board';
 import { Game } from '/src/modules/Game.js';
-let game = new Game(); 
+let game = new Game(new Board()); 
 
 function getWindow() {
   let w = window,
@@ -26,7 +27,7 @@ new p5(p => {
   p.setup = function setup() {
     let window = getWindow()
     p.createCanvas(window.w, window.h);
-    p.background(randColor());
+    p.background(0);
   };
 
   p.draw = function () {
