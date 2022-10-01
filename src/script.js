@@ -12,7 +12,7 @@ function getWindow() {
     y = w.innerHeight || e.clientHeight || g.clientHeight;
   return { w: x, h: y };
 }
-
+"use strict";
 new p5(p => {
   let bg, sprite;
 
