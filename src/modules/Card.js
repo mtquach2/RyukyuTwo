@@ -3,7 +3,7 @@ import p5 from 'p5';
 /**
  * Creates an object for each card in a deck of cards
  */
-export class Cards {
+export class Card {
 	
 	constructor(suit, value, img) {
 		this.suit = suit;

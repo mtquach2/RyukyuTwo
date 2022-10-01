@@ -1,26 +1,29 @@
-import p5 from 'p5';
-import { Cards } from './Cards';
+import { Card } from './Card';
+import { Board } from './Board';
 
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
 export class Game {
-    suits = ['diamonds', 'hearts', 'spades', 'clubs']
-	values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10',
-			'J', 'Q', 'K']
-    cards = []
-    index = 0
-    row = 0;
-    position = 0;
+	constructor(board) {
+		this.board = board;
+	}
+	
+    deck = [];
+    index = 0;
+	col = 0;
     
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
      * @param p reference to p5
      */
     load(p) {
-		for (const suit of this.suits) {
-			for (const value of this.values) {
-				this.cards.push(new Cards(`${suit}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
+		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
+		const values = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
+
+		for (const suit of suits) {
+			for (const value of values) {
+				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
 	}
@@ -31,30 +34,16 @@ export class Game {
      * @param p 
      */
     staticRender(p) {
-		if (this.index < 52) {
-			this.cards[this.index].showImage(this.position, this.row, p); //Shows image for the given card (i.e. cards[index])
+		this.board.render(p);
+		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
+		p.shuffle(this.deck, true);
+		if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
+			this.board.addCard(this.col, this.deck[this.index++]);
+			
+			if (this.board.isFull(this.col)) {
+				this.col++;
+			}
 		}
-		else {
-			this.index = -1;
-			this.row += 100;
-			this.position = -10;
-		}
-		this.index++;
-		this.position += 10;
-
-		// if (this.index < 52) {
-		// 	if (p5play.mouse.pressed()) {
-		// 		let sprite = new p5play.Sprite(p.mouseX, p.mouseY, 64, 64);
-		// 		sprite.addImage('face', this.cards[this.index]);
-
-		// 		// Scale should be approx 1.5 ~ 1.75
-		// 		sprite.scale = 1.5;
-		// 		this.index++;
-		// 	}
-		// }
-		// else {
-		// 	this.index = 0;
-		// }
 	}
 
     add(a, b) {
