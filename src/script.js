@@ -15,7 +15,7 @@ function getWindow() {
 "use strict";
 new p5(p => {
   let bg, sprite;
-
+  let extraCanvas;
   function randColor() {
     return p.color(p.random(255), p.random(255), p.random(255));
   };
@@ -27,11 +27,11 @@ new p5(p => {
   p.setup = function setup() {
     let window = getWindow()
     p.createCanvas(window.w, window.h);
-    p.background(0);
   };
 
   p.draw = function () {
-    game.staticRender(p);
+    p.background(0);
+    game.staticRender(extraCanvas, p);
   };
 
   p.mouseClicked = function mouseClicked() {

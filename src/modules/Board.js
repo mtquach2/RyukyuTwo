@@ -91,31 +91,33 @@ export class Board {
      * @param p p5 instance 
      */
     clicked(px, displayMap, p) {
+        let currentCard;
         if (px >= 230 && px < 295 && this.count1 > 0) {
-            this.placeColumn(displayMap.get(0)[this.count1], p);
+            currentCard = displayMap.get(0)[this.count1];
+            displayMap.get(0)[this.count1].showImage(330, 200, p); //displays card into column selection
             this.count1--;
             displayMap.get(0)[this.count1].showImage(230, 125, p); //updates card shown in topDisplay
         }
         else if (px >= 295 && px < 360 && this.count2 > 0) {
-            this.placeColumn(displayMap.get(1)[this.count2], p);
+            currentCard = displayMap.get(1)[this.count2];
+            displayMap.get(1)[this.count2].showImage(330, 200, p); 
             this.count2--;
             displayMap.get(1)[this.count2].showImage(295, 125, p);
         }
         else if (px >= 360 && px < 425 && this.count3 > 0) {
-            this.placeColumn(displayMap.get(2)[this.count3], p);
+            currentCard = displayMap.get(2)[this.count3];
+            displayMap.get(2)[this.count3].showImage(330, 200, p); 
             this.count3--;
-            displayMap.get(2)[this.count3].showImage(360, 125, p); 
+            displayMap.get(2)[this.count3].showImage(360, 125, p);
         }
         else if (px >= 425 && px < 490 && this.count4 > 0) {
-            this.placeColumn(displayMap.get(3)[this.count4], p);
+            currentCard = displayMap.get(3)[this.count4];
+            displayMap.get(3)[this.count4].showImage(330, 200, p); 
             this.count4--;
             displayMap.get(3)[this.count4].showImage(425, 125, p);
         }
-    }
-
-    placeColumn(card, p) {
-        card.showImage(330, 200, p); //shows card that was selected from topDisplay
-    }
+        return currentCard;
+    } //TODO if we click somewhere that is not a card we get an error from return statement
 
     isFull(index) {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 

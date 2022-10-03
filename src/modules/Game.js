@@ -8,13 +8,12 @@ export class Game {
 	constructor(board) {
 		this.board = board;
 	}
-	
+	mouseClicked = false;
     deck = [];
     index = 0;
 	col = 0;
 	displayMap = new Map();
-	currentCard;
-    
+    currentCard; 
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
      * @param p reference to p5
@@ -43,17 +42,21 @@ export class Game {
      * then repeats displaying a deck in the rest of the rows on screen/canvas
      * @param p 
      */
-    staticRender(p) {
+    staticRender(extraCanvas, p) {
 		this.board.render(p);
 		this.board.renderTopDisplay(p, this.displayMap);
 		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
 		p.shuffle(this.deck, true);
-		if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
-			this.board.addCard(this.col, this.deck[this.index++]);
+		// if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
+		// 	this.board.addCard(this.col, this.deck[this.index++]);
 			
-			if (this.board.isFull(this.col)) {
-				this.col++;
-			}
+		// 	if (this.board.isFull(this.col)) {
+		// 		this.col++;
+		// 	}
+		// }
+		if (this.mouseClicked == true) {
+			let bounds = p.constrain(p.mouseX, 200, 460);
+			this.currentCard.showImage(bounds, 200, p);
 		}
 	}
 	/**
@@ -62,6 +65,8 @@ export class Game {
 	 * @param p instance of p5
 	 */
 	updateTopDisplay(px, p) {
-		this.board.clicked(px, this.displayMap, p);
+		this.currentCard = this.board.clicked(px, this.displayMap, p);
+		console.log(this.currentCard);
+		this.mouseClicked = true;
 	}
 };
