@@ -61,20 +61,26 @@ export class Board {
         }
     }
 
-    renderTopDisplay(p, displayMap) {
+    renderTopDisplay(p, displayMap, count) {
         p.noFill();
         p.stroke(0, 0, 255);
         let x = 0;
-        let count = 12;
         while (x < 4) {
             p.rect(135 + x * 65, 10, 65, 65);
             displayMap.get(x)[count].showImage(135 + x * 65, 10, p);
             x++;
-            //TODO figure out how to decrement count every time mouse is clicked
-        } 
+            //TODO Store x axis from showImage()
+                //so that we can see if x is equal to mouseX 
+                //y axis is always 10 so check if mouseY is at 10
+                //if x-axis == mouseX 
+                    //reverse math to get x variable and decrement count from that x var
+        } //TODO store card that was from previous count (card that was clicked) so we can move it 
         
     }
 
+    clicked() {
+
+    }
     isFull(index) {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 
     }
