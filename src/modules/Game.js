@@ -45,7 +45,7 @@ export class Game {
      */
     staticRender(p) {
 		this.board.render(p);
-		this.currentCard = this.board.renderTopDisplay(p, this.displayMap);
+		this.board.renderTopDisplay(p, this.displayMap);
 		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
 		p.shuffle(this.deck, true);
 		if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
