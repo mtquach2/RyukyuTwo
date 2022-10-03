@@ -61,26 +61,14 @@ export class Board {
         }
     }
 
-    renderTopDisplay(p, deck1, deck2, deck3, deck4) {
+    renderTopDisplay(p, displayMap) {
         p.noFill();
         p.stroke(0, 0, 255);
         let x = 0;
-        let number = 1; 
         let count = 12;
         while (x < 4) {
-            p.rect(150 + x * 65, 10, 65, 65);
-            if (x == 0) {
-                deck1[count].showImage(150 + x * 65, 10, p);
-            }
-            else if (x == 1) {
-                deck2[count].showImage(150 + x * 65, 10, p);
-            }
-            else if (x == 2) {
-                deck3[count].showImage(150 + x * 65, 10, p);
-            }
-            else {
-                deck4[count].showImage(150 + x * 65, 10, p);
-            }
+            p.rect(135 + x * 65, 10, 65, 65);
+            displayMap.get(x)[count].showImage(135 + x * 65, 10, p);
             x++;
             //TODO figure out how to decrement count every time mouse is clicked
         } 
