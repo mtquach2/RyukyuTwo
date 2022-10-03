@@ -31,7 +31,7 @@ export class Timer{
   //   settimeout()
   // }, interval);
 
-  //fix
+  //have to clean up/not brute force it
   cardDropColumn(card){
     //checking if the top row has space (if top row has space there could be space below as well)
     //if 3rd column is not completely filled; drop card in 3rd column
@@ -58,9 +58,18 @@ export class Timer{
         y = true;
       }
     }
-    // else if(){
-    //   //more cases
-    // }
+    else if(board[1][4] == null){
+      cardDropRow(1, card);
+    }
+    else if(board[3][4] == null){
+      cardDropRow(3, card);
+    }
+    else if(board[0][4] == null){
+      cardDropRow(0, card);
+    }
+    else if(board[4][4] == null){
+      cardDropRow(4, card);
+    }
   }
 
   cardDropRow(column, card){
