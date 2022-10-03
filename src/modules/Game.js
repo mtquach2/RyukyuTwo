@@ -11,33 +11,33 @@ export class Game {
 		this.timer = timer;
 	}
 	mouseWasClicked = false;
-  deck = [];
+  	deck = [];
 	col = 0;
-
 	displayMap = new Map();
-  currentCard; 
+  	currentCard; 
  
-	interval;
+	// interval;
 	
-    timerDisplay(p){
-      let seconds = 60; //how many seconds per "set" interval
-      this.interval = setInterval(function(){
-        console.log("Seconds remaining:", seconds);
-        p.background(0);
-        p.stroke(255);
-        p.textSize(20);
-        p.text("timer:", 450, 200);
-        p.stroke(255);
-        p.textSize(20);
-        p.text(seconds, 510, 200);
-        seconds -= 1;
-        if(seconds == 0){
-          clearInterval(this.interval);
-          console.log("Interval has been cleared");
-          seconds = 60; //reset back to initial seconds
-        }
-      }, 1000); //how fast to count the intervals
-    }
+    // timerDisplay(p){
+    //   	let seconds = 60; //how many seconds per "set" interval
+    //   	this.interval = setInterval(function(){
+    //     console.log("Seconds remaining:", seconds);
+    //     p.background(0);
+    //     p.stroke(255);
+    //     p.textSize(20);
+    //     p.text("timer:", 450, 200);
+    //     p.stroke(255);
+    //     p.textSize(20);
+    //     p.text(seconds, 510, 200);
+    //     seconds -= 1;
+    //     if(seconds == 0){
+	// 		clearInterval(this.interval);
+	// 		console.log("Interval has been cleared");
+	// 		seconds = 60; //reset back to initial seconds
+    //     }
+    //   }, 1000); //how fast to count the intervals
+    // }
+
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
      * @param p reference to p5
@@ -62,22 +62,15 @@ export class Game {
 	}
 
     /**
-     * Displays an entire deck of cards in one row
-     * then repeats displaying a deck in the rest of the rows on screen/canvas
+     * Displays the board and top display for the game
+     * Also, includes logic for selecting a card and column for game
      * @param p 
      */
     staticRender(p) {
 		this.board.render(p);
 		this.board.renderTopDisplay(p, this.displayMap);
-		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
+
 		p.shuffle(this.deck, true);
-		// if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
-		// 	this.board.addCard(this.col, this.deck[this.index++]);
-			
-		// 	if (this.board.isFull(this.col)) {
-		// 		this.col++;
-		// 	}
-		// }
 		if (this.mouseWasClicked == true && this.currentCard != null) {
 			let bounds = p.constrain(p.mouseX, 200, 460);
 			this.currentCard.showImage(bounds, 200, p); 

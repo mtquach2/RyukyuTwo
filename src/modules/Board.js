@@ -73,15 +73,37 @@ export class Board {
         p.noFill();
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
+            p.rect(230 + i * 65, 59, 65, 65);
+            p.rect(230 + i * 65, 92, 65, 65);
             p.rect(230 + i * 65, 125, 65, 65); 
         }
         for (let x = 0; x < 5; x++) {
             p.rect(200 + x * 65, 200, 65, 65);
         }
-        displayMap.get(0)[this.count1].showImage(230, 125, p);
-        displayMap.get(1)[this.count2].showImage(295, 125, p);
-        displayMap.get(2)[this.count3].showImage(360, 125, p); 
-        displayMap.get(3)[this.count4].showImage(425, 125, p);
+
+        if ((this.count1 - 2) >= 0) {
+            displayMap.get(0)[this.count1 - 2].showImage(230, 59, p);
+            displayMap.get(0)[this.count1 - 1].showImage(230, 92, p);
+            displayMap.get(0)[this.count1].showImage(230, 125, p);
+        }
+        
+        if ((this.count2 - 2) >= 0) {
+            displayMap.get(1)[this.count2 - 2].showImage(295, 59, p);
+            displayMap.get(1)[this.count2 - 1].showImage(295, 92, p);
+            displayMap.get(1)[this.count2].showImage(295, 125, p);
+        }
+        
+        if ((this.count3 - 2) >= 0) {
+            displayMap.get(2)[this.count3 - 2].showImage(360, 59, p); 
+            displayMap.get(2)[this.count3 - 1].showImage(360, 92, p); 
+            displayMap.get(2)[this.count3].showImage(360, 125, p);
+        }
+         
+        if ((this.count4 - 2) >= 0) {
+            displayMap.get(3)[this.count4 - 2].showImage(425, 59, p);
+            displayMap.get(3)[this.count4 - 1].showImage(425, 92, p); 
+            displayMap.get(3)[this.count4].showImage(425, 125, p);
+        }
     }
     /**
      * Function used to check to see if a specific card/column is clicked 
