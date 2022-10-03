@@ -29,7 +29,7 @@ new p5(p => {
     let window = getWindow()
     p.createCanvas(window.w, window.h);
     p.background(0);
-    game.timeDisplay(p);
+    game.timerDisplay(p);
   };
 
   p.draw = function () {
