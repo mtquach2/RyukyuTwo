@@ -2,7 +2,6 @@ import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Game } from '/src/modules/Game.js';
 let game = new Game(new Board()); 
-let count = 12; 
 
 function getWindow() {
   let w = window,
@@ -32,13 +31,12 @@ new p5(p => {
   };
 
   p.draw = function () {
-    game.staticRender(p, count);
+    game.staticRender(p);
   };
 
   p.mouseClicked = function mouseClicked() {
-    if (count > 0) {
-      count--;
+    if (p.mouseY >= 10 && p.mouseY <= 75) {
+      game.updateTopDisplay(p.mouseX, p);
     }
-  }
- //when mouse is clicked on a specific col we decrement count for that deck
+  };
 });

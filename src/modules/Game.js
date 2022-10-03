@@ -42,9 +42,9 @@ export class Game {
      * then repeats displaying a deck in the rest of the rows on screen/canvas
      * @param p 
      */
-    staticRender(p, count) {
+    staticRender(p) {
 		this.board.render(p);
-		this.board.renderTopDisplay(p, this.displayMap, count);
+		this.board.renderTopDisplay(p, this.displayMap);
 		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
 		p.shuffle(this.deck, true);
 		if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
@@ -54,5 +54,9 @@ export class Game {
 				this.col++;
 			}
 		}
+	}
+
+	updateTopDisplay(px, p) {
+		this.board.clicked(px, this.displayMap, p);
 	}
 };

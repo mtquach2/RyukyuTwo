@@ -3,6 +3,10 @@ import { Hand } from './Hand';
 
 export class Board {
     constructor() {
+        this.count1 = 12;
+        this.count2 = 12;
+        this.count3 = 12;
+        this.count4 = 12; 
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
@@ -60,27 +64,49 @@ export class Board {
             }
         }
     }
-
-    renderTopDisplay(p, displayMap, count) {
+    /**
+     * Creates a 1x4 array/rectangle and displays cards to use for game
+     * @param p p5 instance
+     * @param displayMap map of deck split in 4 equal parts pre-shuffled
+     */
+    renderTopDisplay(p, displayMap) {
         p.noFill();
         p.stroke(0, 0, 255);
-        let x = 0;
-        while (x < 4) {
-            p.rect(135 + x * 65, 10, 65, 65);
-            displayMap.get(x)[count].showImage(135 + x * 65, 10, p);
-            x++;
-            //TODO Store x axis from showImage()
-                //so that we can see if x is equal to mouseX 
-                //y axis is always 10 so check if mouseY is at 10
-                //if x-axis == mouseX 
-                    //reverse math to get x variable and decrement count from that x var
-        } //TODO store card that was from previous count (card that was clicked) so we can move it 
-        
+        for (let i = 0; i < 4; i++) {
+            p.rect(135 + i * 65, 10, 65, 65); 
+        }
+        displayMap.get(0)[this.count1].showImage(135, 10, p);
+        displayMap.get(1)[this.count2].showImage(200, 10, p);
+        displayMap.get(2)[this.count3].showImage(265, 10, p); 
+        displayMap.get(3)[this.count4].showImage(330, 10, p);
+    }
+    /**
+     * Function used to check to see if a specific card/column is clicked 
+     * then updates the card being displayed in that column
+     * @param px where our mouse's x-axis is at
+     * @param displayMap map for deck of cards
+     * @param p p5 instance 
+     */
+    clicked(px, displayMap, p) {
+        if (px >= 135 && px < 200 && this.count1 > 0) {
+            //TODO store current card before decrementing count to display in 1x5 array
+            this.count1--;
+            displayMap.get(0)[this.count1].showImage(135, 10, p);
+        }
+        else if (px >= 200 && px < 265 && this.count2 > 0) {
+            this.count2--;
+            displayMap.get(1)[this.count2].showImage(200, 10, p);
+        }
+        else if (px >= 265 && px < 330 && this.count3 > 0) {
+            this.count3--;
+            displayMap.get(2)[this.count3].showImage(265, 10, p);
+        }
+        else if (px >= 330 && px < 395 && this.count4 > 0) {
+            this.count4--;
+            displayMap.get(3)[this.count4].showImage(330, 10, p);
+        }
     }
 
-    clicked() {
-
-    }
     isFull(index) {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 
     }
