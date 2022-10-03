@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import {Board} from '/src/modules/Board.js';
 
-//should the timer class take care of the card dropping to the board???
+//How will this Timer class be called?
 
 /*
 If card has not been selected, it will select the card at which the cursor is pointed at and drop it in the middle column
@@ -19,17 +19,45 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 
 */
 let board;
+let notDropped;
 let x = false; //need to rename
 let y = false; //need to rename
+let timer = 60000; //60 seconds
+let interval;
 
 export class Timer{
-  constructor(board){
+  constructor(board, notDropped){
     this.board = board;
+    this.notDropped = notDropped; //if card has not been dropped then timer should start???
+    //there will be a "lag", player can not drop RIGHT AWAY? so notDropped will always be true?
   }
 
   // setInterval(() => {
   //   settimeout()
   // }, interval);
+  
+  /*
+    Every 60 seconds, call cardDropColumn()
+      -This means that a player has not yet selected + dropped a card
+    How to figure out if a card has been dropped?
+    Should this be an issue to fix within Timer or Game?
+
+    TODO: How to reset timer if a card is dropped before reaching 60 seconds.
+  */
+  while(notDropped){
+    interval = setInterval(cardDropColumn,timer);
+  }
+  //or
+  /*
+  if(notDropped){ 
+    interval = setInterval(cardDropColumn, timer);
+  }
+  else{ //if someone drops a card before timer runs out???
+    notDropped = false;
+    clearInterval(interval);
+  }
+  */
+
 
   //have to clean up/not brute force it
   cardDropColumn(card){
@@ -70,12 +98,27 @@ export class Timer{
     else if(board[4][4] == null){
       cardDropRow(4, card);
     }
+
+    /*
+    while(notDropped){
+      i = 2;
+      //have i-- or i++ if a row is full? or something
+      //hop between columns instead of having so many if statements?
+    }
+    */
   }
 
+  /*
+    Puts a card on the board after the 60 seconds of timer has passed, but what if it has not passed yet?
+  */
   cardDropRow(column, card){
     for(i = 4; i >= 0; i--){ //working from the bottom of the board up?
       if(board[column][i] == null){ //if that slot is empty put card there
         board[column][i] = card;
+        notDropped = false;
+        clearInterval(interval); //reset the timer?
+
+        
       }
     }
   }
