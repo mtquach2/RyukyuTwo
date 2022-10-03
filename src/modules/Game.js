@@ -8,9 +8,8 @@ export class Game {
 	constructor(board) {
 		this.board = board;
 	}
-	mouseClicked = false;
+	mouseWasClicked = false;
     deck = [];
-    index = 0;
 	col = 0;
 	displayMap = new Map();
     currentCard; 
@@ -42,7 +41,7 @@ export class Game {
      * then repeats displaying a deck in the rest of the rows on screen/canvas
      * @param p 
      */
-    staticRender(extraCanvas, p) {
+    staticRender(p) {
 		this.board.render(p);
 		this.board.renderTopDisplay(p, this.displayMap);
 		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
@@ -54,9 +53,9 @@ export class Game {
 		// 		this.col++;
 		// 	}
 		// }
-		if (this.mouseClicked == true) {
+		if (this.mouseWasClicked == true && this.currentCard != null) {
 			let bounds = p.constrain(p.mouseX, 200, 460);
-			this.currentCard.showImage(bounds, 200, p);
+			this.currentCard.showImage(bounds, 200, p); 
 		}
 	}
 	/**
@@ -66,7 +65,26 @@ export class Game {
 	 */
 	updateTopDisplay(px, p) {
 		this.currentCard = this.board.clicked(px, this.displayMap, p);
-		console.log(this.currentCard);
-		this.mouseClicked = true;
+		this.mouseWasClicked = true;
+	}
+
+	placeCard(p) {
+		if (this.col < 5 && p.mouseX >= 200 && p.mouseX < 265) {
+			this.col = 0;
+		}
+		else if (this.col < 5 && p.mouseX >= 265 && p.mouseX < 330) {
+			this.col = 1;
+		}
+		else if (this.col < 5 && p.mouseX >= 330 && p.mouseX < 395) {
+			this.col = 2;
+		}
+		else if (this.col < 5 && p.mouseX >= 395 && p.mouseX < 460) {
+			this.col = 3;
+		}
+		else if (this.col < 5 && p.mouseX >= 460 && p.mouseX < 525) {
+			this.col = 4;
+		}
+		this.board.addCard(this.col, this.currentCard);
+		this.currentCard = null;
 	}
 };

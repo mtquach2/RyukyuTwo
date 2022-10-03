@@ -14,8 +14,6 @@ function getWindow() {
 }
 "use strict";
 new p5(p => {
-  let bg, sprite;
-  let extraCanvas;
   function randColor() {
     return p.color(p.random(255), p.random(255), p.random(255));
   };
@@ -31,12 +29,16 @@ new p5(p => {
 
   p.draw = function () {
     p.background(0);
-    game.staticRender(extraCanvas, p);
+    game.staticRender(p);
   };
 
   p.mouseClicked = function mouseClicked() {
     if (p.mouseY >= 125 && p.mouseY <= 180) {
       game.updateTopDisplay(p.mouseX, p);
+    }
+
+    if (p.mouseY >= 200 && p.mouseY <= 460) {
+      game.placeCard(p);
     }
   };
 });
