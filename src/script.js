@@ -1,5 +1,6 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
+import { Timer } from './modules/Timer';
 import { Game } from '/src/modules/Game.js';
 let game = new Game(new Board()); 
 
@@ -25,6 +26,8 @@ new p5(p => {
   p.setup = function setup() {
     let window = getWindow()
     p.createCanvas(window.w, window.h);
+    p.background(0);
+    game.timerDisplay(p);
   };
 
   p.draw = function () {
