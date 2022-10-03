@@ -48,19 +48,19 @@ export class Board {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { //squares for each row to display best hand in row
-                p.rect(40, 100 + i * 65, 40, 40);
-                p.text(`${this.rankTable[rowHand.rank]}`, 50, 110 + i * 65, 20, 20);
+                p.rect(130, 310 + i * 65, 40, 40);
+                p.text(`${this.rankTable[rowHand.rank]}`, 145, 325 + i * 65, 20, 20);
             }
             if (colHand.rank != -1) { //squares for each col to display best hand in col
-                p.rect(115 + i * 65, 450, 40, 40);
-                p.text(`${this.rankTable[colHand.rank]}`, 125 + i * 65, 460, 20, 20);
+                p.rect(215 + i * 65, 650, 40, 40);
+                p.text(`${this.rankTable[colHand.rank]}`, 230 + i * 65, 665, 20, 20);
             }
             for (let j = 0; j < this.boardRows.length; j++) {
                 // Create rectangle border
-                p.rect(100 + i * 65, 100 + j * 65, 65, 65); //makes a visible 1x5 array for each of the 5 rows 
+                p.rect(200 + i * 65, 300 + j * 65, 65, 65); //makes a visible 1x5 array for each of the 5 rows 
                 
                 
-                colHand.showCard(j, 100 + i * 65, 100 + j * 65, p); //displays a card throughout each col starting from the bottom left square going up 
+                colHand.showCard(j, 200 + i * 65, 300 + j * 65, p); //displays a card throughout each col starting from the bottom left square going up 
             }
         }
     }
@@ -73,12 +73,15 @@ export class Board {
         p.noFill();
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
-            p.rect(135 + i * 65, 10, 65, 65); 
+            p.rect(230 + i * 65, 125, 65, 65); 
         }
-        displayMap.get(0)[this.count1].showImage(135, 10, p);
-        displayMap.get(1)[this.count2].showImage(200, 10, p);
-        displayMap.get(2)[this.count3].showImage(265, 10, p); 
-        displayMap.get(3)[this.count4].showImage(330, 10, p);
+        for (let x = 0; x < 5; x++) {
+            p.rect(200 + x * 65, 200, 65, 65);
+        }
+        displayMap.get(0)[this.count1].showImage(230, 125, p);
+        displayMap.get(1)[this.count2].showImage(295, 125, p);
+        displayMap.get(2)[this.count3].showImage(360, 125, p); 
+        displayMap.get(3)[this.count4].showImage(425, 125, p);
     }
     /**
      * Function used to check to see if a specific card/column is clicked 
@@ -88,22 +91,25 @@ export class Board {
      * @param p p5 instance 
      */
     clicked(px, displayMap, p) {
-        if (px >= 135 && px < 200 && this.count1 > 0) {
-            //TODO store current card before decrementing count to display in 1x5 array
+        if (px >= 230 && px < 295 && this.count1 > 0) {
+            displayMap.get(0)[this.count1].showImage(330, 200, p); //displays card into column selection
             this.count1--;
-            displayMap.get(0)[this.count1].showImage(135, 10, p);
+            displayMap.get(0)[this.count1].showImage(230, 125, p); //updates card shown in topDisplay
         }
-        else if (px >= 200 && px < 265 && this.count2 > 0) {
+        else if (px >= 295 && px < 360 && this.count2 > 0) {
+            displayMap.get(1)[this.count2].showImage(330, 200, p); 
             this.count2--;
-            displayMap.get(1)[this.count2].showImage(200, 10, p);
+            displayMap.get(1)[this.count2].showImage(295, 125, p);
         }
-        else if (px >= 265 && px < 330 && this.count3 > 0) {
+        else if (px >= 360 && px < 425 && this.count3 > 0) {
+            displayMap.get(2)[this.count3].showImage(330, 200, p); 
             this.count3--;
-            displayMap.get(2)[this.count3].showImage(265, 10, p);
+            displayMap.get(2)[this.count3].showImage(360, 125, p); 
         }
-        else if (px >= 330 && px < 395 && this.count4 > 0) {
+        else if (px >= 425 && px < 490 && this.count4 > 0) {
+            displayMap.get(3)[this.count4].showImage(330, 200, p); 
             this.count4--;
-            displayMap.get(3)[this.count4].showImage(330, 10, p);
+            displayMap.get(3)[this.count4].showImage(425, 125, p);
         }
     }
 

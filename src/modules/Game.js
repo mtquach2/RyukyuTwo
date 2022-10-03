@@ -13,6 +13,7 @@ export class Game {
     index = 0;
 	col = 0;
 	displayMap = new Map();
+	currentCard;
     
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
@@ -44,7 +45,7 @@ export class Game {
      */
     staticRender(p) {
 		this.board.render(p);
-		this.board.renderTopDisplay(p, this.displayMap);
+		this.currentCard = this.board.renderTopDisplay(p, this.displayMap);
 		// If you left click, then it will fill the entire board with 5-of-a-kind columns and straight flush rows to test some hand ranking
 		p.shuffle(this.deck, true);
 		if (p.mouseButton == p.LEFT && this.index < 52 && this.col < 5) {
@@ -55,7 +56,11 @@ export class Game {
 			}
 		}
 	}
-
+	/**
+	 * Sends displayMap to clicked() 
+	 * @param px mouseX value
+	 * @param p instance of p5
+	 */
 	updateTopDisplay(px, p) {
 		this.board.clicked(px, this.displayMap, p);
 	}

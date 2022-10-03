@@ -35,7 +35,7 @@ new p5(p => {
   };
 
   p.mouseClicked = function mouseClicked() {
-    if (p.mouseY >= 10 && p.mouseY <= 75) {
+    if (p.mouseY >= 125 && p.mouseY <= 180) {
       game.updateTopDisplay(p.mouseX, p);
     }
   };
