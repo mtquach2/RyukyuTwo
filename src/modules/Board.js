@@ -73,7 +73,7 @@ export class Board {
         p.noFill();
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
-            p.rect(230 + i * 65, 59, 65, 65);
+            p.rect(230 + i * 65, 59, 65, 65); //TODO get rid of hardcoding placements
             p.rect(230 + i * 65, 92, 65, 65);
             p.rect(230 + i * 65, 125, 65, 65); 
         }
@@ -81,7 +81,7 @@ export class Board {
             p.rect(200 + x * 65, 200, 65, 65);
         }
 
-        if ((this.count1 - 2) >= 0) {
+        if ((this.count1 - 2) >= 0) { //TODO make this a method
             displayMap.get(0)[this.count1 - 2].showImage(230, 59, p);
             displayMap.get(0)[this.count1 - 1].showImage(230, 92, p);
             displayMap.get(0)[this.count1].showImage(230, 125, p);
@@ -115,7 +115,7 @@ export class Board {
     clicked(px, displayMap, p) {
         let currentCard;
         if (px >= 230 && px < 295 && this.count1 > 0) {
-            currentCard = displayMap.get(0)[this.count1];
+            currentCard = displayMap.get(0)[this.count1]; //TODO make method for inner stuff in conditions
             displayMap.get(0)[this.count1].showImage(330, 200, p); //displays card into column selection
             this.count1--;
             displayMap.get(0)[this.count1].showImage(230, 125, p); //updates card shown in topDisplay

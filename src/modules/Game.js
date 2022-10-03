@@ -53,7 +53,7 @@ export class Game {
 		}
 
 		//shuffles the deck and then splits the deck into 4 equal decks 
-		p.shuffle(this.deck, true);
+		p.shuffle(this.deck, true); //TODO make method for this logic here
 		this.displayMap.set(0, this.deck.slice(0,13));
 		this.displayMap.set(1, this.deck.slice(13, 26));	
 		this.displayMap.set(2, this.deck.slice(26, 39));
@@ -70,8 +70,8 @@ export class Game {
 		this.board.render(p);
 		this.board.renderTopDisplay(p, this.displayMap);
 
-		p.shuffle(this.deck, true);
-		if (this.mouseWasClicked == true && this.currentCard != null) {
+		p.shuffle(this.deck, true); //TODO make a new method for this stuff maybe in board.js?
+		if (this.mouseWasClicked == true && this.currentCard != null) { 
 			let bounds = p.constrain(p.mouseX, 200, 460);
 			this.currentCard.showImage(bounds, 200, p); 
 		}
@@ -86,7 +86,7 @@ export class Game {
 		this.mouseWasClicked = true;
 	}
 
-	placeCard(p) {
+	placeCard(p) { //TODO move in Board.js & refactor
 		if (this.col < 5 && p.mouseX >= 200 && p.mouseX < 265) {
 			this.col = 0;
 		}
