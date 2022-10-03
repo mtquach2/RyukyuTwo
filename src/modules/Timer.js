@@ -1,7 +1,12 @@
 import p5 from 'p5';
 import {Board} from '/src/modules/Board.js';
 
-//How will this Timer class be called?
+/*
+  -Timer called once when round starts 
+  -Stops when round ends
+  -resets at every card drop
+  -resets when 60 second is over and card also drops
+*/
 
 /*
 If card has not been selected, it will select the card at which the cursor is pointed at and drop it in the middle column
@@ -19,22 +24,40 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 
 */
 let board;
-let notDropped;
+let notDropped = true;
 let x = false; //need to rename
 let y = false; //need to rename
 let timer = 60000; //60 seconds
 let interval;
+let second;
 
 export class Timer{
-  constructor(board, notDropped){
-    this.board = board;
-    this.notDropped = notDropped; //if card has not been dropped then timer should start???
+  constructor(){
+    //this.board = board;
+    //this.notDropped = notDropped; //if card has not been dropped then timer should start???
     //there will be a "lag", player can not drop RIGHT AWAY? so notDropped will always be true?
   }
 
-  // setInterval(() => {
-  //   settimeout()
-  // }, interval);
+  // timeDisplay(p){
+	// 	let seconds = 5;
+	// 	//console.log("Initial times runned:", timesRun);
+	// 	p.stroke(255);
+	// 	p.textSize(20);
+	// 	p.text("timer:", 450, 200);
+	// 	this.interval = setInterval(function(){
+	// 		seconds -= 1;
+	// 		console.log("Amount of seconds passed:", seconds);
+	// 		//console.log("Interval:", this.interval);
+	// 		p.stroke(255);
+	// 		p.textSize(20);
+	// 		p.text(seconds, 500, 200);
+	// 		if(seconds === 0){
+	// 			clearInterval(this.interval);
+	// 			console.log("Interval has been cleared");
+	// 			seconds = 5;
+	// 		}
+	// 	}, 1000); 
+	// }
   
   /*
     Every 60 seconds, call cardDropColumn()
@@ -46,6 +69,7 @@ export class Timer{
   */
   while(notDropped){
     interval = setInterval(cardDropColumn,timer);
+    second.html(interval);
   }
   //or
   /*

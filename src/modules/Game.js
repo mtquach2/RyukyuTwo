@@ -1,17 +1,66 @@
 import { Card } from './Card';
 import { Board } from './Board';
+import { Timer } from './Timer';
 
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
+// let timer;
 export class Game {
-	constructor(board) {
+	constructor(board, timer) {
 		this.board = board;
+		this.timer = timer;
 	}
 	
     deck = [];
     index = 0;
 	col = 0;
+ 
+	timer = 60000;
+	
+	interval;
+	
+	timeDisplay(p){
+		let seconds = 5;
+		//console.log("Initial times runned:", timesRun);
+		p.stroke(255);
+		p.textSize(20);
+		p.text("timer:", 450, 200);
+		this.interval = setInterval(function(){
+			seconds -= 1;
+			console.log("Amount of seconds passed:", seconds);
+			//console.log("Interval:", this.interval);
+			p.stroke(255);
+			p.textSize(20);
+			p.text(seconds, 500, 200);
+			if(seconds === 0){
+				clearInterval(this.interval);
+				console.log("Interval has been cleared");
+				seconds = 5;
+			}
+		}, 1000); 
+	}
+
+	countToTen(p){
+
+	}
+
+	// log(msg) {
+	// 	console.log("MESSAGE: ", msg);
+	// 	clearInterval(this.interval);
+	// }
+	
+
+	timeLeft(p){
+		interval = setInterval(this.timeDisplay,timer);
+	}
+	//p.strokWeight();
+	//console.log(timer.interval);
+	//console.log("Hello");
+	//p.text(Timer(Board).interval, 500, 250);
+	//interval = setInterval(this.timeIt,timer);
+
+	
     
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
