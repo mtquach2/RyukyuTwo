@@ -12,9 +12,7 @@ export class Game {
 	}
 	mouseWasClicked = false;
   	deck = [];
-	col = 0;
 	displayMap = new Map();
-  	currentCard; 
  
 	// interval;
 	
@@ -51,14 +49,6 @@ export class Game {
 				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
-
-		//shuffles the deck and then splits the deck into 4 equal decks 
-		p.shuffle(this.deck, true); //TODO make method for this logic here
-		this.displayMap.set(0, this.deck.slice(0,13));
-		this.displayMap.set(1, this.deck.slice(13, 26));	
-		this.displayMap.set(2, this.deck.slice(26, 39));
-		this.displayMap.set(3, this.deck.slice(39, 52));	
-		console.log(this.displayMap);
 	}
 
     /**
@@ -69,12 +59,8 @@ export class Game {
     staticRender(p) {
 		this.board.render(p);
 		this.board.renderTopDisplay(p, this.displayMap);
-
-		p.shuffle(this.deck, true); //TODO make a new method for this stuff maybe in board.js?
-		if (this.mouseWasClicked == true && this.currentCard != null) { 
-			let bounds = p.constrain(p.mouseX, 200, 460);
-			this.currentCard.showImage(bounds, 200, p); 
-		}
+		this.board.initCards(this.displayMap, p);
+		this.board.displayCard(this.mouseWasClicked, p);
 	}
 	/**
 	 * Sends displayMap to clicked() 
@@ -86,23 +72,24 @@ export class Game {
 		this.mouseWasClicked = true;
 	}
 
-	placeCard(p) { //TODO move in Board.js & refactor
-		if (this.col < 5 && p.mouseX >= 200 && p.mouseX < 265) {
-			this.col = 0;
+	/**
+	 * Game.js version of chooseCol in Board.js
+	 * @param p 
+	 */
+	placeCard(p) { //TODO remove?
+		this.board.chooseCol(p);
+	}
+
+	/**
+	 * Splits a full deck of cards into 4 even parts
+	 * @param p p5 instance
+	 */
+	splitCards(p) {
+		p.shuffle(this.deck, true);
+		let x = 0; 
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.deck.slice(x, x + 13));
+			x += 13;
 		}
-		else if (this.col < 5 && p.mouseX >= 265 && p.mouseX < 330) {
-			this.col = 1;
-		}
-		else if (this.col < 5 && p.mouseX >= 330 && p.mouseX < 395) {
-			this.col = 2;
-		}
-		else if (this.col < 5 && p.mouseX >= 395 && p.mouseX < 460) {
-			this.col = 3;
-		}
-		else if (this.col < 5 && p.mouseX >= 460 && p.mouseX < 525) {
-			this.col = 4;
-		}
-		this.board.addCard(this.col, this.currentCard);
-		this.currentCard = null;
 	}
 };

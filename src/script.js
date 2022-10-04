@@ -27,6 +27,7 @@ new p5(p => {
     let window = getWindow()
     p.createCanvas(window.w, window.h);
     p.background(0);
+    game.splitCards(p);
     // game.timerDisplay(p);
   };
 

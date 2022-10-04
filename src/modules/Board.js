@@ -2,11 +2,12 @@ import { Card } from './Card';
 import { Hand } from './Hand';
 
 export class Board {
-    constructor() {
-        this.count1 = 12;
-        this.count2 = 12;
-        this.count3 = 12;
-        this.count4 = 12; 
+    constructor() { 
+        this.xPositions = [230, 295, 360, 425, 490];
+        this.yPositions = [59, 92, 125];
+        this.counts = [12, 12, 12, 12];
+        this.currentCard;
+        this.col = 0; 
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
@@ -72,37 +73,13 @@ export class Board {
     renderTopDisplay(p, displayMap) {
         p.noFill();
         p.stroke(0, 0, 255);
-        for (let i = 0; i < 4; i++) {
-            p.rect(230 + i * 65, 59, 65, 65); //TODO get rid of hardcoding placements
-            p.rect(230 + i * 65, 92, 65, 65);
-            p.rect(230 + i * 65, 125, 65, 65); 
+        for (let index = 0; index < 4; index++) {
+            for (let i = 0; i < 3; i++) {
+                p.rect(230 + index * 65, this.yPositions[i], 65, 65);
+            }       
         }
         for (let x = 0; x < 5; x++) {
             p.rect(200 + x * 65, 200, 65, 65);
-        }
-
-        if ((this.count1 - 2) >= 0) { //TODO make this a method
-            displayMap.get(0)[this.count1 - 2].showImage(230, 59, p);
-            displayMap.get(0)[this.count1 - 1].showImage(230, 92, p);
-            displayMap.get(0)[this.count1].showImage(230, 125, p);
-        }
-        
-        if ((this.count2 - 2) >= 0) {
-            displayMap.get(1)[this.count2 - 2].showImage(295, 59, p);
-            displayMap.get(1)[this.count2 - 1].showImage(295, 92, p);
-            displayMap.get(1)[this.count2].showImage(295, 125, p);
-        }
-        
-        if ((this.count3 - 2) >= 0) {
-            displayMap.get(2)[this.count3 - 2].showImage(360, 59, p); 
-            displayMap.get(2)[this.count3 - 1].showImage(360, 92, p); 
-            displayMap.get(2)[this.count3].showImage(360, 125, p);
-        }
-         
-        if ((this.count4 - 2) >= 0) {
-            displayMap.get(3)[this.count4 - 2].showImage(425, 59, p);
-            displayMap.get(3)[this.count4 - 1].showImage(425, 92, p); 
-            displayMap.get(3)[this.count4].showImage(425, 125, p);
         }
     }
     /**
@@ -113,35 +90,70 @@ export class Board {
      * @param p p5 instance 
      */
     clicked(px, displayMap, p) {
-        let currentCard;
-        if (px >= 230 && px < 295 && this.count1 > 0) {
-            currentCard = displayMap.get(0)[this.count1]; //TODO make method for inner stuff in conditions
-            displayMap.get(0)[this.count1].showImage(330, 200, p); //displays card into column selection
-            this.count1--;
-            displayMap.get(0)[this.count1].showImage(230, 125, p); //updates card shown in topDisplay
+        for (let i = 0; i < 4; i++) {
+            if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] > 0) {
+                this.currentCard = displayMap.get(i)[this.counts[i]];
+                displayMap.get(i)[this.counts[i]].showImage(330, 200, p);
+                this.counts[i]--;
+                displayMap.get(i)[this.counts[i]].showImage(295, 125, p);
+            }
         }
-        else if (px >= 295 && px < 360 && this.count2 > 0) {
-            currentCard = displayMap.get(1)[this.count2];
-            displayMap.get(1)[this.count2].showImage(330, 200, p); 
-            this.count2--;
-            displayMap.get(1)[this.count2].showImage(295, 125, p);
-        }
-        else if (px >= 360 && px < 425 && this.count3 > 0) {
-            currentCard = displayMap.get(2)[this.count3];
-            displayMap.get(2)[this.count3].showImage(330, 200, p); 
-            this.count3--;
-            displayMap.get(2)[this.count3].showImage(360, 125, p);
-        }
-        else if (px >= 425 && px < 490 && this.count4 > 0) {
-            currentCard = displayMap.get(3)[this.count4];
-            displayMap.get(3)[this.count4].showImage(330, 200, p); 
-            this.count4--;
-            displayMap.get(3)[this.count4].showImage(425, 125, p);
-        }
-        return currentCard;
-    } //TODO if we click somewhere that is not a card we get an error from return statement
+    }
 
     isFull(index) {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 
     }
+    /**
+     * Displays the first set of cards in the top display
+     * @param displayMap map for split deck of cards
+     * @param p p5 instance 
+     */
+    initCards(displayMap, p) {
+        for (let i = 0; i < 4; i++) {
+            let offset = -2;
+            for (let l = 0; l < 3; l++) {
+                if ((this.counts[i] - 2) >= 0) {
+                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[l], p);
+                }
+                offset++;
+            }
+        } 
+    }
+
+    /**
+     * Displays card selected from top display into 1x5 array
+     * Moves with mouse's x-axis
+     * @param mouseWasClicked boolean to check to see if a card was previously selected
+     * @param p p5 instance
+     */
+    displayCard(mouseWasClicked, p) {
+		if (mouseWasClicked == true && this.currentCard != null) { 
+			let bounds = p.constrain(p.mouseX, 200, 460);
+			this.currentCard.showImage(bounds, 200, p); 
+		}
+	}
+
+    /**
+     * Displays selected card into the clicked column 
+     * @param p 
+     */
+    chooseCol(p) { //TODO figure out better way to do this
+        if (this.col < 5 && p.mouseX >= 200 && p.mouseX < 265) {
+			this.col = 0;
+		}
+		else if (this.col < 5 && p.mouseX >= 265 && p.mouseX < 330) {
+			this.col = 1;
+		}
+		else if (this.col < 5 && p.mouseX >= 330 && p.mouseX < 395) {
+			this.col = 2;
+		}
+		else if (this.col < 5 && p.mouseX >= 395 && p.mouseX < 460) {
+			this.col = 3;
+		}
+		else if (this.col < 5 && p.mouseX >= 460 && p.mouseX < 525) {
+			this.col = 4;
+		}
+		this.addCard(this.col, this.currentCard);
+		this.currentCard = null; 
+    } //TODO maybe include game over boolean? while the game isn't over see what column was clicked?
 }
