@@ -39,7 +39,7 @@ new p5(p => {
 
   p.draw = function () { //30 fps or is it actually 60 fps?
     frameCounter++;
-    if(frameCounter % 60 == 0){ //seems to be 60 fps?
+    if(frameCounter % 60 == 0){ 
       this.drawTimer();
       frameCounter = 0; 
       console.log("FrameCounter refreshed");
