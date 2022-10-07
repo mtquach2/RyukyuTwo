@@ -41,7 +41,7 @@ new p5(p => {
     frameCounter++;
     if(frameCounter % 60 == 0){ 
       this.drawTimer();
-      frameCounter = 0;
+      frameCounter = 0; 
       console.log("FrameCounter refreshed");
     }
     game.staticRender(p);
