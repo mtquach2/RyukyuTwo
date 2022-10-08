@@ -3,6 +3,7 @@ import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
 import { Game } from '/src/modules/Game.js';
 let game = new Game(new Board()); 
+let windowSize;
 
 function getWindow() {
   let w = window,
@@ -13,6 +14,7 @@ function getWindow() {
     y = w.innerHeight || e.clientHeight || g.clientHeight;
   return { w: x, h: y };
 }
+
 "use strict";
 new p5(p => {
   function randColor() {
@@ -24,16 +26,16 @@ new p5(p => {
   };
 
   p.setup = function setup() {
-    let window = getWindow()
-    p.createCanvas(window.w, window.h);
-    p.background(0);
+    windowSize = getWindow();
+    p.createCanvas(windowSize.w, windowSize.h);
     game.splitCards(p);
+    console.log(windowSize.w, windowSize.h);
     // game.timerDisplay(p);
   };
 
   p.draw = function () {
     p.background(0);
-    game.staticRender(p);
+    game.staticRender(p, windowSize.w, windowSize.h);
   };
 
   p.mouseClicked = function mouseClicked() {
