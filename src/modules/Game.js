@@ -56,19 +56,19 @@ export class Game {
      * Also, includes logic for selecting a card and column for game
      * @param p 
      */
-    staticRender(p) {
-		this.board.render(p);
-		this.board.renderTopDisplay(p, this.displayMap);
-		this.board.initCards(this.displayMap, p);
-		this.board.displayCard(this.mouseWasClicked, p);
+    staticRender(p, width, height) {
+		this.board.render(p, this.displayMap, width, height);
+		this.board.initCards(p, this.displayMap, width, height);
+		this.board.displayCard(this.mouseWasClicked, p, width, height);
 	}
+
 	/**
 	 * Sends displayMap to clicked() 
 	 * @param px mouseX value
 	 * @param p instance of p5
 	 */
 	updateTopDisplay(px, p) {
-		this.currentCard = this.board.clicked(px, this.displayMap, p);
+		this.currentCard = this.board.clicked(p, this.displayMap, px);
 		this.mouseWasClicked = true;
 	}
 
