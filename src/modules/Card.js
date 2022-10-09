@@ -28,4 +28,8 @@ export class Card {
 	getValue() {
 		return this.value;
 	}
+
+	getImage() {
+		return this.img;
+	}
 };

@@ -1,7 +1,10 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
+import { Timer } from './modules/Timer';
 import { Game } from '/src/modules/Game.js';
-let game = new Game(new Board()); 
+let board = new Board();
+let game = new Game(board); 
+let windowSize;
 
 function getWindow() {
   let w = window,
@@ -13,9 +16,8 @@ function getWindow() {
   return { w: x, h: y };
 }
 
+"use strict";
 new p5(p => {
-  let bg, sprite;
-
   function randColor() {
     return p.color(p.random(255), p.random(255), p.random(255));
   };
@@ -25,13 +27,19 @@ new p5(p => {
   };
 
   p.setup = function setup() {
-    let window = getWindow()
-    p.createCanvas(window.w, window.h);
-    p.background(0);
+    windowSize = getWindow();
+    p.createCanvas(windowSize.w, windowSize.h);
+    game.splitCards(p);
+    // game.timerDisplay(p);
   };
 
   p.draw = function () {
-    game.staticRender(p);
+    p.background(0);
+    game.staticRender(p, windowSize.w, windowSize.h);
   };
 
+  p.mouseClicked = function mouseClicked() {
+    game.updateTopDisplay(p.mouseX, p.mouseY);
+    board.chooseCol(p.mouseY, p);
+  };
 });
