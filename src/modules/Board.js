@@ -102,17 +102,17 @@ export class Board {
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
             for (let y = 0; y < 3; y++) {
-                p.rect(this.boardX + (i + 1) * 65 + 65/2, this.yPositions[y], 65, 65);
+                p.rect(this.boardX + (i + 1) * 65 + 65/2, this.yPositions[y], 65, 65); //top display
             }       
         }
         for (let i = 0; i < 5; i++) {
-            p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65);
+            p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
         }
     }
 
     /**
-     * Function used to check to see if a specific card/column is clicked 
-     * then updates the card being displayed in that column
+     * Method used to check to see if a specific card from the top display was clicked
+     * then updates the top display and displays it in 1x5 array for column choosing
      * @param px where our mouse's x-axis is at
      * @param displayMap map for deck of card
      */
@@ -135,7 +135,7 @@ export class Board {
     }
 
     /**
-     * Displays the first set of cards in the top display
+     * Displays cards in the top display
      * @param p p5 instance 
      * @param displayMap map for split deck of cards
      */

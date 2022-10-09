@@ -63,7 +63,7 @@ export class Game {
 	}
 
 	/**
-	 * Sends displayMap to clicked() 
+	 * Sends displayMap to clicked() in Board.js 
 	 * @param px mouseX value
 	 * @param p instance of p5
 	 */
