@@ -1,10 +1,14 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
-import { Timer } from './modules/Timer';
 import { Game } from '/src/modules/Game.js';
+import { Timer } from './modules/Timer';
+
 let board = new Board();
 let game = new Game(board); 
 let windowSize;
+let timerGraphics;
+let seconds = 60;
+let frameCounter = 0;
 
 function getWindow() {
   let w = window,
@@ -16,8 +20,11 @@ function getWindow() {
   return { w: x, h: y };
 }
 
+
 "use strict";
 new p5(p => {
+  let bg, sprite;
+
   function randColor() {
     return p.color(p.random(255), p.random(255), p.random(255));
   };
@@ -41,5 +48,37 @@ new p5(p => {
   p.mouseClicked = function mouseClicked() {
     game.updateTopDisplay(p.mouseX, p.mouseY);
     board.chooseCol(p.mouseY, p);
+    let window = getWindow()
+    p.createCanvas(window.w, window.h);
+    p.background(0);
+    timerGraphics = p.createGraphics(window.w, window.h);
+    console.log(p.frameRate);
+
   };
+
+  p.draw = function () { //30 fps or is it actually 60 fps?
+    frameCounter++;
+    if(frameCounter % 60 == 0){ //seems to be 60 fps?
+      this.drawTimer();
+      frameCounter = 0; 
+      console.log("FrameCounter refreshed");
+    }
+    game.staticRender(p);
+
+  };
+
+  p.drawTimer = function() {
+    timerGraphics.background(0); //"reset" background so that there will not be an overlap
+    timerGraphics.stroke(255);
+    timerGraphics.textSize(20);
+    timerGraphics.text("timer:", 600, 200);
+    timerGraphics.stroke(255);
+    timerGraphics.textSize(20);
+    timerGraphics.text(seconds, 660, 200);
+    seconds--;
+    if(seconds == 0){
+      seconds = 60;
+    }
+    p.image(timerGraphics, 0, 0); //take timerGraphics and load it onto canvas
+  }
 });

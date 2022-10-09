@@ -22,130 +22,130 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
   -drop it in the row given the rules above
   -3rd->(2nd->4th, 4th->2nd)->(1st->5th, 5th->1st)
 
-*/
-let board;
-let notDropped = true;
-let x = false; //need to rename
-let y = false; //need to rename
-let timer = 60000; //60 seconds
-let interval;
-let second;
+// */
+// let board;
+// let notDropped = true;
+// let x = false; //need to rename
+// let y = false; //need to rename
+// let timer = 60000; //60 seconds
+// let interval;
+// let second;
 
-export class Timer{
-  constructor(){
-    //this.board = board;
-    //this.notDropped = notDropped; //if card has not been dropped then timer should start???
-    //there will be a "lag", player can not drop RIGHT AWAY? so notDropped will always be true?
-  }
+// export class Timer{
+//   constructor(){
+//     //this.board = board;
+//     //this.notDropped = notDropped; //if card has not been dropped then timer should start???
+//     //there will be a "lag", player can not drop RIGHT AWAY? so notDropped will always be true?
+//   }
 
-  // timeDisplay(p){
-	// 	let seconds = 5;
-	// 	//console.log("Initial times runned:", timesRun);
-	// 	p.stroke(255);
-	// 	p.textSize(20);
-	// 	p.text("timer:", 450, 200);
-	// 	this.interval = setInterval(function(){
-	// 		seconds -= 1;
-	// 		console.log("Amount of seconds passed:", seconds);
-	// 		//console.log("Interval:", this.interval);
-	// 		p.stroke(255);
-	// 		p.textSize(20);
-	// 		p.text(seconds, 500, 200);
-	// 		if(seconds === 0){
-	// 			clearInterval(this.interval);
-	// 			console.log("Interval has been cleared");
-	// 			seconds = 5;
-	// 		}
-	// 	}, 1000); 
-	// }
+//   // timeDisplay(p){
+// 	// 	let seconds = 5;
+// 	// 	//console.log("Initial times runned:", timesRun);
+// 	// 	p.stroke(255);
+// 	// 	p.textSize(20);
+// 	// 	p.text("timer:", 450, 200);
+// 	// 	this.interval = setInterval(function(){
+// 	// 		seconds -= 1;
+// 	// 		console.log("Amount of seconds passed:", seconds);
+// 	// 		//console.log("Interval:", this.interval);
+// 	// 		p.stroke(255);
+// 	// 		p.textSize(20);
+// 	// 		p.text(seconds, 500, 200);
+// 	// 		if(seconds === 0){
+// 	// 			clearInterval(this.interval);
+// 	// 			console.log("Interval has been cleared");
+// 	// 			seconds = 5;
+// 	// 		}
+// 	// 	}, 1000); 
+// 	// }
   
-  /*
-    Every 60 seconds, call cardDropColumn()
-      -This means that a player has not yet selected + dropped a card
-    How to figure out if a card has been dropped?
-    Should this be an issue to fix within Timer or Game?
+//   /*
+//     Every 60 seconds, call cardDropColumn()
+//       -This means that a player has not yet selected + dropped a card
+//     How to figure out if a card has been dropped?
+//     Should this be an issue to fix within Timer or Game?
 
-    TODO: How to reset timer if a card is dropped before reaching 60 seconds.
-  */
-  while(notDropped){
-    interval = setInterval(cardDropColumn,timer);
-    second.html(interval);
-  }
-  //or
-  /*
-  if(notDropped){ 
-    interval = setInterval(cardDropColumn, timer);
-  }
-  else{ //if someone drops a card before timer runs out???
-    notDropped = false;
-    clearInterval(interval);
-  }
-  */
+//     TODO: How to reset timer if a card is dropped before reaching 60 seconds.
+//   */
+//   while(notDropped){
+//     interval = setInterval(cardDropColumn,timer);
+//     second.html(interval);
+//   }
+//   //or
+//   /*
+//   if(notDropped){ 
+//     interval = setInterval(cardDropColumn, timer);
+//   }
+//   else{ //if someone drops a card before timer runs out???
+//     notDropped = false;
+//     clearInterval(interval);
+//   }
+//   */
 
 
-  //have to clean up/not brute force it
-  cardDropColumn(card){
-    //checking if the top row has space (if top row has space there could be space below as well)
-    //if 3rd column is not completely filled; drop card in 3rd column
-    if(board[2][4] == null){
-      cardDropRow(2, card);
-    }
-    else if(board[1][4] == null && board[3][4] == null){ //if both 2nd and 4th column empty, interchange
-      if(x == false){ //2nd column should go first
-        cardDropRow(1, card);
-        x = true;
-      }
-      else{ //if card was just placd in 2nd column, then go to 4th column
-        cardDropRow(3, card);
-        x = false;
-      }
-    }
-    else if(board[0][4] == null && board[4][4] == null){
-      if(y = false){ //1st column should go first
-        cardDropRow(0, card);
-        y = true;
-      }
-      else{ //if card was just placed in 1st column, then go to the 5th column
-        cardDropRow(0, card);
-        y = true;
-      }
-    }
-    else if(board[1][4] == null){
-      cardDropRow(1, card);
-    }
-    else if(board[3][4] == null){
-      cardDropRow(3, card);
-    }
-    else if(board[0][4] == null){
-      cardDropRow(0, card);
-    }
-    else if(board[4][4] == null){
-      cardDropRow(4, card);
-    }
+//   //have to clean up/not brute force it
+//   cardDropColumn(card){
+//     //checking if the top row has space (if top row has space there could be space below as well)
+//     //if 3rd column is not completely filled; drop card in 3rd column
+//     if(board[2][4] == null){
+//       cardDropRow(2, card);
+//     }
+//     else if(board[1][4] == null && board[3][4] == null){ //if both 2nd and 4th column empty, interchange
+//       if(x == false){ //2nd column should go first
+//         cardDropRow(1, card);
+//         x = true;
+//       }
+//       else{ //if card was just placd in 2nd column, then go to 4th column
+//         cardDropRow(3, card);
+//         x = false;
+//       }
+//     }
+//     else if(board[0][4] == null && board[4][4] == null){
+//       if(y = false){ //1st column should go first
+//         cardDropRow(0, card);
+//         y = true;
+//       }
+//       else{ //if card was just placed in 1st column, then go to the 5th column
+//         cardDropRow(0, card);
+//         y = true;
+//       }
+//     }
+//     else if(board[1][4] == null){
+//       cardDropRow(1, card);
+//     }
+//     else if(board[3][4] == null){
+//       cardDropRow(3, card);
+//     }
+//     else if(board[0][4] == null){
+//       cardDropRow(0, card);
+//     }
+//     else if(board[4][4] == null){
+//       cardDropRow(4, card);
+//     }
 
-    /*
-    while(notDropped){
-      i = 2;
-      //have i-- or i++ if a row is full? or something
-      //hop between columns instead of having so many if statements?
-    }
-    */
-  }
+//     /*
+//     while(notDropped){
+//       i = 2;
+//       //have i-- or i++ if a row is full? or something
+//       //hop between columns instead of having so many if statements?
+//     }
+//     */
+//   }
 
-  /*
-    Puts a card on the board after the 60 seconds of timer has passed, but what if it has not passed yet?
-  */
-  cardDropRow(column, card){
-    for(i = 4; i >= 0; i--){ //working from the bottom of the board up?
-      if(board[column][i] == null){ //if that slot is empty put card there
-        board[column][i] = card;
-        notDropped = false;
-        clearInterval(interval); //reset the timer?
+//   /*
+//     Puts a card on the board after the 60 seconds of timer has passed, but what if it has not passed yet?
+//   */
+//   cardDropRow(column, card){
+//     for(i = 4; i >= 0; i--){ //working from the bottom of the board up?
+//       if(board[column][i] == null){ //if that slot is empty put card there
+//         board[column][i] = card;
+//         notDropped = false;
+//         clearInterval(interval); //reset the timer?
 
         
-      }
-    }
-  }
+//       }
+//     }
+//   }
 
-}
 
+//}
