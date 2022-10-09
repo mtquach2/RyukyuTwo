@@ -2,10 +2,7 @@ import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Game } from '/src/modules/Game.js';
 import { Timer } from './modules/Timer';
-
-let board = new Board();
-let game = new Game(board); 
-let windowSize;
+let game = new Game(new Board()); 
 let timerGraphics;
 let seconds = 60;
 let frameCounter = 0;
@@ -20,8 +17,6 @@ function getWindow() {
   return { w: x, h: y };
 }
 
-
-"use strict";
 new p5(p => {
   let bg, sprite;
 
@@ -34,20 +29,6 @@ new p5(p => {
   };
 
   p.setup = function setup() {
-    windowSize = getWindow();
-    p.createCanvas(windowSize.w, windowSize.h);
-    game.splitCards(p);
-    // game.timerDisplay(p);
-  };
-
-  p.draw = function () {
-    p.background(0);
-    game.staticRender(p, windowSize.w, windowSize.h);
-  };
-
-  p.mouseClicked = function mouseClicked() {
-    game.updateTopDisplay(p.mouseX, p.mouseY);
-    board.chooseCol(p.mouseY, p);
     let window = getWindow()
     p.createCanvas(window.w, window.h);
     p.background(0);
