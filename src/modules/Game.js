@@ -6,8 +6,9 @@ import { Timer } from './Timer';
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
 export class Game {
-	constructor(board, timer) {
+	constructor(board, score, timer) {
 		this.board = board;
+		this.score = score;
 		this.timer = timer;
 	}
 	mouseWasClicked = false;
@@ -57,6 +58,7 @@ export class Game {
      * @param p 
      */
     staticRender(p, width, height) {
+		this.score.displayScoreTable(p, width, height);
 		this.board.render(p, this.displayMap, width, height);
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);

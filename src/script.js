@@ -1,8 +1,9 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
-import { Game } from '/src/modules/Game.js';
-let game = new Game(new Board()); 
+import { Game } from './modules/Game';
+import { Score } from './modules/Score'
+let game = new Game(new Board(), new Score()); 
 let windowSize;
 
 function getWindow() {
