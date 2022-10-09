@@ -2,7 +2,8 @@ import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
 import { Game } from '/src/modules/Game.js';
-let game = new Game(new Board()); 
+let board = new Board();
+let game = new Game(board); 
 let windowSize;
 
 function getWindow() {
@@ -39,12 +40,7 @@ new p5(p => {
   };
 
   p.mouseClicked = function mouseClicked() {
-    if (p.mouseY >= 125 && p.mouseY <= 180) {
-      game.updateTopDisplay(p.mouseX, p);
-    }
-
-    if (p.mouseY >= 200 && p.mouseY <= 460) {
-      game.placeCard(p);
-    }
+    game.updateTopDisplay(p.mouseX, p.mouseY);
+    board.chooseCol(p.mouseY, p);
   };
 });
