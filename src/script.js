@@ -30,7 +30,6 @@ new p5(p => {
     windowSize = getWindow();
     p.createCanvas(windowSize.w, windowSize.h);
     game.splitCards(p);
-    console.log(windowSize.w, windowSize.h);
     // game.timerDisplay(p);
   };
 

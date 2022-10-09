@@ -143,8 +143,7 @@ export class Board {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
-                // TODO: Needs a little cleanup to resolve a bug where the last few cards aren't displayed and the last one is not placeable
-                if ((this.counts[i] - 2) >= 0) {
+                if ((this.counts[i] + offset) >= 0) {
                     displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l], p);
                 }
                 offset++;
@@ -177,7 +176,6 @@ export class Board {
                     break;
                 }
             }
-
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
                 this.addCard(this.col, this.currentCard);
                 this.currentCard = null; 
