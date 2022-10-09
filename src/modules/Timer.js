@@ -149,3 +149,29 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 
 
 //}
+
+export class Timer{
+  constructor(game) {
+		this.game = game;
+	}
+
+  seconds = 60;
+
+  drawTimer(p){ //in this case p would be the new canvas/graphics, timerGraphics
+    console.log("In drawTimer function");
+    p.background(0); //"reset" background so that there will not be an overlap
+    p.stroke(255);
+    p.textSize(20);
+    p.text("timer:", 600, 200);
+    p.stroke(255);
+    p.textSize(20);
+    p.text(this.seconds, 660, 200);
+    this.seconds--;
+    console.log("Seconds left:", this.seconds);
+    if(this.seconds == 0){
+      this.seconds = 60;
+    }
+    p.image(p, 0, 0); //take timerGraphics and load it onto canvas
+
+  }
+}
