@@ -85,7 +85,7 @@ export class Board {
         p.stroke(255, 0, 0);
         for (let i = 0; i < this.boardCols.length; i++) {
             p.rect(this.boardX, this.boardY + (i + 1) * 65, 40, 40); // Rank box for rows
-            p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY * 2.5 + 20, 40, 40); // Rank box for cols
+            p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 40, 40, 40); // Rank box for cols
 
             for (let j = 0; j < this.boardRows.length; j++) {     
                 p.rect(this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, 65, 65); // Board
