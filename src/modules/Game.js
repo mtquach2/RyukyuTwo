@@ -1,5 +1,6 @@
 import { Card } from './Card';
 import { Board } from './Board';
+import { Score } from './Score';
 import { Timer } from './Timer';
 
 /**
@@ -50,6 +51,8 @@ export class Game {
 				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
+
+		this.score.fillScoreTable();
 	}
 
     /**
@@ -58,11 +61,18 @@ export class Game {
      * @param p 
      */
     staticRender(p, width, height) {
-		this.score.displayScoreTable(p, width, height);
+		this.score.render(p, width, height);
 		this.board.render(p, this.displayMap, width, height);
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);
+		this.renderDivider(p, width, height);
 	}
+
+	renderDivider(p, width, height) {
+        p.stroke(0, 255, 0);
+        p.line(width/4, 0, width/4, height);
+        p.line(width * 2/3, 0, width * 2/3, height);
+    }
 
 	/**
 	 * Sends displayMap to clicked() in Board.js 
