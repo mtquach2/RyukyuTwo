@@ -65,21 +65,13 @@ export class Game {
 	}
 
 	/**
-	 * Sends displayMap to clicked() 
+	 * Sends displayMap to clicked() in Board.js 
 	 * @param px mouseX value
 	 * @param p instance of p5
 	 */
-	updateTopDisplay(px, p) {
-		this.currentCard = this.board.clicked(p, this.displayMap, px);
+	updateTopDisplay(px, py) {
+		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
-	}
-
-	/**
-	 * Game.js version of chooseCol in Board.js
-	 * @param p 
-	 */
-	placeCard(p) { //TODO remove?
-		this.board.chooseCol(p);
 	}
 
 	/**

@@ -3,7 +3,9 @@ import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
 import { Game } from './modules/Game';
 import { Score } from './modules/Score'
-let game = new Game(new Board(), new Score()); 
+let board = new Board();
+let score = new Score();
+let game = new Game(board, score); 
 let windowSize;
 
 function getWindow() {
@@ -30,7 +32,6 @@ new p5(p => {
     windowSize = getWindow();
     p.createCanvas(windowSize.w, windowSize.h);
     game.splitCards(p);
-    console.log(windowSize.w, windowSize.h);
     // game.timerDisplay(p);
   };
 
@@ -40,12 +41,7 @@ new p5(p => {
   };
 
   p.mouseClicked = function mouseClicked() {
-    if (p.mouseY >= 125 && p.mouseY <= 180) {
-      game.updateTopDisplay(p.mouseX, p);
-    }
-
-    if (p.mouseY >= 200 && p.mouseY <= 460) {
-      game.placeCard(p);
-    }
+    game.updateTopDisplay(p.mouseX, p.mouseY);
+    board.chooseCol(p.mouseY, p);
   };
 });

@@ -102,31 +102,30 @@ export class Board {
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
             for (let y = 0; y < 3; y++) {
-                p.rect(this.boardX + (i + 1) * 65 + 65/2, this.yPositions[y], 65, 65);
+                p.rect(this.boardX + (i + 1) * 65 + 65/2, this.yPositions[y], 65, 65); //top display
             }       
         }
         for (let i = 0; i < 5; i++) {
-            p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65);
+            p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
         }
     }
 
     /**
-     * Function used to check to see if a specific card/column is clicked 
-     * then updates the card being displayed in that column
-     * @param p p5 instance 
-     * @param displayMap map for deck of cards
+     * Method used to check to see if a specific card from the top display was clicked
+     * then updates the top display and displays it in 1x5 array for column choosing
      * @param px where our mouse's x-axis is at
+     * @param displayMap map for deck of card
      */
-    clicked(p, displayMap, px) {
-        if (this.currentCard != null) {
-            return;
-        }
-        for (let i = 0; i < 4; i++) {
-            if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] > 0) {
-                this.currentCard = displayMap.get(i)[this.counts[i]];
-                displayMap.get(i)[this.counts[i]].showImage(this.boardX, 200, p);
-                this.counts[i]--;
-                displayMap.get(i)[this.counts[i]].showImage(this.boardX - 65, 125, p);
+    clicked(px, py, displayMap) {
+        if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
+            if (this.currentCard != null) {
+                return;
+            }
+            for (let i = 0; i < 4; i++) {
+                if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
+                    this.currentCard = displayMap.get(i)[this.counts[i]];
+                    this.counts[i]--;
+                }
             }
         }
     }
@@ -136,7 +135,7 @@ export class Board {
     }
 
     /**
-     * Displays the first set of cards in the top display
+     * Displays cards in the top display
      * @param p p5 instance 
      * @param displayMap map for split deck of cards
      */
@@ -144,8 +143,7 @@ export class Board {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
-                // TODO: Needs a little cleanup to resolve a bug where the last few cards aren't displayed and the last one is not placeable
-                if ((this.counts[i] - 2) >= 0) {
+                if ((this.counts[i] + offset) >= 0) {
                     displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l], p);
                 }
                 offset++;
@@ -162,7 +160,7 @@ export class Board {
     displayCard(mouseWasClicked, p) {
 		if (mouseWasClicked == true && this.currentCard != null) { 
 			let bounds = p.constrain(p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
-			this.currentCard.showImage(bounds, 200, p); 
+			this.currentCard.showImage(bounds, this.boardY - 65, p); 
 		}
 	}
 
@@ -170,19 +168,20 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param p 
      */
-    chooseCol(p) {
-        for (let col = 0; col < 5; col++) {
-            if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
-                this.col = col;
-                break;
+    chooseCol(py, p) {
+        if (py >= this.boardY - 65 && py < this.boardY) {
+            for (let col = 0; col < 5; col++) {
+                if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
+                    this.col = col;
+                    break;
+                }
             }
-        }
+            if (this.col != -1 && !this.boardCols[this.col].isFull()) {
+                this.addCard(this.col, this.currentCard);
+                this.currentCard = null; 
+            }
 
-        if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-            this.addCard(this.col, this.currentCard);
-            this.currentCard = null; 
+            this.col = -1;
         }
-
-        this.col = -1;
-    } //TODO maybe include game over boolean? while the game isn't over see what column was clicked?
+    }
 }
