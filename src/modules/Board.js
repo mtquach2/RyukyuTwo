@@ -122,7 +122,7 @@ export class Board {
                 return;
             }
             for (let i = 0; i < 4; i++) {
-                if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] > 0) {
+                if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
                     this.counts[i]--;
                 }
