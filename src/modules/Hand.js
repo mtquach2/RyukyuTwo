@@ -1,10 +1,10 @@
 import { Card } from './Card';
 import { Score } from './Score';
 export class Hand {
+    score = new Score();
     constructor() {
         this.hand = [];
         this.rank = -1;
-        this.score = new Score();
     }
 
     addCard(card, index) {

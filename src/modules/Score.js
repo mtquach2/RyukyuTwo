@@ -78,5 +78,6 @@ export class Score {
     
     updateScore(rank) {
         this.currentScore += this.ranks[rank];
-    }
+        console.log(this.currentScore);
+    } //TODO global currentScore does not update after updateScore()
 }
