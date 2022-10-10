@@ -1,7 +1,7 @@
 import { Hand } from './Hand';
 
 export class Board {
-    constructor(timer) { 
+    constructor() { 
         this.counts = [12, 12, 12, 12];
         this.currentCard;
         this.col = 0; 
@@ -21,13 +21,12 @@ export class Board {
 			10:'1P',
 			11:'H',
         }
-        this.timer = timer;
     }
     boardX = 0;
     boardY = 0;
     xPositions = [];
     yPositions = [];
-    cardPlaced = false;
+    cardSelected = false;
 
     addCard(column, card) {
         if (card == null) {
@@ -120,6 +119,7 @@ export class Board {
      */
     clicked(px, py, displayMap) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
+            console.log("CLICKED!");
             if (this.currentCard != null) {
                 return;
             }

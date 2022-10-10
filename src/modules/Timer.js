@@ -154,6 +154,7 @@ export class Timer{
   constructor() {
     this.seconds = 10;
     this.cardPlaced = false;
+    this.cardSelected = false;
   
 	}
 
@@ -168,7 +169,6 @@ export class Timer{
     p.stroke(255);
     p.textSize(20);
     p.text(this.seconds, 960, 200);
-    this.seconds--;
     console.log("Seconds left:", this.seconds);
     if(this.cardPlaced == true || this.seconds == 0){
       if(this.cardPlaced == true){
@@ -177,8 +177,16 @@ export class Timer{
       this.seconds = 10;
       this.cardPlaced = false;
     }
+    this.seconds--;
+    // if(this.cardSelected == true && this.cardPlaced == false && this.seconds == 0){
+
+    // }
     //p.image(p, 0, 0); //take timerGraphics and load it onto canvas
 
+  }
+
+  cardSelection(){
+    this.cardSelected = true;
   }
 
   resetTimer(){

@@ -48,7 +48,20 @@ export class Game {
 	updateTopDisplay(px, py) {
 		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
-		this.timer.resetTimer();
+	}
+
+	timerTrigger() {
+		console.log(this.mouseWasClicked);
+		if(this.mouseWasClicked == true){
+			this.timer.resetTimer();
+			this.mouseWasClicked = false;
+		}
+		else if(this.mouseWasClicked == false && this.timer.seconds == 0){
+			console.log("NO ACTION");
+		}
+		else if(this.mouseWasClicked == false){
+			console.log("NO MOUSE CLICK");
+		}
 	}
 
 	/**
