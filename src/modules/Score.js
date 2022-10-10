@@ -21,6 +21,7 @@ export class Score {
     scoreY = 0;
     
     scoreTableKeys = [];
+    pointsMap = new Map();
 
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
@@ -69,14 +70,15 @@ export class Score {
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-
+            this.pointsMap.set(rank, 0);
             p.text(`${rank}\t${score}`, this.scoreX/30, this.scoreY/25 + this.scoreY/3 + (i + 1) * 40);
         }
-
         // TODO: Display how many times they made that poker hand on the table
     }
     
     updateScore(rank) {
+        this.pointsMap.set(rank, this.pointsMap.get(rank) + 1); //TODO this is getting overriden too
+        console.log(this.pointsMap);
         this.currentScore += this.ranks[rank];
         console.log(this.currentScore);
     } //TODO global currentScore does not update after updateScore()
