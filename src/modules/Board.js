@@ -1,5 +1,4 @@
 import { Hand } from './Hand';
-import { Score } from './Score';
 export class Board {
     constructor() { 
         this.counts = [12, 12, 12, 12];
@@ -8,25 +7,11 @@ export class Board {
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
-        this.rankTable = {
-            1:'5K',
-			2:'RSF',
-			3:'SF',
-			4:'4K',
-			5:'FH',
-			6:'ST',
-			7:'FL',
-			8:'3K',
-			9:'2P',
-			10:'1P',
-			11:'H',
-        }
     }
     boardX = 0;
     boardY = 0;
     xPositions = [];
     yPositions = [];
-    score = new Score();
 
     addCard(column, card) {
         if (card == null) {
@@ -69,12 +54,10 @@ export class Board {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { // Display rank for hands (rows)
-                p.text(`${this.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
-                this.score.getRank(this.rankTable[rowHand.rank]);
+                p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
             }
             if (colHand.rank != -1) { // Display rank for hands (columns)
-                p.text(`${this.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY * 2.5 + 32.5, 20, 20);
-                this.score.getRank(this.rankTable[colHand.rank]); 
+                p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY * 2.5 + 32.5, 20, 20);
             }
             for (let j = 0; j < this.boardRows.length; j++) {            
                 colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, p); //displays a card throughout each col starting from the bottom left square going up 

@@ -21,7 +21,6 @@ export class Score {
     scoreY = 0;
     
     scoreTableKeys = [];
-    currentRank = 0;
 
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
@@ -76,9 +75,8 @@ export class Score {
 
         // TODO: Display how many times they made that poker hand on the table
     }
-
-    getRank(rank) {
+    
+    updateScore(rank) {
         this.currentScore += this.ranks[rank];
     }
-    
 }
