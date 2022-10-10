@@ -2,14 +2,8 @@ export class Score {
     constructor() {
         this.currentScore = 0;
         this.totalScore = 0;
-    }
-    scoreX = 0;
-    scoreY = 0;
-
-    scoreTableKeys = [];
-
-    fillScoreTable() {
-        const ranks = {
+        this.clearPoint = 6000; //each round +1000
+        this.ranks = {
             '5K': 3000,
             'RSF': 2800,
             'SF': 2400,
@@ -22,8 +16,16 @@ export class Score {
             '1P': 200,
             'H': 0,
         }
-        this.scoreTableKeys = [...Object.keys(ranks)];
-        this.scoreTableValues = [...Object.values(ranks)];
+    }
+    scoreX = 0;
+    scoreY = 0;
+    
+    scoreTableKeys = [];
+    currentRank = 0;
+
+    fillScoreTable() {
+        this.scoreTableKeys = [...Object.keys(this.ranks)];
+        this.scoreTableValues = [...Object.values(this.ranks)];
     }
 
     render(p, w, h) {
@@ -46,7 +48,8 @@ export class Score {
         p.stroke(255, 255, 255);
         p.text("CLEAR POINT", this.scoreX/10, this.scoreY/15);
 
-        // TODO: Add the required CLEAR POINT based on level
+        p.text(this.clearPoint, this.scoreX/10, this.scoreY/7);
+        // TODO: Change clearPoint based on level
 
         // Line for bounds of TOTAL
         p.stroke(0, 255, 0);
@@ -54,8 +57,7 @@ export class Score {
         p.line(this.scoreX/40, this.scoreY/4.5, this.scoreX/40 + this.scoreX/5, this.scoreY/4.5);
         p.stroke(255, 255, 255);
         p.text("TOTAL", this.scoreX/10, this.scoreY/5);
-
-        // TODO: Add the current score
+        p.text(this.currentScore, this.scoreX/10, this.scoreY/3.75);
     }
 
     renderScoreTable(p) {
@@ -74,4 +76,9 @@ export class Score {
 
         // TODO: Display how many times they made that poker hand on the table
     }
+
+    getRank(rank) {
+        this.currentScore += this.ranks[rank];
+    }
+    
 }

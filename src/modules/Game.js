@@ -6,7 +6,7 @@ import { Timer } from './Timer';
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
-export class Game {
+export class Game { //TODO need a reset method and something to keep score of rounds
 	constructor(board, score, timer) {
 		this.board = board;
 		this.score = score;
@@ -65,10 +65,10 @@ export class Game {
 		this.board.render(p, this.displayMap, width, height);
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);
-		this.renderDivider(p, width, height);
+		// this.renderDivider(p, width, height);
 	}
 
-	renderDivider(p, width, height) {
+	renderDivider(p, width, height) { //TODO fix 
         p.stroke(0, 255, 0);
         p.line(width/4, 0, width/4, height);
         p.line(width * 2/3, 0, width * 2/3, height);
