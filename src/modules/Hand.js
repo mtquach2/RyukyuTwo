@@ -1,7 +1,6 @@
 import { Card } from './Card';
-import { Score } from './Score';
+import { score } from '../script';
 export class Hand {
-    score = new Score();
     constructor() {
         this.hand = [];
         this.rank = -1;
@@ -18,7 +17,7 @@ export class Hand {
         if (this.hand.length == 5) {
             console.log("Evaluating: ", this.hand);
             this.evaluateHand(this.hand);
-            this.score.updateScore(this.rankTable[this.rank]);
+            score.updateScore(this.rankTable[this.rank]);
         }
 
         return 5 - this.hand.length;

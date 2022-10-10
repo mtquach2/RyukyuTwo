@@ -4,7 +4,7 @@ import { Timer } from './modules/Timer';
 import { Game } from './modules/Game';
 import { Score } from './modules/Score'
 let board = new Board();
-let score = new Score();
+export let score = new Score();
 let game = new Game(board, score); 
 let windowSize;
 

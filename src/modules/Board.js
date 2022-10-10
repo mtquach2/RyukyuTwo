@@ -21,7 +21,7 @@ export class Board {
         if (!this.boardCols[column].isFull()) {
             const row = this.boardCols[column].addCard(card);
             this.boardRows[row].addCard(card);
-
+            
             // Major Diagonal
             if (row == column) {
                 this.boardDiag[0].addCard(card);
