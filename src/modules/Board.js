@@ -27,6 +27,7 @@ export class Board {
     xPositions = [];
     yPositions = [];
     cardPlaced = false;
+    cardSelected = false;
 
     addCard(column, card) {
         if (card == null) {
@@ -182,6 +183,7 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
+                this.cardSelected = true;
                 this.addCard(this.col, this.currentCard);
                 this.cardPlaced = true;
                 this.currentCard = null; 
