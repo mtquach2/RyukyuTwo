@@ -74,9 +74,13 @@ export class Score {
         }
     }
     
+    /**
+     * Updates the currentScore depending on what hand was played/completed
+     * Also, updates the number of poker hands have been played/completed
+     * @param rank rank of poker hand
+     */
     updateScore(rank) {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1); 
-        console.log(this.pointsMap);
         this.currentScore += this.ranks[rank];
     }
 }
