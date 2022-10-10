@@ -51,16 +51,47 @@ export class Game {
 	}
 
 	timerTrigger() {
-		console.log(this.mouseWasClicked);
-		if(this.mouseWasClicked == true){
+		//console.log(this.mouseWasClicked);
+		// if(this.mouseWasClicked == true){
+		// 	this.timer.resetTimer();
+		// 	this.mouseWasClicked = false;
+		// }
+		// else if(this.mouseWasClicked == false && this.timer.seconds == 0){
+		// 	console.log("NO ACTION");
+		// }
+		// else if(this.mouseWasClicked == false){
+		// 	console.log("NO MOUSE CLICK");
+		// }
+
+
+
+		// console.log("CARD PLACED:",this.board.cardPlaced);
+		if(this.board.cardPlaced == true){
 			this.timer.resetTimer();
-			this.mouseWasClicked = false;
+			this.board.cardPlaced = false;
 		}
-		else if(this.mouseWasClicked == false && this.timer.seconds == 0){
-			console.log("NO ACTION");
+		else if(this.board.cardPlaced == false && this.mouseWasClicked == true && this.timer.seconds == 0) {
+			let i;
+			for(i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard) != -1){
+					this.board.currentCard = null;
+					console.log("Card selected but not placed --> Added to board")
+					break; //card added successfully
+				}
+			}
+			this.timer.resetTimer();
 		}
-		else if(this.mouseWasClicked == false){
-			console.log("NO MOUSE CLICK");
+		else if(this.board.cardPlaced == false && this.mouseWasClicked == false && this.timer.seconds == 0){
+			let i;
+			for(i = 0; i < 5; i++){
+				if(this.displayMap.get(0) != null){
+					if(this.board.addCard(i, this.displayMap.get(i)) != -1){
+						console.log("Getting card from topDisplay --> Added to board")
+						break; //card added successfully
+					}
+				}
+			}
+			this.timer.resetTimer();
 		}
 	}
 

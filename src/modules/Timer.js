@@ -154,7 +154,7 @@ export class Timer{
   constructor() {
     this.seconds = 10;
     this.cardPlaced = false;
-    this.cardSelected = false;
+    //this.cardSelected = false;
   
 	}
 
@@ -185,9 +185,9 @@ export class Timer{
 
   }
 
-  cardSelection(){
-    this.cardSelected = true;
-  }
+  // cardSelection(){
+  //   this.cardSelected = true;
+  // }
 
   resetTimer(){
     this.cardPlaced = true;

@@ -26,7 +26,7 @@ export class Board {
     boardY = 0;
     xPositions = [];
     yPositions = [];
-    cardSelected = false;
+    cardPlaced = false;
 
     addCard(column, card) {
         if (card == null) {
@@ -43,6 +43,9 @@ export class Board {
             }
 
             // TODO: Test reverse diagonal
+        }
+        else{
+            return -1;
         }
     }
     
@@ -180,6 +183,7 @@ export class Board {
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
                 this.addCard(this.col, this.currentCard);
+                this.cardPlaced = true;
                 this.currentCard = null; 
             }
 
