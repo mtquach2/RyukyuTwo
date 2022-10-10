@@ -13,28 +13,6 @@ export class Game {
 	mouseWasClicked = false;
   	deck = [];
 	displayMap = new Map();
- 
-	// interval;
-	
-    // timerDisplay(p){
-    //   	let seconds = 60; //how many seconds per "set" interval
-    //   	this.interval = setInterval(function(){
-    //     console.log("Seconds remaining:", seconds);
-    //     p.background(0);
-    //     p.stroke(255);
-    //     p.textSize(20);
-    //     p.text("timer:", 450, 200);
-    //     p.stroke(255);
-    //     p.textSize(20);
-    //     p.text(seconds, 510, 200);
-    //     seconds -= 1;
-    //     if(seconds == 0){
-	// 		clearInterval(this.interval);
-	// 		console.log("Interval has been cleared");
-	// 		seconds = 60; //reset back to initial seconds
-    //     }
-    //   }, 1000); //how fast to count the intervals
-    // }
 
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
@@ -70,6 +48,7 @@ export class Game {
 	updateTopDisplay(px, py) {
 		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
+		this.timer.resetTimer();
 	}
 
 	/**

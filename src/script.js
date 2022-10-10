@@ -1,9 +1,11 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
-import { Game } from '/src/modules/Game.js';
 import { Timer } from './modules/Timer';
-let game = new Game(new Board()); 
-let timer = new Timer(game);
+import { Game } from '/src/modules/Game.js';
+let board = new Board();
+let timer = new Timer();
+let game = new Game(board, timer); 
+let windowSize;
 let timerGraphics;
 let seconds = 60;
 let frameCounter = 0; //maybe use frameCount()?
@@ -18,9 +20,8 @@ function getWindow() {
   return { w: x, h: y };
 }
 
+"use strict";
 new p5(p => {
-  let bg, sprite;
-
   function randColor() {
     return p.color(p.random(255), p.random(255), p.random(255));
   };
@@ -30,39 +31,27 @@ new p5(p => {
   };
 
   p.setup = function setup() {
-    let window = getWindow()
-    p.createCanvas(window.w, window.h);
-    p.background(0);
-    timerGraphics = p.createGraphics(window.w, window.h);
-    //console.log(p.frameRate);
-
+    windowSize = getWindow();
+    p.createCanvas(windowSize.w, windowSize.h);
+    game.splitCards(p);
+    //timerGraphics = p.createGraphics(window.w, window.h);
   };
 
-  p.draw = function () { //30 fps or is it actually 60 fps?
+  p.draw = function () {
+    p.background(0);
+    timer.drawTimer(p);
     frameCounter++;
     if(frameCounter % 60 == 0){ //seems to be 60 fps?
-      console.log("in draw function if statement");
-      timer.drawTimer(timerGraphics);
       frameCounter = 0; 
-      console.log("FrameCounter refreshed");
-      p.image(p, 0, 0); //take timerGraphics and load it onto canvas
+      //console.log("FrameCounter refreshed");
+      timer.drawSeconds(p);
+      //p.image(timer.drawSeconds(timerGraphics), 0, 0); //take timerGraphics and load it onto canvas
     }
-    game.staticRender(p);
-
+    game.staticRender(p, windowSize.w, windowSize.h);
   };
 
-  // p.drawTimer = function() {
-  //   timerGraphics.background(0); //"reset" background so that there will not be an overlap
-  //   timerGraphics.stroke(255);
-  //   timerGraphics.textSize(20);
-  //   timerGraphics.text("timer:", 600, 200);
-  //   timerGraphics.stroke(255);
-  //   timerGraphics.textSize(20);
-  //   timerGraphics.text(seconds, 660, 200);
-  //   seconds--;
-  //   if(seconds == 0){
-  //     seconds = 60;
-  //   }
-  //   p.image(timerGraphics, 0, 0); //take timerGraphics and load it onto canvas
-  // }
+  p.mouseClicked = function mouseClicked() {
+    game.updateTopDisplay(p.mouseX, p.mouseY);
+    board.chooseCol(p.mouseY, p);
+  };
 });
