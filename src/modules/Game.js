@@ -71,58 +71,50 @@ export class Game {
 		}
 		else if(this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0){
 			let placed = false;
+			// console.log("TOP DISPLAY FIRST COL:", this.displayMap.get(0));
+			// console.log("TOP DISPLAY SECOND COL:", this.displayMap.get(1));
+			// console.log("TOP DISPLAY THIRD COL:", this.displayMap.get(2));
+			// console.log("TOP DISPLAY FOURTH COL:", this.displayMap.get(3));
+			//console.log("TOP DISPLAY CARD: ", this.displayMap.get(i)[this.board.counts[x]]);
+			// for(let i = 0; i < 5; i++){ 
+			// 	for(let x = 0; x < 4; x++){ 
+			// 		console.log("TOP DISPLAY CARD: ", this.displayMap.get(x)[this.board.counts[x]]);
+			// 		console.log("X IS CURRENTLY:", x);
+			// 		if(this.displayMap.get(x)[this.board.counts[x]].value != null){
+			// 			if(this.board.addCard(i, this.displayMap.get(x)[this.board.counts[x]]) != -1){
+			// 				this.board.currentCard = null;
+			// 				this.board.counts[x]--;
+			// 				console.log("Getting card from topDisplay --> Added to board")
+			// 				placed = true;
+			// 				break; 
+			// 			}
+			// 		}
+			// 	}
+			// 	if(placed == true){
+			// 		placed = false;
+			// 		break;
+			// 	}
+			// }
+
 			console.log("TOP DISPLAY FIRST COL:", this.displayMap.get(0));
 			console.log("TOP DISPLAY SECOND COL:", this.displayMap.get(1));
 			console.log("TOP DISPLAY THIRD COL:", this.displayMap.get(2));
 			console.log("TOP DISPLAY FOURTH COL:", this.displayMap.get(3));
-			//console.log("TOP DISPLAY CARD: ", this.displayMap.get(i)[this.board.counts[x]]);
+			let firstCard = this.board.getFirstCard(this.displayMap);
 			for(let i = 0; i < 5; i++){ 
-				for(let x = 0; x < 4; x++){ 
-					console.log("TOP DISPLAY CARD: ", this.displayMap.get(x)[this.board.counts[x]]);
-					console.log("X IS CURRENTLY:", x);
-					if(this.displayMap.get(x)[this.board.counts[x]].value != null){
-						if(this.board.addCard(i, this.displayMap.get(x)[this.board.counts[x]]) != -1){
-							this.board.currentCard = null;
-							this.board.counts[x]--;
-							console.log("Getting card from topDisplay --> Added to board")
-							placed = true;
-							break; 
-						}
+				if(firstCard != null){
+					//this.board.addCard(i, firstCard)
+					if(this.board.addCard(i, firstCard) != -1){
+						this.board.currentCard = null;
+						console.log("Getting card from topDisplay --> Added to board")
+						break;
 					}
 				}
-				if(placed == true){
-					placed = false;
-					break;
-				}
-
-				// for(let i = 0; i < 5; i++){
-				// 	//loop through each column on bottom board to see if there is still space to add
-				// 	for(let x = 0; x < 4; x++){
-				// 		//for each empty spot loop through each column of the 
-				// 	}
-				// }
-
-
-
-
-
-
-
-
-				// for(let y = this.displayMap.get(i).length; y > 0; y--){
-				// 	if(this.displayMap.get(i)[y] != null){
-				// 		this.board.currentCard = this.displayMap.get(i)[y];
-				// 		if(this.board.addCard(i, this.displayMap.get(i)[y]) != -1){
-				// 			this.board.currentCard = null;
-				// 			console.log("Getting card from topDisplay --> Added to board")
-				// 			break; //card added successfully
-				// 		}
-				// 	}
-				// }
 			}
 			this.timer.resetTimer();
 		}
 	}
+
 
 	/**
 	 * Splits a full deck of cards into 4 even parts

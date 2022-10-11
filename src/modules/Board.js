@@ -192,4 +192,21 @@ export class Board {
             this.col = -1;
         }
     }
+
+    getFirstCard(displayMap){
+        let firstCard;
+        for(let i = 0; i < 4; i++){
+            if(this.counts[i] >= 0){
+                firstCard = displayMap.get(i)[this.counts[i]];
+                if(firstCard != null){
+                    firstCard = displayMap.get(i)[this.counts[i]];
+                    console.log("i:", i, "COUNTS:", this.counts[i]);
+                    this.counts[i]--;
+                    return firstCard;
+                }
+            }
+        }
+
+
+    }
 }
