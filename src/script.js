@@ -3,10 +3,11 @@ import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
 import { Game } from './modules/Game';
 import { Score } from './modules/Score'
+let score = new Score();
 let board = new Board();
-export let score = new Score();
 let game = new Game(board, score); 
 let windowSize;
+export {score}; 
 
 function getWindow() {
   let w = window,

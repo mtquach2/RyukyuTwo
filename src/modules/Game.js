@@ -51,7 +51,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
-
+		this.board.loadCardsLeft(p);
 		this.score.fillScoreTable();
 	}
 

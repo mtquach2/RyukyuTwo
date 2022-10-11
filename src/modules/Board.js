@@ -12,6 +12,7 @@ export class Board {
     boardY = 0;
     xPositions = [];
     yPositions = [];
+    brick; 
 
     addCard(column, card) {
         if (card == null) {
@@ -46,6 +47,7 @@ export class Board {
         this.renderBoard(p);
 		this.renderBoardCards(p);
 		this.renderTopDisplay(p, displayMap);
+        this.renderCardsLeft(p, w, h);
     }
 
     renderBoardCards(p) {
@@ -94,6 +96,32 @@ export class Board {
         for (let i = 0; i < 5; i++) {
             p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
         }
+    }
+
+    /**
+     * Displays rectangle for cards left part
+     * Also displays how many cards remaining in each column 
+     * @param p p5 instance 
+     * @param w window width
+     * @param h window height
+     */
+    renderCardsLeft(p, w, h) {
+        p.stroke(255, 0, 0);
+        p.rect(w - w/4.5, h/25 + h/3, w/5, h/2.25); //left room for bottom instructions box
+        for (let i = 0; i < 4; i++) {
+            console.log(this.counts[i]);
+            for (let x = 0; x < this.counts[i] + 1; x++) {
+                p.image(this.brick, w - w/4.7 + (i * 50), h/22.5 + h/3 + (x * 33), 25, 25);
+            }
+        }
+    }
+
+    /**
+     * Used to load brick image for cards left part
+     * @param p p5 instance
+     */
+    loadCardsLeft(p) {
+        this.brick = p.loadImage('../../static/brick.png');
     }
 
     /**
