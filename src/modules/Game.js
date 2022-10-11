@@ -52,43 +52,6 @@ export class Game {
 		this.mouseWasClicked = true;
 	}
 
-	timerTrigger() {
-		// console.log("CARD PLACED:",this.board.cardPlaced);
-		if(this.board.cardPlaced == true){
-			this.timer.resetTimer();
-			this.board.cardPlaced = false;
-		}
-		else if(this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
-			for(let i = 0; i <= 5; i++){
-				if(this.board.addCard(i, this.board.currentCard) != -1){
-					this.board.currentCard = null;
-					this.board.cardSelected = false;
-					//console.log("Card selected but not placed --> Added to board")
-					break; 
-				}
-			}
-			this.timer.resetTimer();
-		}
-		else if(this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0){
-			// console.log("TOP DISPLAY FIRST COL:", this.displayMap.get(0));
-			// console.log("TOP DISPLAY SECOND COL:", this.displayMap.get(1));
-			// console.log("TOP DISPLAY THIRD COL:", this.displayMap.get(2));
-			// console.log("TOP DISPLAY FOURTH COL:", this.displayMap.get(3));
-			let firstCard = this.board.getFirstCard(this.displayMap);
-			for(let i = 0; i < 5; i++){ 
-				if(firstCard != null){
-					if(this.board.addCard(i, firstCard) != -1){
-						this.board.currentCard = null;
-						//console.log("Getting card from topDisplay --> Added to board")
-						break;
-					}
-				}
-			}
-			this.timer.resetTimer();
-		}
-	}
-
-
 	/**
 	 * Splits a full deck of cards into 4 even parts
 	 * @param p p5 instance
@@ -99,6 +62,35 @@ export class Game {
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
+		}
+	}
+
+	timerTrigger() {
+		if(this.board.cardPlaced == true){
+			this.timer.resetTimer();
+			this.board.cardPlaced = false;
+		}
+		else if(this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
+			for(let i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard) != -1){
+					this.board.currentCard = null;
+					this.board.cardSelected = false;
+					break; 
+				}
+			}
+			this.timer.resetTimer();
+		}
+		else if(this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0){
+			let firstCard = this.board.getFirstCard(this.displayMap);
+			for(let i = 0; i < 5; i++){ 
+				if(firstCard != null){
+					if(this.board.addCard(i, firstCard) != -1){
+						this.board.currentCard = null;
+						break;
+					}
+				}
+			}
+			this.timer.resetTimer();
 		}
 	}
 };

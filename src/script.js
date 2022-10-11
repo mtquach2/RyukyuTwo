@@ -43,10 +43,8 @@ new p5(p => {
     frameCounter++;
     if(frameCounter % 60 == 0){ //seems to be 60 fps?
       frameCounter = 0; 
-      //console.log("FrameCounter refreshed");
       game.timerTrigger();
       timer.drawSeconds(p);
-
       //p.image(timer.drawSeconds(timerGraphics), 0, 0); //take timerGraphics and load it onto canvas
     }
     game.staticRender(p, windowSize.w, windowSize.h);
