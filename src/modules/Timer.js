@@ -152,7 +152,7 @@ If middle column is full it will first drop card in 2nd column and then 4th (int
 
 export class Timer{
   constructor() {
-    this.seconds = 2;
+    this.seconds = 5;
     this.cardPlaced = false;
     //this.cardSelected = false;
   
@@ -174,7 +174,7 @@ export class Timer{
       if(this.cardPlaced == true){
         console.log("Card has been placed");
       }
-      this.seconds = 2;
+      this.seconds = 5;
       this.cardPlaced = false;
     }
     this.seconds--;

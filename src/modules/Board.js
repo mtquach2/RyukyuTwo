@@ -1,7 +1,7 @@
 import { Hand } from './Hand';
 
 export class Board {
-    constructor() { 
+    constructor(timer) { 
         this.counts = [12, 12, 12, 12];
         this.currentCard;
         this.col = 0; 
@@ -21,6 +21,7 @@ export class Board {
 			10:'1P',
 			11:'H',
         }
+        this.timer = timer;
     }
     boardX = 0;
     boardY = 0;
@@ -123,7 +124,7 @@ export class Board {
      */
     clicked(px, py, displayMap) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
-            console.log("CLICKED!");
+            //console.log("CLICKED!");
             if (this.currentCard != null) {
                 return;
             }
@@ -175,22 +176,25 @@ export class Board {
      * @param p 
      */
     chooseCol(py, p) {
-        if (py >= this.boardY - 65 && py < this.boardY) {
-            for (let col = 0; col < 5; col++) {
-                if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
-                    this.col = col;
-                    break;
+        this.cardSelected = true;
+        if(this.timer.seconds != 0){
+            if (py >= this.boardY - 65 && py < this.boardY) {
+                for (let col = 0; col < 5; col++) {
+                    if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
+                        this.col = col;
+                        break;
+                    }
                 }
+                if (this.col != -1 && !this.boardCols[this.col].isFull()) {
+                    this.addCard(this.col, this.currentCard);
+                    this.cardPlaced = true;
+                    this.currentCard = null; 
+                }
+    
+                this.col = -1;
             }
-            if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                this.cardSelected = true;
-                this.addCard(this.col, this.currentCard);
-                this.cardPlaced = true;
-                this.currentCard = null; 
-            }
-
-            this.col = -1;
         }
+
     }
 
     getFirstCard(displayMap){
