@@ -176,8 +176,6 @@ export class Board {
      * @param p 
      */
     chooseCol(py, p) {
-        this.cardSelected = true;
-        if(this.timer.seconds != 0){
             if (py >= this.boardY - 65 && py < this.boardY) {
                 for (let col = 0; col < 5; col++) {
                     if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
@@ -186,17 +184,25 @@ export class Board {
                     }
                 }
                 if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                    this.addCard(this.col, this.currentCard);
-                    this.cardPlaced = true;
-                    this.currentCard = null; 
+                    //recentMoves.push(this.currentCard);
+                    this.cardSelected = true;
+                    if(this.timer.seconds != 0){
+                        this.addCard(this.col, this.currentCard);
+                        this.cardPlaced = true;
+                        this.currentCard = null; 
+                    }
                 }
     
                 this.col = -1;
             }
-        }
 
     }
 
+    /**
+     * Gets the first card from the display map, starting from leftmost column
+     * @param displayMap the map showing the cards that the player has available to use.
+     * @returns 
+     */
     getFirstCard(displayMap){
         let firstCard;
         for(let i = 0; i < 4; i++){
