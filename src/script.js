@@ -5,8 +5,8 @@ import { Timer } from './modules/Timer';
 import { Game } from './modules/Game';
 import { Score } from './modules/Score'
 let score = new Score();
-let board = new Board();
 let timer = new Timer();
+let board = new Board(timer);
 let game = new Game(board, score, timer); 
 let windowSize;
 //let timerGraphics;
@@ -57,7 +57,7 @@ new p5(p => {
 
   p.mouseClicked = function mouseClicked() {
     game.updateTopDisplay(p.mouseX, p.mouseY);
-    board.chooseCol(p.mouseY, p, this.recentMoves);
+    board.chooseCol(p.mouseY, p);
   };
 
   p.keyPressed = function keyPressed() {
