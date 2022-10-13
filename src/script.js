@@ -6,8 +6,8 @@ let timer = new Timer();
 let board = new Board(timer);
 let game = new Game(board, timer); 
 let windowSize;
-let timerGraphics;
-let seconds = 60;
+//let timerGraphics;
+//let seconds = 60;
 let frameCounter = 0; //maybe use frameCount()?
 
 function getWindow() {
@@ -35,6 +35,7 @@ new p5(p => {
     p.createCanvas(windowSize.w, windowSize.h);
     game.splitCards(p);
     //timerGraphics = p.createGraphics(window.w, window.h);
+    //game.cancel(p);
   };
 
   p.draw = function () {
@@ -52,6 +53,14 @@ new p5(p => {
 
   p.mouseClicked = function mouseClicked() {
     game.updateTopDisplay(p.mouseX, p.mouseY);
-    board.chooseCol(p.mouseY, p);
+    board.chooseCol(p.mouseY, p, this.recentMoves);
   };
+
+  p.keyPressed = function keyPressed() {
+    if(p.keyCode == p.BACKSPACE){
+      console.log("BACKSPACE PRESSED!");
+      console.log(game.recentMoves);
+    }
+
+  }
 });

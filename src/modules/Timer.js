@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import {Board} from '/src/modules/Board.js';
+//import {Board} from '/src/modules/Board.js';
 
 export class Timer{
   constructor() {
@@ -8,12 +8,20 @@ export class Timer{
   
 	}
 
+  /**
+   * Draws the words "timer:"
+   * @param p instance of p5
+   */
   drawTimer(p){
     p.stroke(255);
     p.textSize(20);
     p.text("timer:", 900, 200);
   }
 
+  /**
+   * Draws a countdown timer indicating to the player how many seconds are remaining
+   * @param p instance of p5
+   */
   drawSeconds(p){ 
     p.stroke(255);
     p.textSize(20);

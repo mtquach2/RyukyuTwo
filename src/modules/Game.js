@@ -16,6 +16,9 @@ export class Game {
 
 	x = 0;
 
+	cancelsLeft = 3;
+	recentMoves = [];
+
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
      * @param p reference to p5
@@ -40,6 +43,7 @@ export class Game {
 		this.board.render(p, this.displayMap, width, height);
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);
+		this.cancelDisplay(p);
 	}
 
 	/**
@@ -65,14 +69,21 @@ export class Game {
 		}
 	}
 
+	/**
+	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
+	 */
 	timerTrigger() {
 		if(this.board.cardPlaced == true){
+			this.recentMoves.push(this.board.currentCard);
+			this.board.movesUpdate(this.recentMoves);
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
 		else if(this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
+					this.recentMoves.push(this.board.currentCard);
+					this.board.movesUpdate(this.recentMoves);
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
 					break; 
@@ -85,6 +96,8 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
+						this.recentMoves.push(firstCard);
+						this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}
@@ -93,4 +106,14 @@ export class Game {
 			this.timer.resetTimer();
 		}
 	}
+
+	cancelDisplay(p){
+		p.stroke(255);
+		p.textSize(20);
+		p.text("cancels left:", 900, 100);
+		p.stroke(255);
+		p.textSize(20);
+		p.text(this.cancelsLeft, 1020, 100);
+	}
+
 };
