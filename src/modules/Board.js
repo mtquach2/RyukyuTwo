@@ -1,5 +1,4 @@
 import { Hand } from './Hand';
-
 export class Board {
     constructor(timer) { 
         this.counts = [12, 12, 12, 12];
@@ -8,25 +7,13 @@ export class Board {
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
-        this.rankTable = {
-            1:'5K',
-			2:'RSF',
-			3:'SF',
-			4:'4K',
-			5:'FH',
-			6:'ST',
-			7:'FL',
-			8:'3K',
-			9:'2P',
-			10:'1P',
-			11:'H',
-        }
         this.timer = timer;
     }
     boardX = 0;
     boardY = 0;
     xPositions = [];
     yPositions = [];
+    brick; 
     cardPlaced = false;
     cardSelected = false;
 
@@ -38,7 +25,7 @@ export class Board {
         if (!this.boardCols[column].isFull()) {
             const row = this.boardCols[column].addCard(card);
             this.boardRows[row].addCard(card);
-
+            
             // Major Diagonal
             if (row == column) {
                 this.boardDiag[0].addCard(card);
@@ -66,6 +53,7 @@ export class Board {
         this.renderBoard(p);
 		this.renderBoardCards(p);
 		this.renderTopDisplay(p, displayMap);
+        this.renderCardsLeft(p, w, h);
     }
 
     renderBoardCards(p) {
@@ -74,10 +62,10 @@ export class Board {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { // Display rank for hands (rows)
-                p.text(`${this.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
+                p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
             }
             if (colHand.rank != -1) { // Display rank for hands (columns)
-                p.text(`${this.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY * 2.5 + 32.5, 20, 20);
+                p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY * 2.5 + 32.5, 20, 20);
             }
             for (let j = 0; j < this.boardRows.length; j++) {            
                 colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, p); //displays a card throughout each col starting from the bottom left square going up 
@@ -91,7 +79,7 @@ export class Board {
         p.stroke(255, 0, 0);
         for (let i = 0; i < this.boardCols.length; i++) {
             p.rect(this.boardX, this.boardY + (i + 1) * 65, 40, 40); // Rank box for rows
-            p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY * 2.5 + 20, 40, 40); // Rank box for cols
+            p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 40, 40, 40); // Rank box for cols
 
             for (let j = 0; j < this.boardRows.length; j++) {     
                 p.rect(this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, 65, 65); // Board
@@ -114,6 +102,33 @@ export class Board {
         for (let i = 0; i < 5; i++) {
             p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
         }
+    }
+
+    /**
+     * Displays rectangle for cards left part
+     * Also displays how many cards remaining in each column 
+     * @param p p5 instance 
+     * @param w window width
+     * @param h window height
+     */
+    renderCardsLeft(p, w, h) {
+        p.stroke(255, 0, 0);
+        let width = w/5;
+        let height = h/2.25; 
+        p.rect(w - w/4.5, h/25 + h/3, width, height); //left room for bottom instructions box
+        for (let i = 0; i < 4; i++) {
+            for (let x = 0; x < this.counts[i] + 1; x++) {
+                p.image(this.brick, w - w/4.75 + (i * width/4), h/22.5 + h/3 + (x * height/13), 25, 25);
+            }
+        }
+    }
+
+    /**
+     * Used to load brick image for cards left part
+     * @param p p5 instance
+     */
+    loadCardsLeft(p) {
+        this.brick = p.loadImage('../../static/brick.png');
     }
 
     /**

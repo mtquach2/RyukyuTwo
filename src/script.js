@@ -1,14 +1,18 @@
 import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
-import { Game } from '/src/modules/Game.js';
+
+import { Game } from './modules/Game';
+import { Score } from './modules/Score'
+let score = new Score();
+let board = new Board();
 let timer = new Timer();
-let board = new Board(timer);
-let game = new Game(board, timer); 
+let game = new Game(board, score, timer); 
 let windowSize;
 //let timerGraphics;
 //let seconds = 60;
 let frameCounter = 0; //maybe use frameCount()?
+export {score}; 
 
 function getWindow() {
   let w = window,
