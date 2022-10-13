@@ -1,18 +1,21 @@
 import { Hand } from './Hand';
 export class Board {
-    constructor() { 
+    constructor(timer) { 
         this.counts = [12, 12, 12, 12];
         this.currentCard;
         this.col = 0; 
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
+        this.timer = timer;
     }
     boardX = 0;
     boardY = 0;
     xPositions = [];
     yPositions = [];
     brick; 
+    cardPlaced = false;
+    cardSelected = false;
 
     addCard(column, card) {
         if (card == null) {
@@ -29,6 +32,9 @@ export class Board {
             }
 
             // TODO: Test reverse diagonal
+        }
+        else{
+            return -1;
         }
     }
     
@@ -133,6 +139,7 @@ export class Board {
      */
     clicked(px, py, displayMap) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
+            //console.log("CLICKED!");
             if (this.currentCard != null) {
                 return;
             }
@@ -183,7 +190,7 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param p 
      */
-    chooseCol(py, p) {
+    chooseCol(py, p, recentMoves) {
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
@@ -192,11 +199,48 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                this.addCard(this.col, this.currentCard);
-                this.currentCard = null; 
+                this.cardSelected = true;
+                if(this.timer.seconds != 0){
+                    this.addCard(this.col, this.currentCard);
+                    recentMoves.push(this.currentCard);
+                    this.board.movesUpdate(this.recentMoves);
+                    this.cardPlaced = true;
+                    this.currentCard = null; 
+                }
             }
-
             this.col = -1;
         }
     }
+
+    /**
+     * Gets the first card from the display map, starting from leftmost column
+     * @param displayMap the map showing the cards that the player has available to use.
+     * @returns the first card 
+     */
+    getFirstCard(displayMap){
+        let firstCard;
+        for(let i = 0; i < 4; i++){
+            if(this.counts[i] >= 0){
+                firstCard = displayMap.get(i)[this.counts[i]];
+                if(firstCard != null){
+                    firstCard = displayMap.get(i)[this.counts[i]];
+                    console.log("i:", i, "COUNTS:", this.counts[i]);
+                    this.counts[i]--;
+                    return firstCard;
+                }
+            }
+        }
+
+
+    }
+
+    /**
+     * Keeps track of the latest three moves. Removes the first move whenever a new move is added
+     * @param recentMoves 
+     */
+    movesUpdate(recentMoves){
+		if(recentMoves.length > 3){
+			recentMoves.shift(); //removes first item from array
+		}
+	}
 }
