@@ -107,11 +107,12 @@ export class Board {
      */
     renderCardsLeft(p, w, h) {
         p.stroke(255, 0, 0);
-        p.rect(w - w/4.5, h/25 + h/3, w/5, h/2.25); //left room for bottom instructions box
+        let width = w/5;
+        let height = h/2.25; 
+        p.rect(w - w/4.5, h/25 + h/3, width, height); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
-            console.log(this.counts[i]);
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                p.image(this.brick, w - w/4.7 + (i * 50), h/22.5 + h/3 + (x * 33), 25, 25);
+                p.image(this.brick, w - w/4.75 + (i * width/4), h/22.5 + h/3 + (x * height/13), 25, 25);
             }
         }
     }
