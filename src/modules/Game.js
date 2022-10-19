@@ -1,12 +1,9 @@
 import { Card } from './Card';
-import { Board } from './Board';
-import { Score } from './Score';
-import { Timer } from './Timer';
 
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
-export class Game {
+export class Game { //TODO need a reset method and something to keep score of rounds
 	constructor(board, score, timer) {
 		this.board = board;
 		this.score = score;
@@ -15,28 +12,11 @@ export class Game {
 	mouseWasClicked = false;
   	deck = [];
 	displayMap = new Map();
- 
-	// interval;
-	
-    // timerDisplay(p){
-    //   	let seconds = 60; //how many seconds per "set" interval
-    //   	this.interval = setInterval(function(){
-    //     console.log("Seconds remaining:", seconds);
-    //     p.background(0);
-    //     p.stroke(255);
-    //     p.textSize(20);
-    //     p.text("timer:", 450, 200);
-    //     p.stroke(255);
-    //     p.textSize(20);
-    //     p.text(seconds, 510, 200);
-    //     seconds -= 1;
-    //     if(seconds == 0){
-	// 		clearInterval(this.interval);
-	// 		console.log("Interval has been cleared");
-	// 		seconds = 60; //reset back to initial seconds
-    //     }
-    //   }, 1000); //how fast to count the intervals
-    // }
+
+	x = 0;
+
+	cancelsLeft = 3;
+	recentMoves = [];
 
     /**
      * Method to preload images and initializes Card objects for an entire deck of cards
@@ -51,7 +31,7 @@ export class Game {
 				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
-
+		this.board.loadCardsLeft(p);
 		this.score.fillScoreTable();
 	}
 
@@ -65,10 +45,11 @@ export class Game {
 		this.board.render(p, this.displayMap, width, height);
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);
-		this.renderDivider(p, width, height);
+		// this.renderDivider(p, width, height);
+		this.cancelDisplay(p);
 	}
 
-	renderDivider(p, width, height) {
+	renderDivider(p, width, height) { //TODO fix 
         p.stroke(0, 255, 0);
         p.line(width/4, 0, width/4, height);
         p.line(width * 2/3, 0, width * 2/3, height);
@@ -96,4 +77,52 @@ export class Game {
 			x += 13;
 		}
 	}
+
+	/**
+	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
+	 */
+	timerTrigger() {
+		if(this.board.cardPlaced == true){
+			this.recentMoves.push(this.board.currentCard);
+			this.board.movesUpdate(this.recentMoves);
+			this.timer.resetTimer();
+			this.board.cardPlaced = false;
+		}
+		else if(this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
+			for(let i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard) != -1){
+					this.recentMoves.push(this.board.currentCard);
+					this.board.movesUpdate(this.recentMoves);
+					this.board.currentCard = null;
+					this.board.cardSelected = false;
+					break; 
+				}
+			}
+			this.timer.resetTimer();
+		}
+		else if(this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0){
+			let firstCard = this.board.getFirstCard(this.displayMap);
+			for(let i = 0; i < 5; i++){ 
+				if(firstCard != null){
+					if(this.board.addCard(i, firstCard) != -1){
+						this.recentMoves.push(firstCard);
+						this.board.movesUpdate(this.recentMoves);
+						this.board.currentCard = null;
+						break;
+					}
+				}
+			}
+			this.timer.resetTimer();
+		}
+	}
+
+	cancelDisplay(p){
+		p.stroke(255);
+		p.textSize(20);
+		p.text("cancels left:", 900, 100);
+		p.stroke(255);
+		p.textSize(20);
+		p.text(this.cancelsLeft, 1020, 100);
+	}
+
 };

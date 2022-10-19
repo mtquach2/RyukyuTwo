@@ -1,31 +1,21 @@
 import { Hand } from './Hand';
-
 export class Board {
-    constructor() { 
+    constructor(timer) { 
         this.counts = [12, 12, 12, 12];
         this.currentCard;
         this.col = 0; 
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
-        this.rankTable = {
-            1:'5K',
-			2:'RSF',
-			3:'SF',
-			4:'4K',
-			5:'FH',
-			6:'ST',
-			7:'FL',
-			8:'3K',
-			9:'2P',
-			10:'1P',
-			11:'H',
-        }
+        this.timer = timer;
     }
     boardX = 0;
     boardY = 0;
     xPositions = [];
     yPositions = [];
+    brick; 
+    cardPlaced = false;
+    cardSelected = false;
 
     addCard(column, card) {
         if (card == null) {
@@ -35,13 +25,16 @@ export class Board {
         if (!this.boardCols[column].isFull()) {
             const row = this.boardCols[column].addCard(card);
             this.boardRows[row].addCard(card);
-
+            
             // Major Diagonal
             if (row == column) {
                 this.boardDiag[0].addCard(card);
             }
 
             // TODO: Test reverse diagonal
+        }
+        else{
+            return -1;
         }
     }
     
@@ -60,6 +53,7 @@ export class Board {
         this.renderBoard(p);
 		this.renderBoardCards(p);
 		this.renderTopDisplay(p, displayMap);
+        this.renderCardsLeft(p, w, h);
     }
 
     renderBoardCards(p) {
@@ -68,7 +62,7 @@ export class Board {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { // Display rank for hands (rows)
-                p.text(`${this.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
+                p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
             }
             if (colHand.rank != -1) { // Display rank for hands (columns)
                 p.text(`${this.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 50, 20, 20);
@@ -111,6 +105,33 @@ export class Board {
     }
 
     /**
+     * Displays rectangle for cards left part
+     * Also displays how many cards remaining in each column 
+     * @param p p5 instance 
+     * @param w window width
+     * @param h window height
+     */
+    renderCardsLeft(p, w, h) {
+        p.stroke(255, 0, 0);
+        let width = w/5;
+        let height = h/2.25; 
+        p.rect(w - w/4.5, h/25 + h/3, width, height); //left room for bottom instructions box
+        for (let i = 0; i < 4; i++) {
+            for (let x = 0; x < this.counts[i] + 1; x++) {
+                p.image(this.brick, w - w/4.75 + (i * width/4), h/22.5 + h/3 + (x * height/13), 25, 25);
+            }
+        }
+    }
+
+    /**
+     * Used to load brick image for cards left part
+     * @param p p5 instance
+     */
+    loadCardsLeft(p) {
+        this.brick = p.loadImage('../../static/brick.png');
+    }
+
+    /**
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
      * @param px where our mouse's x-axis is at
@@ -118,6 +139,7 @@ export class Board {
      */
     clicked(px, py, displayMap) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
+            //console.log("CLICKED!");
             if (this.currentCard != null) {
                 return;
             }
@@ -168,7 +190,7 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param p 
      */
-    chooseCol(py, p) {
+    chooseCol(py, p, recentMoves) {
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
@@ -177,11 +199,48 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                this.addCard(this.col, this.currentCard);
-                this.currentCard = null; 
+                this.cardSelected = true;
+                if(this.timer.seconds != 0){
+                    this.addCard(this.col, this.currentCard);
+                    recentMoves.push(this.currentCard);
+                    this.board.movesUpdate(this.recentMoves);
+                    this.cardPlaced = true;
+                    this.currentCard = null; 
+                }
             }
-
             this.col = -1;
         }
     }
+
+    /**
+     * Gets the first card from the display map, starting from leftmost column
+     * @param displayMap the map showing the cards that the player has available to use.
+     * @returns the first card 
+     */
+    getFirstCard(displayMap){
+        let firstCard;
+        for(let i = 0; i < 4; i++){
+            if(this.counts[i] >= 0){
+                firstCard = displayMap.get(i)[this.counts[i]];
+                if(firstCard != null){
+                    firstCard = displayMap.get(i)[this.counts[i]];
+                    console.log("i:", i, "COUNTS:", this.counts[i]);
+                    this.counts[i]--;
+                    return firstCard;
+                }
+            }
+        }
+
+
+    }
+
+    /**
+     * Keeps track of the latest three moves. Removes the first move whenever a new move is added
+     * @param recentMoves 
+     */
+    movesUpdate(recentMoves){
+		if(recentMoves.length > 3){
+			recentMoves.shift(); //removes first item from array
+		}
+	}
 }

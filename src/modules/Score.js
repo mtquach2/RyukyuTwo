@@ -2,14 +2,8 @@ export class Score {
     constructor() {
         this.currentScore = 0;
         this.totalScore = 0;
-    }
-    scoreX = 0;
-    scoreY = 0;
-
-    scoreTableKeys = [];
-
-    fillScoreTable() {
-        const ranks = {
+        this.clearPoint = 6000; //each round +1000
+        this.ranks = {
             '5K': 3000,
             'RSF': 2800,
             'SF': 2400,
@@ -22,8 +16,16 @@ export class Score {
             '1P': 200,
             'H': 0,
         }
-        this.scoreTableKeys = [...Object.keys(ranks)];
-        this.scoreTableValues = [...Object.values(ranks)];
+    }
+    scoreX = 0;
+    scoreY = 0;
+    
+    scoreTableKeys = [];
+    pointsMap = new Map();
+
+    fillScoreTable() {
+        this.scoreTableKeys = [...Object.keys(this.ranks)];
+        this.scoreTableValues = [...Object.values(this.ranks)];
     }
 
     render(p, w, h) {
@@ -46,7 +48,8 @@ export class Score {
         p.stroke(255, 255, 255);
         p.text("CLEAR POINT", this.scoreX/10, this.scoreY/15);
 
-        // TODO: Add the required CLEAR POINT based on level
+        p.text(this.clearPoint, this.scoreX/10, this.scoreY/7);
+        // TODO: Change clearPoint based on level
 
         // Line for bounds of TOTAL
         p.stroke(0, 255, 0);
@@ -54,8 +57,7 @@ export class Score {
         p.line(this.scoreX/40, this.scoreY/4.5, this.scoreX/40 + this.scoreX/5, this.scoreY/4.5);
         p.stroke(255, 255, 255);
         p.text("TOTAL", this.scoreX/10, this.scoreY/5);
-
-        // TODO: Add the current score
+        p.text(this.currentScore, this.scoreX/10, this.scoreY/3.75);
     }
 
     renderScoreTable(p) {
@@ -68,10 +70,17 @@ export class Score {
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-
-            p.text(`${rank}\t${score}`, this.scoreX/30, this.scoreY/25 + this.scoreY/3 + (i + 1) * 40);
+            p.text(`${rank}\t${score}\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX/30, this.scoreY/25 + this.scoreY/3 + (i + 1) * 40);
         }
-
-        // TODO: Display how many times they made that poker hand on the table
+    }
+    
+    /**
+     * Updates the currentScore depending on what hand was played/completed
+     * Also, updates the number of poker hands have been played/completed
+     * @param rank rank of poker hand
+     */
+    updateScore(rank) {
+        this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1); 
+        this.currentScore += this.ranks[rank];
     }
 }
