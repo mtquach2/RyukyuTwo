@@ -1,5 +1,4 @@
 import p5 from 'p5';
-//import {Board} from '/src/modules/Board.js';
 
 export class Timer{
   constructor() {
