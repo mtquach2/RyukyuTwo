@@ -1,7 +1,4 @@
 import { Card } from './Card';
-import { Board } from './Board';
-import { Score } from './Score';
-import { Timer } from './Timer';
 
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
