@@ -81,7 +81,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	/**
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
-	timerTrigger() {
+	timerTrigger() { //TODO clean up 
 		if (this.board.cardPlaced == true) {
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;

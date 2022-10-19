@@ -202,7 +202,6 @@ export class Board {
                 if (this.timer.seconds != 0) {
                     this.addCard(this.col, this.currentCard);
                     recentMoves.push(this.currentCard);
-                    console.log(recentMoves);
                     this.movesUpdate(recentMoves);
                     this.cardPlaced = true;
                     this.currentCard = null;
