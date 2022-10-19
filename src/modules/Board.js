@@ -207,6 +207,7 @@ export class Board {
                     // this.board.movesUpdate(this.recentMoves);
                     this.cardPlaced = true;
                     this.currentCard = null; 
+                    this.cardSelected = false;
                 }
             }
             this.col = -1;
