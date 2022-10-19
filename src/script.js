@@ -40,11 +40,11 @@ new p5(p => {
   p.draw = function () {
     p.background(0);
     timer.drawTimer(p);
-    frameCounter++;
-    if (frameCounter % 60 == 0) { //seems to be 60 fps?
-      frameCounter = 0;
-      game.timerTrigger();
-      timer.drawSeconds(p);
+    game.timerTrigger();
+    timer.drawSeconds(p);
+
+    if (p.frameCount % 60 == 0) { //seems to be 60 fps?
+      timer.countDown();
       //p.image(timer.drawSeconds(timerGraphics), 0, 0); //take timerGraphics and load it onto canvas
     }
     game.staticRender(p, windowSize.w, windowSize.h);
