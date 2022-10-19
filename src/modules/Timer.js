@@ -26,6 +26,9 @@ export class Timer {
       this.seconds = 60;
       this.cardPlaced = false;
     }
+  }
+
+  countDown() {
     this.seconds--;
   }
 

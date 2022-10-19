@@ -1,9 +1,23 @@
-import { Card } from './Card';
 import { score } from '../script';
+
 export class Hand {
     constructor() {
         this.hand = [];
         this.rank = -1;
+    }
+
+    rankTable = {
+        1: '5K',
+        2: 'RSF',
+        3: 'SF',
+        4: '4K',
+        5: 'FH',
+        6: 'ST',
+        7: 'FL',
+        8: '3K',
+        9: '2P',
+        10: '1P',
+        11: 'H',
     }
 
     addCard(card, index) {
@@ -66,19 +80,6 @@ export class Hand {
             (duplicates[2] > 1 && 9) ||
             (duplicates[2] && 10) ||
             11;
-        this.rankTable = {
-            1: '5K',
-            2: 'RSF',
-            3: 'SF',
-            4: '4K',
-            5: 'FH',
-            6: 'ST',
-            7: 'FL',
-            8: '3K',
-            9: '2P',
-            10: '1P',
-            11: 'H',
-        }
     }
 
     count(count, value) {
