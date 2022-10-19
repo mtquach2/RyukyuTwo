@@ -190,7 +190,7 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param p 
      */
-    chooseCol(py, p) {
+    chooseCol(py, p, recentMoves) {
         this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
@@ -203,8 +203,9 @@ export class Board {
                 if(this.timer.seconds != 0){
                     console.log("SECONDS IN CHOOSECOL:", this.timer.seconds);
                     this.addCard(this.col, this.currentCard);
-                    // recentMoves.push(this.currentCard);
-                    // this.board.movesUpdate(this.recentMoves);
+                    recentMoves.push(this.currentCard);
+                    console.log(recentMoves);
+                    this.movesUpdate(recentMoves);
                     this.cardPlaced = true;
                     this.currentCard = null; 
                     this.cardSelected = false;

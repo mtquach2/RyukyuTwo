@@ -57,7 +57,7 @@ new p5(p => {
 
   p.mouseClicked = function mouseClicked() {
     game.updateTopDisplay(p.mouseX, p.mouseY);
-    board.chooseCol(p.mouseY, p, this.recentMoves);
+    board.chooseCol(p.mouseY, p, game.recentMoves);
   };
 
   p.keyPressed = function keyPressed() {

@@ -86,8 +86,10 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 */
 	timerTrigger() {
 		if(this.board.cardPlaced == true){
-			// this.recentMoves.push(this.board.currentCard);
-			// this.board.movesUpdate(this.recentMoves);
+			// don't need to update recentMoves here because cards is already pushed in chooseCol
+			//this.recentMoves.push(this.board.currentCard);
+			//console.log(this.recentMoves);
+			// this.board.movesUpdate(this.recentMovåes);
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
@@ -95,8 +97,9 @@ export class Game { //TODO need a reset method and something to keep score of ro
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
 					console.log("CARD SELECTED!");
-					// this.recentMoves.push(this.board.currentCard);
-					// this.board.movesUpdate(this.recentMoves);
+					this.recentMoves.push(this.board.currentCard);
+					console.log(this.recentMoves);
+					this.board.movesUpdate(this.recentMoves);
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
 					break; 
@@ -109,8 +112,9 @@ export class Game { //TODO need a reset method and something to keep score of ro
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
-						// this.recentMoves.push(firstCard);
-						// this.board.movesUpdate(this.recentMoves);
+						this.recentMoves.push(firstCard);
+						console.log(this.recentMoves);
+						this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}
