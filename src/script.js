@@ -6,12 +6,12 @@ import { Score } from './modules/Score';
 let score = new Score();
 let timer = new Timer();
 let board = new Board(timer);
-let game = new Game(board, score, timer); 
+let game = new Game(board, score, timer);
 let windowSize;
 //let timerGraphics;
 //let seconds = 60;
 let frameCounter = 0; //maybe use frameCount()?
-export {score}; 
+export { score };
 
 function getWindow() {
   let w = window,
@@ -45,8 +45,8 @@ new p5(p => {
     p.background(0);
     timer.drawTimer(p);
     frameCounter++;
-    if(frameCounter % 60 == 0){ //seems to be 60 fps?
-      frameCounter = 0; 
+    if (frameCounter % 60 == 0) { //seems to be 60 fps?
+      frameCounter = 0;
       game.timerTrigger();
       timer.drawSeconds(p);
       //p.image(timer.drawSeconds(timerGraphics), 0, 0); //take timerGraphics and load it onto canvas
@@ -60,7 +60,7 @@ new p5(p => {
   };
 
   p.keyPressed = function keyPressed() {
-    if(p.keyCode == p.BACKSPACE){
+    if (p.keyCode == p.BACKSPACE) {
       console.log("BACKSPACE PRESSED!");
       console.log(game.recentMoves);
     }

@@ -1,14 +1,14 @@
-export class Timer{
+export class Timer {
   constructor() {
     this.seconds = 60;
     this.cardPlaced = false;
-	}
+  }
 
   /**
    * Draws the words "timer:"
    * @param p instance of p5
    */
-  drawTimer(p){
+  drawTimer(p) {
     p.stroke(255);
     p.textSize(20);
     p.text("timer:", 900, 200);
@@ -18,23 +18,18 @@ export class Timer{
    * Draws a countdown timer indicating to the player how many seconds are remaining
    * @param p instance of p5
    */
-  drawSeconds(p){ 
+  drawSeconds(p) {
     p.stroke(255);
     p.textSize(20);
     p.text(this.seconds, 960, 200);
-    console.log("Seconds left:", this.seconds);
-    if(this.cardPlaced == true || this.seconds == 0){
-      if(this.cardPlaced == true){
-        console.log("Card has been placed");
-      }
+    if (this.cardPlaced == true || this.seconds == 0) {
       this.seconds = 60;
       this.cardPlaced = false;
     }
     this.seconds--;
-
   }
 
-  resetTimer(){
+  resetTimer() {
     this.cardPlaced = true;
   }
 }
