@@ -25,10 +25,6 @@ function getWindow() {
 
 "use strict";
 new p5(p => {
-  function randColor() {
-    return p.color(p.random(255), p.random(255), p.random(255));
-  };
-
   p.preload = function preload() {
     game.load(p);
   };
