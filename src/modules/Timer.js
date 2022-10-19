@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import {Board} from '/src/modules/Board.js';
+import {Board} from './Board';
 
 /*
   -Timer called once when round starts 

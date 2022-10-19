@@ -2,7 +2,7 @@ import p5 from 'p5';
 import { Board } from './modules/Board';
 import { Timer } from './modules/Timer';
 import { Game } from './modules/Game';
-import { Score } from './modules/Score'
+import { Score } from './modules/Score';
 let board = new Board();
 let score = new Score();
 let game = new Game(board, score); 
