@@ -2,7 +2,7 @@ import p5 from 'p5';
 
 export class Timer{
   constructor() {
-    this.seconds = 5;
+    this.seconds = 60;
     this.cardPlaced = false;
   
 	}
