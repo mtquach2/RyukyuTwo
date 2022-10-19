@@ -1,9 +1,9 @@
 import { Hand } from './Hand';
 export class Board {
-    constructor(timer) { 
+    constructor(timer) {
         this.counts = [12, 12, 12, 12];
         this.currentCard;
-        this.col = 0; 
+        this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
@@ -13,7 +13,7 @@ export class Board {
     boardY = 0;
     xPositions = [];
     yPositions = [];
-    brick; 
+    brick;
     cardPlaced = false;
     cardSelected = false;
 
@@ -25,7 +25,7 @@ export class Board {
         if (!this.boardCols[column].isFull()) {
             const row = this.boardCols[column].addCard(card);
             this.boardRows[row].addCard(card);
-            
+
             // Major Diagonal
             if (row == column) {
                 this.boardDiag[0].addCard(card);
@@ -33,11 +33,11 @@ export class Board {
 
             // TODO: Test reverse diagonal
         }
-        else{
+        else {
             return -1;
         }
     }
-    
+
     render(p, displayMap, w, h) {
         this.boardX = w / 3;
         this.boardY = h / 3;
@@ -47,12 +47,12 @@ export class Board {
         }
 
         for (let y = 2; y >= 0; y--) {
-            this.yPositions[y] = this.boardY/2 - 33 * y;
+            this.yPositions[y] = this.boardY / 2 - 33 * y;
         }
 
         this.renderBoard(p);
-		this.renderBoardCards(p);
-		this.renderTopDisplay(p, displayMap);
+        this.renderBoardCards(p);
+        this.renderTopDisplay(p, displayMap);
         this.renderCardsLeft(p, w, h);
     }
 
@@ -67,7 +67,7 @@ export class Board {
             if (colHand.rank != -1) { // Display rank for hands (columns)
                 p.text(`${this.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 50, 20, 20);
             }
-            for (let j = 0; j < this.boardRows.length; j++) {            
+            for (let j = 0; j < this.boardRows.length; j++) {
                 colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, p); //displays a card throughout each col starting from the bottom left square going up 
             }
         }
@@ -81,7 +81,7 @@ export class Board {
             p.rect(this.boardX, this.boardY + (i + 1) * 65, 40, 40); // Rank box for rows
             p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 40, 40, 40); // Rank box for cols
 
-            for (let j = 0; j < this.boardRows.length; j++) {     
+            for (let j = 0; j < this.boardRows.length; j++) {
                 p.rect(this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, 65, 65); // Board
             }
         }
@@ -96,8 +96,8 @@ export class Board {
         p.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
             for (let y = 0; y < 3; y++) {
-                p.rect(this.boardX + (i + 1) * 65 + 65/2, this.yPositions[y], 65, 65); //top display
-            }       
+                p.rect(this.boardX + (i + 1) * 65 + 65 / 2, this.yPositions[y], 65, 65); //top display
+            }
         }
         for (let i = 0; i < 5; i++) {
             p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
@@ -113,12 +113,12 @@ export class Board {
      */
     renderCardsLeft(p, w, h) {
         p.stroke(255, 0, 0);
-        let width = w/5;
-        let height = h/2.25; 
-        p.rect(w - w/4.5, h/25 + h/3, width, height); //left room for bottom instructions box
+        let width = w / 5;
+        let height = h / 2.25;
+        p.rect(w - w / 4.5, h / 25 + h / 3, width, height); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                p.image(this.brick, w - w/4.75 + (i * width/4), h/22.5 + h/3 + (x * height/13), 25, 25);
+                p.image(this.brick, w - w / 4.75 + (i * width / 4), h / 22.5 + h / 3 + (x * height / 13), 25, 25);
             }
         }
     }
@@ -139,7 +139,6 @@ export class Board {
      */
     clicked(px, py, displayMap) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
-            //console.log("CLICKED!");
             if (this.currentCard != null) {
                 return;
             }
@@ -170,7 +169,7 @@ export class Board {
                 }
                 offset++;
             }
-        } 
+        }
     }
 
     /**
@@ -180,17 +179,18 @@ export class Board {
      * @param p p5 instance
      */
     displayCard(mouseWasClicked, p) {
-		if (mouseWasClicked == true && this.currentCard != null) { 
-			let bounds = p.constrain(p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
-			this.currentCard.showImage(bounds, this.boardY - 65, p); 
-		}
-	}
+        if (mouseWasClicked == true && this.currentCard != null) {
+            let bounds = p.constrain(p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
+            this.currentCard.showImage(bounds, this.boardY - 65, p);
+        }
+    }
 
     /**
      * Displays selected card into the clicked column 
      * @param p 
      */
     chooseCol(py, p, recentMoves) {
+        this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
@@ -199,13 +199,13 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                this.cardSelected = true;
-                if(this.timer.seconds != 0){
+                if (this.timer.seconds != 0) {
                     this.addCard(this.col, this.currentCard);
                     recentMoves.push(this.currentCard);
-                    this.board.movesUpdate(this.recentMoves);
+                    this.movesUpdate(recentMoves);
                     this.cardPlaced = true;
-                    this.currentCard = null; 
+                    this.currentCard = null;
+                    this.cardSelected = false;
                 }
             }
             this.col = -1;
@@ -217,14 +217,13 @@ export class Board {
      * @param displayMap the map showing the cards that the player has available to use.
      * @returns the first card 
      */
-    getFirstCard(displayMap){
+    getFirstCard(displayMap) {
         let firstCard;
-        for(let i = 0; i < 4; i++){
-            if(this.counts[i] >= 0){
+        for (let i = 0; i < 4; i++) {
+            if (this.counts[i] >= 0) {
                 firstCard = displayMap.get(i)[this.counts[i]];
-                if(firstCard != null){
+                if (firstCard != null) {
                     firstCard = displayMap.get(i)[this.counts[i]];
-                    console.log("i:", i, "COUNTS:", this.counts[i]);
                     this.counts[i]--;
                     return firstCard;
                 }
@@ -238,9 +237,9 @@ export class Board {
      * Keeps track of the latest three moves. Removes the first move whenever a new move is added
      * @param recentMoves 
      */
-    movesUpdate(recentMoves){
-		if(recentMoves.length > 3){
-			recentMoves.shift(); //removes first item from array
-		}
-	}
+    movesUpdate(recentMoves) {
+        if (recentMoves.length > 3) {
+            recentMoves.shift(); //removes first item from array
+        }
+    }
 }
