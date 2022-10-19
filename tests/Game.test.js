@@ -3,3 +3,5 @@ const game = new Game()
 test('Check deck length', () => {
     expect(game.deck.length).toEqual(4);
 });
+
+//Testing I didn't break anything
