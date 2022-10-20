@@ -51,7 +51,6 @@ export class Board {
         for (let y = 2; y >= 0; y--) {
             this.yPositions[y] = this.boardY / 2 - 33 * y;
         }
-
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
@@ -182,7 +181,7 @@ export class Board {
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
-            this.currentCard.showImage(bounds, this.boardY - 65, p);
+            this.currentCard.showImage(bounds, this.boardY - 65);
         }
     }
 

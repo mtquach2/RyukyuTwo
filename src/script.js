@@ -15,8 +15,9 @@ const p = new p5(p => {
   };
 
   p.draw = function () {
+    let windowSize = getWindow();
     p.background(0);
-    GM.draw();
+    GM.draw(windowSize.w, windowSize.h);
   };
 
   p.mouseClicked = function mouseClicked() {
