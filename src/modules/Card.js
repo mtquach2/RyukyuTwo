@@ -14,7 +14,6 @@ export class Card {
 	 * Displays the image associated with the given card 
 	 * @param position x-axis for where we want the card
 	 * @param row y-axis for where we want the card
-	 * @param p reference to p5
 	 */
 	showImage(position, row) {
 		this.p.image(this.img, position, row, 64, 64);

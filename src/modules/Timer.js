@@ -6,8 +6,7 @@ export class Timer {
   }
 
   /**
-   * Draws the words "timer:"
-   * @param p instance of p5
+   * Displays timer 
    */
   drawTimer(w, h) {
     this.p5.stroke(255, 0, 0);
@@ -19,7 +18,6 @@ export class Timer {
 
   /**
    * Draws a countdown timer indicating to the player how many seconds are remaining
-   * @param p instance of p5
    */
   drawSeconds(w, h) {
     this.p5.stroke(255);

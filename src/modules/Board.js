@@ -10,7 +10,7 @@ export class Board {
         this.boardDiag = [new Hand(), new Hand()];
         this.timer = timer;
 
-        this.boardX = 0; 
+        this.boardX = 0;
         this.boardY = 0;
         this.xPositions = [];
         this.yPositions = [];
@@ -90,7 +90,6 @@ export class Board {
 
     /**
      * Creates a 1x4 array/rectangle and displays cards to use for game
-     * @param p p5 instance
      */
     renderTopDisplay() {
         this.p.noFill();
@@ -124,8 +123,7 @@ export class Board {
     }
 
     /**
-     * Used to load brick image for cards left part
-     * @param p p5 instance
+     * Used to load card back image for cards left part
      */
     loadCardsLeft() {
         this.marker = this.p.loadImage('../../static/cards/card_back.png');
@@ -135,6 +133,7 @@ export class Board {
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
      * @param px where our mouse's x-axis is at
+     * @param py where our mouse's y-axis is at
      * @param displayMap map for deck of card
      */
     clicked(px, py, displayMap) {
@@ -157,7 +156,6 @@ export class Board {
 
     /**
      * Displays cards in the top display
-     * @param p p5 instance 
      * @param displayMap map for split deck of cards
      */
     initCards(displayMap) {
@@ -176,7 +174,6 @@ export class Board {
      * Displays card selected from top display into 1x5 array
      * Moves with mouse's x-axis
      * @param mouseWasClicked boolean to check to see if a card was previously selected
-     * @param p p5 instance
      */
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
@@ -187,7 +184,8 @@ export class Board {
 
     /**
      * Displays selected card into the clicked column 
-     * @param p 
+     * @param py mouse's y-axis 
+     * @param recentMoves data structure that stores the last 3 recent moves
      */
     chooseCol(py, recentMoves) {
         this.cardSelected = true;
@@ -235,7 +233,7 @@ export class Board {
 
     /**
      * Keeps track of the latest three moves. Removes the first move whenever a new move is added
-     * @param recentMoves 
+     * @param recentMoves data structure that stores last 3 moves
      */
     movesUpdate(recentMoves) {
         if (recentMoves.length > 3) {

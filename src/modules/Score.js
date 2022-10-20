@@ -24,7 +24,7 @@ export class Score {
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
     }
-    
+
 
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];

@@ -20,7 +20,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
-	 * @param p reference to p5
 	 */
 	load() {
 		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
@@ -38,7 +37,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	/**
 	 * Displays the board and top display for the game
 	 * Also, includes logic for selecting a card and column for game
-	 * @param p 
 	 */
 	staticRender(width, height) {
 		this.score.render(width, height);
@@ -58,7 +56,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	/**
 	 * Sends displayMap to clicked() in Board.js 
 	 * @param px mouseX value
-	 * @param p instance of p5
 	 */
 	updateTopDisplay(px, py) {
 		this.currentCard = this.board.clicked(px, py, this.displayMap);
@@ -67,7 +64,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 	/**
 	 * Splits a full deck of cards into 4 even parts
-	 * @param p p5 instance
 	 */
 	splitCards() {
 		this.p5.shuffle(this.deck, true);
@@ -125,6 +121,10 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
 	}
 
+	/**
+	 * Gets the ranking of the poker hand from Hand.js
+	 * @param rank poker hand ranking
+	 */
 	getRank(rank) {
 		this.score.updateScore(rank);
 	}
