@@ -1,5 +1,6 @@
 export class Score {
-    constructor() {
+    constructor(p5) {
+        this.p5 = p5
         this.currentScore = 0;
         this.totalScore = 0;
         this.clearPoint = 6000; //each round +1000
@@ -28,49 +29,49 @@ export class Score {
         this.scoreTableValues = [...Object.values(this.ranks)];
     }
 
-    render(p, w, h) {
+    render(w, h) {
         this.scoreX = w;
         this.scoreY = h;
 
-        this.renderScore(p);
-        this.renderScoreTable(p);
+        this.renderScore();
+        this.renderScoreTable();
     }
 
-    renderScore(p) {
+    renderScore() {
         // Outline of Score Box
-        p.noFill();
-        p.stroke(255, 0, 0);
-        p.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 4);
+        this.p5.noFill();
+        this.p5.stroke(255, 0, 0);
+        this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 4);
 
         // Line for bottom of CLEAR POINT
-        p.stroke(0, 0, 255);
-        p.line(this.scoreX / 40, this.scoreY / 10, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 10);
-        p.stroke(255, 255, 255);
-        p.text("CLEAR POINT", this.scoreX / 10, this.scoreY / 15);
+        this.p5.stroke(0, 0, 255);
+        this.p5.line(this.scoreX / 40, this.scoreY / 10, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 10);
+        this.p5.stroke(255, 255, 255);
+        this.p5.text("CLEAR POINT", this.scoreX / 10, this.scoreY / 15);
 
-        p.text(this.clearPoint, this.scoreX / 10, this.scoreY / 7);
+        this.p5.text(this.clearPoint, this.scoreX / 10, this.scoreY / 7);
         // TODO: Change clearPoint based on level
 
         // Line for bounds of TOTAL
-        p.stroke(0, 255, 0);
-        p.line(this.scoreX / 40, this.scoreY / 6, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 6);
-        p.line(this.scoreX / 40, this.scoreY / 4.5, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 4.5);
-        p.stroke(255, 255, 255);
-        p.text("TOTAL", this.scoreX / 10, this.scoreY / 5);
-        p.text(this.currentScore, this.scoreX / 10, this.scoreY / 3.75);
+        this.p5.stroke(0, 255, 0);
+        this.p5.line(this.scoreX / 40, this.scoreY / 6, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 6);
+        this.p5.line(this.scoreX / 40, this.scoreY / 4.5, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 4.5);
+        this.p5.stroke(255, 255, 255);
+        this.p5.text("TOTAL", this.scoreX / 10, this.scoreY / 5);
+        this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 3.75);
     }
 
-    renderScoreTable(p) {
+    renderScoreTable() {
         // Outline of Score Table
-        p.stroke(255, 0, 0);
-        p.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
+        this.p5.stroke(255, 0, 0);
+        this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
 
         // Populate text of Score Table
-        p.stroke(255, 255, 255);
+        this.p5.stroke(255, 255, 255);
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-            p.text(`${rank}\t${score}\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40);
+            this.p5.text(`${rank}\t${score}\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40);
         }
     }
 

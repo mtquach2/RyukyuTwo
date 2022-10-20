@@ -1,4 +1,4 @@
-import { score } from '../script';
+// import { score } from '../script';
 
 export class Hand {
     constructor() {
@@ -87,9 +87,9 @@ export class Hand {
         return count;
     }
 
-    showCard(index, col, row, p) {
+    showCard(index, col, row) {
         if (this.hand[4 - index] != null) {
-            this.hand[4 - index].showImage(col, row, p)
+            this.hand[4 - index].showImage(col, row)
         }
     }
 

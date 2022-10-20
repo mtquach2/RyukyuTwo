@@ -24,6 +24,16 @@ function getWindow() {
 }
 
 "use strict";
+
+/*
+
+1. import dependent modules (those are just the types)
+2. create an instance of p5
+3. then pass that instance into each constructor
+4. in each module, set this.p = p5 and refer to it thusly
+
+*/
+
 new p5(p => {
   p.preload = function preload() {
     game.load(p);

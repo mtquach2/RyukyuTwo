@@ -4,11 +4,18 @@ import { Card } from './Card';
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
 export class Game { //TODO need a reset method and something to keep score of rounds
-	constructor(board, score, timer) {
+	constructor(p5, board, score, timer) {
+		this.p5 = p5
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.deck = []
 	}
+	/*
+	DO NOT PLACE RANDOM-ASS CODE IN A CLASS DECLARATION
+	ALL CODE IN A CLASS NEEDS TO BE IN A METHOD
+	THESE VARIABLES NEED TO BE IN THE CALLER (script.js?)
+
 	mouseWasClicked = false;
 	deck = [];
 	displayMap = new Map();
@@ -17,21 +24,22 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 	cancelsLeft = 3;
 	recentMoves = [];
+	*/
 
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
 	 * @param p reference to p5
 	 */
-	load(p) {
+	load() {
 		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
 		const values = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
 
 		for (const suit of suits) {
 			for (const value of values) {
-				this.deck.push(new Card(`${suit[0]}`, `${value}`, p.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
+				this.deck.push(new Card(`${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
-		this.board.loadCardsLeft(p);
+		this.board.loadCardsLeft();
 		this.score.fillScoreTable();
 	}
 
@@ -40,19 +48,19 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 * Also, includes logic for selecting a card and column for game
 	 * @param p 
 	 */
-	staticRender(p, width, height) {
-		this.score.render(p, width, height);
-		this.board.render(p, this.displayMap, width, height);
-		this.board.initCards(p, this.displayMap, width, height);
-		this.board.displayCard(this.mouseWasClicked, p, width, height);
-		// this.renderDivider(p, width, height);
-		this.cancelDisplay(p, width, height);
+	staticRender(width, height) {
+		this.score.render( width, height);
+		this.board.render( this.displayMap, width, height);
+		this.board.initCards( this.displayMap, width, height);
+		this.board.displayCard(this.mouseWasClicked, width, height);
+		// this.renderDivider( width, height);
+		this.cancelDisplay( width, height);
 	}
 
-	renderDivider(p, width, height) { //TODO fix 
-		p.stroke(0, 255, 0);
-		p.line(width / 4, 0, width / 4, height);
-		p.line(width * 2 / 3, 0, width * 2 / 3, height);
+	renderDivider(width, height) { //TODO fix 
+		this.p5.stroke(0, 255, 0);
+		this.p5.line(width / 4, 0, width / 4, height);
+		this.p5.line(width * 2 / 3, 0, width * 2 / 3, height);
 	}
 
 	/**
@@ -69,8 +77,8 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 * Splits a full deck of cards into 4 even parts
 	 * @param p p5 instance
 	 */
-	splitCards(p) {
-		p.shuffle(this.deck, true);
+	splitCards() {
+		this.p5.shuffle(this.deck, true);
 		let x = 0;
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
@@ -114,15 +122,15 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		}
 	}
 
-	cancelDisplay(p, w, h) {
-		p.stroke(255, 0, 0);
-		p.rect(w - w / 4.5, h / 25, w / 5, h / 10);
-		p.stroke(255);
-		p.textSize(20);
-		p.text("cancels left:", w - w / 5.5, h / 10);
-		p.stroke(255);
-		p.textSize(20);
-		p.text(this.cancelsLeft, w - w / 12, h / 10);
+	cancelDisplay(w, h) {
+		this.p5.stroke(255, 0, 0);
+		this.p5.rect(w - w / 4.5, h / 25, w / 5, h / 10);
+		this.p5.stroke(255);
+		this.p5.textSize(20);
+		this.p5.text("cancels left:", w - w / 5.5, h / 10);
+		this.p5.stroke(255);
+		this.p5.textSize(20);
+		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
 	}
 
 };
