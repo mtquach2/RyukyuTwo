@@ -13,7 +13,7 @@ export class Board {
     boardY = 0;
     xPositions = [];
     yPositions = [];
-    brick;
+    marker;
     cardPlaced = false;
     cardSelected = false;
 
@@ -118,7 +118,7 @@ export class Board {
         p.rect(w - w / 4.5, h / 25 + h / 3, width, height); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                p.image(this.brick, w - w / 4.75 + (i * width / 4), h / 22.5 + h / 3 + (x * height / 13), 25, 25);
+                p.image(this.marker, w - w / 4.6 + (i * width / 4), h / 2.5 + (x * height / 15), 50, 50);
             }
         }
     }
@@ -128,7 +128,7 @@ export class Board {
      * @param p p5 instance
      */
     loadCardsLeft(p) {
-        this.brick = p.loadImage('../../static/brick.png');
+        this.marker = p.loadImage('../../static/cards/card_back.png');
     }
 
     /**
