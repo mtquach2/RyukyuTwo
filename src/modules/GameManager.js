@@ -64,4 +64,4 @@ GM.mouseClicked = function(x, y){
     b.chooseCol(y, game.recentMoves);
 }
 
-export {game, GM};
+export {game, s, t, b, GM}; //exporting for tests and one instance throughout code
