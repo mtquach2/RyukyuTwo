@@ -33,19 +33,17 @@ new p5(p => {
     windowSize = getWindow();
     p.createCanvas(windowSize.w, windowSize.h);
     game.splitCards(p);
-    //timerGraphics = p.createGraphics(window.w, window.h);
-    //game.cancel(p);
   };
 
   p.draw = function () {
+    windowSize = getWindow();
     p.background(0);
-    timer.drawTimer(p);
+    timer.drawTimer(p, windowSize.w, windowSize.h);
     game.timerTrigger();
-    timer.drawSeconds(p);
+    timer.drawSeconds(p, windowSize.w, windowSize.h);
 
     if (p.frameCount % 60 == 0) { //seems to be 60 fps?
       timer.countDown();
-      //p.image(timer.drawSeconds(timerGraphics), 0, 0); //take timerGraphics and load it onto canvas
     }
     game.staticRender(p, windowSize.w, windowSize.h);
   };
@@ -54,12 +52,4 @@ new p5(p => {
     game.updateTopDisplay(p.mouseX, p.mouseY);
     board.chooseCol(p.mouseY, p, game.recentMoves);
   };
-
-  p.keyPressed = function keyPressed() {
-    if (p.keyCode == p.BACKSPACE) {
-      console.log("BACKSPACE PRESSED!");
-      console.log(game.recentMoves);
-    }
-
-  }
 });

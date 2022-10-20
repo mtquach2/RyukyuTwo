@@ -46,7 +46,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.board.initCards(p, this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, p, width, height);
 		// this.renderDivider(p, width, height);
-		this.cancelDisplay(p);
+		this.cancelDisplay(p, width, height);
 	}
 
 	renderDivider(p, width, height) { //TODO fix 
@@ -114,13 +114,15 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		}
 	}
 
-	cancelDisplay(p) {
+	cancelDisplay(p, w, h) {
+		p.stroke(255, 0, 0);
+		p.rect(w - w / 4.5, h / 25, w / 5, h / 10);
 		p.stroke(255);
 		p.textSize(20);
-		p.text("cancels left:", 900, 100);
+		p.text("cancels left:", w - w / 5.5, h / 10);
 		p.stroke(255);
 		p.textSize(20);
-		p.text(this.cancelsLeft, 1020, 100);
+		p.text(this.cancelsLeft, w - w / 12, h / 10);
 	}
 
 };
