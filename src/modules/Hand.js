@@ -1,4 +1,4 @@
-// import { score } from '../script';
+import { game } from './GameManager';
 
 export class Hand {
     constructor() {
@@ -31,7 +31,7 @@ export class Hand {
         if (this.hand.length == 5) {
             console.log("Evaluating: ", this.hand);
             this.evaluateHand(this.hand);
-            score.updateScore(this.rankTable[this.rank]); //updates score right when hand is completed
+            game.getRank(this.rankTable[this.rank]); //updates score right when hand is completed
         }
 
         return 5 - this.hand.length;
