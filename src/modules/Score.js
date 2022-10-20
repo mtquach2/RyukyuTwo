@@ -17,12 +17,14 @@ export class Score {
             '1P': 200,
             'H': 0,
         }
-    }
-    scoreX = 0;
-    scoreY = 0;
 
-    scoreTableKeys = [];
-    pointsMap = new Map();
+        this.scoreX = 0;
+        this.scoreY = 0;
+
+        this.scoreTableKeys = [];
+        this.pointsMap = new Map();
+    }
+    
 
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];

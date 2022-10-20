@@ -166,7 +166,7 @@ export class Board {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
-                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l], p);
+                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l]);
                 }
                 offset++;
             }

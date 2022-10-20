@@ -28,7 +28,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 		for (const suit of suits) {
 			for (const value of values) {
-				this.deck.push(new Card(`${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
+				this.deck.push(new Card(this.p5, `${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
 		this.board.loadCardsLeft();

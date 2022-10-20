@@ -54,7 +54,7 @@ GM.draw = function(w, h){
     t.drawSeconds(w, h);
 
     if (p.frameCount % 60 == 0) { //seems to be 60 fps?
-      t.countDown();
+    //   t.countDown();
     }
     game.staticRender(w, h); 
 }
