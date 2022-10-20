@@ -20,12 +20,10 @@
   - 2P (2 Pair): 2 sets of pair number cards 
   - 1P (Pair): 2 of the same number card
   
-# How to Play (Default Keyboard Keys): 
-  - Players must first insert coins to play -> Shift 
-  - Once coins are inserted press start -> Return/Enter 
-  - Move left and right to choose a card/column -> Left/Right Arrow Keys
-    - To select a card/column use b button -> X
-  - To cancel/undo a move use the y button -> S
+# How to Play: 
+  - Move left and right to choose a card/column -> Drag Mouse
+    - To select a card/column use b button -> Left Mouse Click 
+  - To cancel/undo a move use the y button -> Backspace
   
 # About: 
 This web-based game is created by Kenny Dong, Teresa Mei, and Michelle Quach with the supervision of Jon Rahoi (also creative director/sponsor of project). 
