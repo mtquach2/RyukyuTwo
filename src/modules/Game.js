@@ -12,7 +12,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 		this.deck = [];
 		this.mouseWasClicked = false;
-		this.deck = [];
 		this.displayMap = new Map();
 		this.x = 0;
 		this.cancelsLeft = 3;
