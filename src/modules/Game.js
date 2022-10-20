@@ -9,23 +9,15 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
-		this.deck = []
+
+		this.deck = [];
+		this.mouseWasClicked = false;
+		this.deck = [];
+		this.displayMap = new Map();
+		this.x = 0;
+		this.cancelsLeft = 3;
+		this.recentMoves = [];
 	}
-	/*
-	DO NOT PLACE RANDOM-ASS CODE IN A CLASS DECLARATION
-	ALL CODE IN A CLASS NEEDS TO BE IN A METHOD
-	THESE VARIABLES NEED TO BE IN THE CALLER (script.js?)
-
-	mouseWasClicked = false;
-	deck = [];
-	displayMap = new Map();
-
-	x = 0;
-
-	cancelsLeft = 3;
-	recentMoves = [];
-	*/
-
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
 	 * @param p reference to p5
@@ -49,12 +41,12 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 * @param p 
 	 */
 	staticRender(width, height) {
-		this.score.render( width, height);
-		this.board.render( this.displayMap, width, height);
-		this.board.initCards( this.displayMap, width, height);
+		this.score.render(width, height);
+		this.board.render(this.displayMap, width, height);
+		this.board.initCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
 		// this.renderDivider( width, height);
-		this.cancelDisplay( width, height);
+		this.cancelDisplay(width, height);
 	}
 
 	renderDivider(width, height) { //TODO fix 

@@ -9,19 +9,15 @@ export class Board {
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
         this.timer = timer;
-    }
-    /* 
-    DO NOT CREATE WINDOW VARIABLES FROM A CLASS DECLARATION
-    
-    boardX = 0;
-    boardY = 0;
-    xPositions = [];
-    yPositions = [];
-    marker;
-    cardPlaced = false;
-    cardSelected = false;
 
-    */
+        this.boardX = 0; 
+        this.boardY = 0;
+        this.xPositions = [];
+        this.yPositions = [];
+        this.marker;
+        this.cardPlaced = false;
+        this.cardSelected = false;
+    }
 
     addCard(column, card) {
         if (card == null) {
@@ -59,7 +55,7 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(w, h);
+        this.renderCardsLeft(w, h); //Says w and h are undefined???
     }
 
     renderBoardCards() {
@@ -74,7 +70,7 @@ export class Board {
                 this.p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 50, 20, 20);
             }
             for (let j = 0; j < this.boardRows.length; j++) {
-                colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, p); //displays a card throughout each col starting from the bottom left square going up 
+                colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65); //displays a card throughout each col starting from the bottom left square going up 
             }
         }
     }
@@ -113,7 +109,6 @@ export class Board {
     /**
      * Displays rectangle for cards left part
      * Also displays how many cards remaining in each column 
-     * @param p p5 instance 
      * @param w window width
      * @param h window height
      */
