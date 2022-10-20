@@ -125,4 +125,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
 	}
 
+	getRank(rank) {
+		this.score.updateScore(rank);
+	}
 };
