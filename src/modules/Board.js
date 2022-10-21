@@ -1,4 +1,6 @@
 import { Hand } from './Hand';
+import { getWindow } from './GameManager';
+
 export class Board {
     constructor(p5, timer) {
         this.p = p5
@@ -40,7 +42,9 @@ export class Board {
         }
     }
 
-    render(displayMap, w, h) {
+    render(displayMap) {
+        let w = getWindow().w;
+        let h = getWindow().h;
         this.boardX = w / 3;
         this.boardY = h / 3;
 
@@ -54,7 +58,7 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(w, h); //Says w and h are undefined???
+        this.renderCardsLeft(); //Says w and h are undefined???
     }
 
     renderBoardCards() {
@@ -110,14 +114,14 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft(w, h) {
+    renderCardsLeft() {
+        let w = getWindow().w;
+        let h = getWindow().h;
         this.p.stroke(255, 0, 0);
-        let width = w / 5;
-        let height = h / 2.25;
-        this.p.rect(w - w / 4.5, h / 25 + h / 3, width, height); //left room for bottom instructions box
+        this.p.rect(w - w / 4.5, h / 25 + h / 3, w / 5, h / 2.25); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, w - w / 4.6 + (i * width / 4), h / 2.5 + (x * height / 15), 50, 50);
+                this.p.image(this.marker, (w - w / 4.6) + (i * w / 20), (h / 2.5) + (x * h / 30), 50, 50);
             }
         }
     }

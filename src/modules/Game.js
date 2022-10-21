@@ -39,7 +39,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 */
 	staticRender(width, height) {
 		this.score.render(width, height);
-		this.board.render(this.displayMap, width, height);
+		this.board.render(this.displayMap);
 		this.board.initCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
 		// this.renderDivider( width, height);
