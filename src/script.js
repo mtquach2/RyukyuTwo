@@ -19,6 +19,6 @@ const p = new p5(p => {
   };
 
   p.mouseClicked = function mouseClicked() {
-      GM.mouseClicked(p.mouseX, p.mouseY);
+    GM.mouseClicked(p.mouseX, p.mouseY);
   };
 });
