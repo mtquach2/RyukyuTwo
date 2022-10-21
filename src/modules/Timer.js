@@ -24,7 +24,6 @@ export class Timer {
     this.p5.stroke(255);
     this.p5.textSize(20);
     this.p5.text(this.seconds, w - w / 10, h / 4);
-    console.log("Seconds left:", this.seconds);
     if(this.cardPlaced == true || this.seconds == 0){
       if(this.cardPlaced == true){
         console.log("Card has been placed");

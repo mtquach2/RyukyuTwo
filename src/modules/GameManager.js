@@ -3,6 +3,7 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
+import { Player } from './Player';
 
 export function getWindow() {
     let w = window,
@@ -39,10 +40,10 @@ const p = new p5(p => {
   });
 
 let s = new Score(p);
-let t = new Timer(p);
+const t = new Timer(p);
 let b = new Board(p, t);
-
-const game = new Game(p, b, s, t);
+const play = new Player(p);
+let game = new Game(p, b, s, t);
 
 GM.setup = function(){
     game.splitCards();
@@ -57,6 +58,14 @@ GM.draw = function(w, h){
     //   t.countDown();
     }
     game.staticRender(w, h); 
+    
+    if (b.boardIsFull()) {
+        play.updateLevel();
+        play.updateTotalScore();
+        s = new Score(p);
+        b = new Board(p, t);
+        game = new Game(p, b, s, t);
+    }
 }
 
 GM.mouseClicked = function(x, y){

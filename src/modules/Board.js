@@ -240,4 +240,12 @@ export class Board {
             recentMoves.shift(); //removes first item from array
         }
     }
+
+    boardIsFull() {
+        if (this.boardRows[0].isFull()) {
+            console.log("HERE");
+            return true;
+        }
+        return false;
+    }
 }
