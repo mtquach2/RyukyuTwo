@@ -1,5 +1,11 @@
-import {Game} from '../src/modules/Game';
-const game = new Game()
+import { game } from '../src/modules/GameManager';
+
 test('Check deck length', () => {
-    expect(game.deck.length).toEqual(4);
+    game.load();
+    expect(game.deck.length).toEqual(52);
+});
+
+test('Check deck split', () => {
+    game.splitCards();
+    expect(game.displayMap.size).toEqual(4);
 });
