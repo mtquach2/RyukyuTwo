@@ -17,6 +17,7 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+        this.columnSelected = false;
     }
 
     addCard(column, card) {
@@ -187,23 +188,27 @@ export class Board {
      * @param py mouse's y-axis 
      * @param recentMoves data structure that stores the last 3 recent moves
      */
-    chooseCol(py, recentMoves) {
+    chooseCol(py, p, recentMoves) {
         this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
-                if (this.p.mouseX >= this.boardX + (col + 1) * 65 && this.p.mouseX < this.boardX + (col + 2) * 65) {
+                if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
                     this.col = col;
                     break;
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                if (this.timer.seconds != 0) {
+                this.columnSelected = true;
+                if(this.timer.seconds != 0){
+                    console.log("SECONDS IN CHOOSECOL:", this.timer.seconds);
                     this.addCard(this.col, this.currentCard);
                     recentMoves.push(this.currentCard);
+                    console.log(recentMoves);
                     this.movesUpdate(recentMoves);
                     this.cardPlaced = true;
-                    this.currentCard = null;
+                    this.currentCard = null; 
                     this.cardSelected = false;
+                    this.columnSelected = false;
                 }
             }
             this.col = -1;
