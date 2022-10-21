@@ -19,11 +19,16 @@ export class Timer {
   /**
    * Draws a countdown timer indicating to the player how many seconds are remaining
    */
+
   drawSeconds(w, h) {
     this.p5.stroke(255);
     this.p5.textSize(20);
     this.p5.text(this.seconds, w - w / 10, h / 4);
-    if (this.cardPlaced == true || this.seconds == 0) {
+    console.log("Seconds left:", this.seconds);
+    if(this.cardPlaced == true || this.seconds == 0){
+      if(this.cardPlaced == true){
+        console.log("Card has been placed");
+      }
       this.seconds = 60;
       this.cardPlaced = false;
     }
