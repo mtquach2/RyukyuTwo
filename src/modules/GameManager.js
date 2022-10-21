@@ -23,13 +23,13 @@ const GM = {
 
 const p = new p5(p => {
     p.setup = function setup() {
-      const windowSize = getWindow();
+      let windowSize = getWindow();
       p.createCanvas(windowSize.w, windowSize.h);
       GM.setup();
     };
   
     p.draw = function () {
-      const windowSize = getWindow();
+      let windowSize = getWindow();
       p.background(0);
       GM.draw(windowSize.w, windowSize.h);
     };
