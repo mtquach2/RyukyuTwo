@@ -19,12 +19,7 @@ export class Hand {
         };
     }
 
-    addCard(card, index) {
-        if (index < 5) {
-            console.log("Trying to add card above limit");
-            return;
-        }
-
+    addCard(card) {
         this.hand.push(card);
 
         if (this.hand.length == 5) {
