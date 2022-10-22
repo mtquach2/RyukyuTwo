@@ -34,6 +34,8 @@ export class Board {
             }
 
             // TODO: Test reverse diagonal
+            
+
         }
         else {
             return -1;
@@ -152,6 +154,15 @@ export class Board {
 
     isFull(index) {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 
+    }
+
+    isBoardFull() {
+        for (const col of this.boardCols) {
+            if (!col.isFull()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

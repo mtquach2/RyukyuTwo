@@ -57,21 +57,26 @@ export class Hand {
         const royal = 'A' <= faces[0] && faces[0] <= 'D';
         const flush = suits[0] == suits[4];
         const straight = faces[4] == String.fromCharCode((faces[0].charCodeAt(0) + 4));
+        
+        // TODO: Straight has an edge case where there's a 3K and possibly 2 2K between the first and last value https://i.imgur.com/pV8a4Rp.png
 
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
-        const counts = suits.reduce(this.count, {});
-        const duplicates = Object.values(counts).reduce(this.count, {});
+        const suitCounts = suits.reduce(this.count, {});
+        const suitDuplicates = Object.values(suitCounts).reduce(this.count, {});
 
-        this.rank = (duplicates[5] && 1) ||
+        const faceCounts = faces.reduce(this.count, {});
+        const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
+
+        this.rank = (faceDuplicates[5] && 1) ||
             (royal && straight && flush && 2) ||
             (straight && flush && 3) ||
-            (duplicates[4] && 4) ||
-            (duplicates[3] && duplicates[2] && 5) ||
+            (faceDuplicates[4] && 4) ||
+            (suitDuplicates[3] && suitDuplicates[2] && 5) ||
             (straight && 6) ||
             (flush && 7) ||
-            (duplicates[3] && 8) ||
-            (duplicates[2] > 1 && 9) ||
-            (duplicates[2] && 10) ||
+            (faceDuplicates[3] && 8) ||
+            (faceDuplicates[2] > 1 && 9) ||
+            (faceDuplicates[2] && 10) ||
             11;
     }
 

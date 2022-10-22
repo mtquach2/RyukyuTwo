@@ -49,14 +49,6 @@ GM.setup = function () {
 }
 
 GM.draw = function (w, h) {
-    timer.drawTimer(w, h);
-    game.timerTrigger();
-    timer.drawSeconds(w, h);
-
-    // Every 60 frames, decrement timer
-    if (p.frameCount % 60 == 0) {
-        timer.countDown();
-    }
     game.staticRender(w, h);
 }
 

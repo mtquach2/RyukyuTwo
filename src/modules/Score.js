@@ -26,10 +26,13 @@ export class Score {
     }
 
 
-    fillScoreTable(level) {
+    fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
         this.scoreTableValues = [...Object.values(this.ranks)];
-        this.clearPoint + 1000 * level;
+    }
+
+    setClearPoint(level, bonus) {
+        this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
     }
 
     render(w, h) {
@@ -86,5 +89,13 @@ export class Score {
     updateScore(rank) {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
+    }
+
+    getScore() {
+        return this.currentScore;
+    }
+
+    isWin() {
+        return this.currentScore >= this.clearPoint;
     }
 }
