@@ -74,8 +74,8 @@ export class Hand {
             (straight && flush && 3) ||
             (duplicates[4] && 4) ||
             (duplicates[3] && duplicates[2] && 5) ||
-            (flush && 6) ||
-            (straight && 7) ||
+            (straight && 6) ||
+            (flush && 7) ||
             (duplicates[3] && 8) ||
             (duplicates[2] > 1 && 9) ||
             (duplicates[2] && 10) ||
