@@ -38,7 +38,6 @@ export class Hand {
 
     evaluateHand(hand) {
         // Modified version of https://dev.to/miketalbot/real-world-javascript-map-reduce-solving-the-poker-hand-problem-3eie
-        const cardValues = "234567890JQKA";
         const value_format = {
             '02': 'M',
             '03': 'L',
@@ -67,9 +66,6 @@ export class Hand {
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
         const counts = suits.reduce(this.count, {});
         const duplicates = Object.values(counts).reduce(this.count, {});
-
-        console.log(counts);
-        console.log(duplicates);
 
         this.rank = (duplicates[5] && 1) ||
             (royal && straight && flush && 2) ||
