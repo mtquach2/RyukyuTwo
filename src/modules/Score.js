@@ -2,7 +2,6 @@ export class Score {
     constructor(p5) {
         this.p5 = p5
         this.currentScore = 0;
-        this.totalScore = 0;
         this.clearPoint = 6000; //each round +1000
         this.ranks = {
             '5K': 3000,

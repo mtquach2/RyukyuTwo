@@ -1,4 +1,8 @@
+import { Game } from './Game';
+import { game, s, t, b } from './GameManager';
 import { Hand } from './Hand';
+import { Player } from './Player';
+
 export class Board {
     constructor(p5, timer) {
         this.p = p5
@@ -17,6 +21,7 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+        this.play = new Player(this.p);
     }
 
     addCard(column, card) {
@@ -56,7 +61,7 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(w, h); //Says w and h are undefined???
+        this.renderCardsLeft(); //Says w and h are undefined???
     }
 
     renderBoardCards() {
@@ -112,14 +117,14 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft(w, h) {
+    renderCardsLeft() {
         this.p.stroke(255, 0, 0);
-        let width = w / 5;
-        let height = h / 2.25;
-        this.p.rect(w - w / 4.5, h / 25 + h / 3, width, height); //left room for bottom instructions box
+        let width = this.boardX * 3;
+        let height = this.boardY * 3;
+        this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, w - w / 4.6 + (i * width / 4), h / 2.5 + (x * height / 15), 50, 50);
+                this.p.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
             }
         }
     }
@@ -238,8 +243,6 @@ export class Board {
                 }
             }
         }
-
-
     }
 
     /**
@@ -250,5 +253,12 @@ export class Board {
         if (recentMoves.length > 3) {
             recentMoves.shift(); //removes first item from array
         }
+    }
+
+    boardIsFull() {
+        if (this.boardRows[0].isFull()) {
+            return true;
+        }
+        return false;
     }
 }

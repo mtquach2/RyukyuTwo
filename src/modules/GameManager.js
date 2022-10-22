@@ -3,6 +3,7 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
+import { Player } from './Player';
 
 export function getWindow() {
     let w = window,
@@ -57,4 +58,4 @@ GM.mouseClicked = function (x, y) {
     board.chooseCol(y, game.recentMoves);
 }
 
-export { game, GM };
+export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code

@@ -245,13 +245,13 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 	cancelDisplay(w, h) {
 		this.p5.stroke(255, 0, 0);
-		this.p5.rect(w - w / 4.5, h / 25, w / 5, h / 10);
+		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text("cancels left:", w - w / 5.5, h / 10);
+		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
+		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
 	}
 
 	/**
