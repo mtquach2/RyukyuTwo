@@ -26,9 +26,10 @@ export class Score {
     }
 
 
-    fillScoreTable() {
+    fillScoreTable(level) {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
         this.scoreTableValues = [...Object.values(this.ranks)];
+        this.clearPoint + 1000 * level;
     }
 
     render(w, h) {

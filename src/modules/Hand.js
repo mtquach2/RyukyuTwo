@@ -4,20 +4,19 @@ export class Hand {
     constructor() {
         this.hand = [];
         this.rank = -1;
-    }
-
-    rankTable = {
-        1: '5K',
-        2: 'RSF',
-        3: 'SF',
-        4: '4K',
-        5: 'FH',
-        6: 'ST',
-        7: 'FL',
-        8: '3K',
-        9: '2P',
-        10: '1P',
-        11: 'H',
+        this.rankTable = {
+            1: '5K',
+            2: 'RSF',
+            3: 'SF',
+            4: '4K',
+            5: 'FH',
+            6: 'ST',
+            7: 'FL',
+            8: '3K',
+            9: '2P',
+            10: '1P',
+            11: 'H',
+        };
     }
 
     addCard(card, index) {
@@ -66,8 +65,11 @@ export class Hand {
         const straight = faces[4] == String.fromCharCode((faces[0].charCodeAt(0) + 4));
 
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
-        const counts = faces.reduce(this.count, {});
+        const counts = suits.reduce(this.count, {});
         const duplicates = Object.values(counts).reduce(this.count, {});
+
+        console.log(counts);
+        console.log(duplicates);
 
         this.rank = (duplicates[5] && 1) ||
             (royal && straight && flush && 2) ||
