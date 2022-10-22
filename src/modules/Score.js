@@ -2,7 +2,6 @@ export class Score {
     constructor(p5) {
         this.p5 = p5
         this.currentScore = 0;
-        this.totalScore = 0;
         this.clearPoint = 6000; //each round +1000
         this.ranks = {
             '5K': 3000,
@@ -29,6 +28,10 @@ export class Score {
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
         this.scoreTableValues = [...Object.values(this.ranks)];
+    }
+
+    setClearPoint(level, bonus) {
+        this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
     }
 
     render(w, h) {
@@ -85,5 +88,13 @@ export class Score {
     updateScore(rank) {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
+    }
+
+    getScore() {
+        return this.currentScore;
+    }
+
+    isWin() {
+        return this.currentScore >= this.clearPoint;
     }
 }

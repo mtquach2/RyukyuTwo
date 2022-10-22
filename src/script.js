@@ -1,7 +1,5 @@
 import p5 from 'p5';
-import { GM } from './modules/GameManager';
-import { getWindow } from './modules/GameManager';
-import { game } from './modules/GameManager';
+import { GM, getWindow, game } from './modules/GameManager';
 
 const p = new p5(p => {
   p.preload = function preload() {
@@ -21,6 +19,6 @@ const p = new p5(p => {
   };
 
   p.mouseClicked = function mouseClicked() {
-      GM.mouseClicked(p.mouseX, p.mouseY);
+    GM.mouseClicked(p.mouseX, p.mouseY);
   };
 });

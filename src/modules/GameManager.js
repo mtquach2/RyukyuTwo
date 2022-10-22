@@ -3,6 +3,7 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
+import { Player } from './Player';
 
 export function getWindow() {
     let w = window,
@@ -15,53 +16,46 @@ export function getWindow() {
 }
 
 const GM = {
-    setup : () => {},
-    draw : () => {},
-    mouseClicked : (x, y)=>{}
+    setup: () => { },
+    draw: () => { },
+    mouseClicked: (x, y) => { }
 }
 
 const p = new p5(p => {
     p.setup = function setup() {
-      const windowSize = getWindow();
-      p.createCanvas(windowSize.w, windowSize.h);
-      GM.setup();
+        const windowSize = getWindow();
+        p.createCanvas(windowSize.w, windowSize.h);
+        GM.setup();
     };
-  
+
     p.draw = function () {
-      const windowSize = getWindow();
-      p.background(0);
-      GM.draw(windowSize.w, windowSize.h);
+        const windowSize = getWindow();
+        p.background(0);
+        GM.draw(windowSize.w, windowSize.h);
     };
-  
+
     p.mouseClicked = function mouseClicked() {
         GM.mouseClicked(p.mouseX, p.mouseY);
     };
-  });
+});
 
-let s = new Score(p);
-let t = new Timer(p);
-let b = new Board(p, t);
+let score = new Score(p);
+let timer = new Timer(p);
+let board = new Board(p, timer);
 
-const game = new Game(p, b, s, t);
+const game = new Game(p, board, score, timer);
 
-GM.setup = function(){
+GM.setup = function () {
     game.splitCards();
 }
 
-GM.draw = function(w, h){
-    t.drawTimer(w, h);
-    game.timerTrigger();
-    t.drawSeconds(w, h);
-
-    if (p.frameCount % 60 == 0) { //seems to be 60 fps?
-    //   t.countDown();
-    }
-    game.staticRender(w, h); 
+GM.draw = function (w, h) {
+    game.staticRender(w, h);
 }
 
-GM.mouseClicked = function(x, y){
+GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
-    b.chooseCol(y, game.recentMoves);
+    board.chooseCol(y, game.recentMoves);
 }
 
-export {game, GM};
+export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code

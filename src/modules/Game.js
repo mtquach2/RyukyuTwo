@@ -1,4 +1,6 @@
+import { Board } from './Board';
 import { Card } from './Card';
+import { Score } from './Score';
 
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
@@ -9,11 +11,14 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.level = 1;
+		this.state = 0;
+		this.bonus = 0;
 
 		this.deck = [];
 		this.mouseWasClicked = false;
 		this.displayMap = new Map();
-		this.x = 0;
+
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
 	}
@@ -29,8 +34,119 @@ export class Game { //TODO need a reset method and something to keep score of ro
 				this.deck.push(new Card(this.p5, `${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
+
 		this.board.loadCardsLeft();
 		this.score.fillScoreTable();
+	}
+
+	resetGame() {
+		this.board = new Board(this.p5, this.timer);
+		this.score = new Score(this.p5);
+
+		this.board.loadCardsLeft();
+		this.score.fillScoreTable();
+
+		if (this.state == 2) {
+			this.level++;
+		}
+		else {
+			this.level = 1;
+			this.bonus = 0;
+		}
+
+		console.log("NEW GAME");
+		console.log("Level to " + this.level + " with bonus " + this.bonus);
+		this.score.setClearPoint(this.level, this.bonus);
+		this.state = 1;
+	}
+
+	menu(width, height) {
+		// TODO: Implement main menu but better
+		this.p5.stroke(255, 255, 255);
+		this.p5.fill(255, 255, 255);
+		this.p5.rect(width/3, height/3, 400, 150);
+
+		this.p5.stroke(0, 0, 0);
+		this.p5.fill(0, 0, 0);
+		this.p5.textSize(64);
+		this.p5.text("CLICK TO PLAY GAME", width/3, height/3, 400, 150);
+
+		if (this.p5.mouseIsPressed) {
+			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 150) {
+				this.p5.textSize(20);
+				this.state = 1;
+			}
+		}
+	}
+
+	play(width, height) {
+		// Render game elements
+		this.renderLevel(width, height);
+		this.score.render(width, height);
+		this.board.render(this.displayMap, width, height);
+		this.board.initCards(this.displayMap, width, height);
+		this.board.displayCard(this.mouseWasClicked, width, height);
+		this.cancelDisplay(width, height);
+
+		this.timer.drawTimer(width, height);
+		this.timerTrigger();
+		this.timer.drawSeconds(width, height);
+	
+		// Every 60 frames, decrement timer
+		if (this.p5.frameCount % 60 == 0) {
+			this.timer.countDown();
+		}
+
+		// Update game state if needed
+		if (this.board.isBoardFull()) {
+			if (this.score.isWin()) {
+				console.log("Won with score " + this.score.getScore());
+				this.state = 2;
+			}
+			else {
+				// TODO: Add possibility of getting omikuji instead of straight to game over
+				this.state = 3;
+			}
+		}	
+	}
+
+	omikuji(width, height) {
+		// TODO: Implement omikuji selection an score update
+		this.p5.stroke(255, 255, 255);
+		this.p5.fill(255, 255, 255);
+		this.p5.rect(width/3, height/3, 400, 400);
+
+		this.p5.stroke(0, 0, 0);
+		this.p5.fill(0, 0, 0);
+		this.p5.textSize(64);
+		this.p5.text("OMIKUJI, CLICK FOR 1500 BONUS", width/3, height/3, 400, 400);
+
+		if (this.p5.mouseIsPressed) {
+			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 400) {
+				this.p5.textSize(20);
+				this.bonus = 1500;
+				this.resetGame();
+			}
+		}
+	}
+
+	gameOver(width, height) {
+		// TODO: Implement a game over screen
+		this.p5.stroke(255, 255, 255);
+		this.p5.fill(255, 255, 255);
+		this.p5.rect(width/3, height/3, 400, 400);
+
+		this.p5.stroke(0, 0, 0);
+		this.p5.fill(0, 0, 0);
+		this.p5.textSize(64);
+		this.p5.text("GAME OVER, CLICK TO RESET", width/3, height/3, 400, 400);
+
+		if (this.p5.mouseIsPressed) {
+			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 400) {
+				this.p5.textSize(20);
+				this.resetGame();
+			}
+		}
 	}
 
 	/**
@@ -38,12 +154,30 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 * Also, includes logic for selecting a card and column for game
 	 */
 	staticRender(width, height) {
-		this.score.render(width, height);
-		this.board.render(this.displayMap, width, height);
-		this.board.initCards(this.displayMap, width, height);
-		this.board.displayCard(this.mouseWasClicked, width, height);
-		// this.renderDivider( width, height);
-		this.cancelDisplay(width, height);
+		// State is 0, load main menu
+		if (this.state == 0) {
+			this.menu(width, height);
+		}
+		
+		// State is 1, play game
+		if (this.state == 1) {
+			this.play(width, height);
+		}
+
+		// State is 2, omikuji
+		if (this.state == 2) {
+			this.omikuji(width, height);
+		}
+
+		// State is 3, game over
+		if (this.state == 3) {
+			this.gameOver(width, height);
+		}
+	}
+
+	renderLevel(w, h) {
+		this.p5.stroke(255);
+		this.p5.text(`LVL ${this.level}`, w/3, h/8, 60, 60);
 	}
 
 	renderDivider(width, height) { //TODO fix 
@@ -111,13 +245,13 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 	cancelDisplay(w, h) {
 		this.p5.stroke(255, 0, 0);
-		this.p5.rect(w - w / 4.5, h / 25, w / 5, h / 10);
+		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text("cancels left:", w - w / 5.5, h / 10);
+		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
+		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
 	}
 
 	/**
