@@ -15,7 +15,7 @@ export function getWindow() {
     return { w: x, h: y };
 }
 
-let GM = {
+const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { }
@@ -23,13 +23,13 @@ let GM = {
 
 const p = new p5(p => {
     p.setup = function setup() {
-        let windowSize = getWindow();
+        const windowSize = getWindow();
         p.createCanvas(windowSize.w, windowSize.h);
         GM.setup();
     };
 
     p.draw = function () {
-        let windowSize = getWindow();
+        const windowSize = getWindow();
         p.background(0);
         GM.draw(windowSize.w, windowSize.h);
     };
@@ -39,39 +39,23 @@ const p = new p5(p => {
     };
 });
 
-let s = new Score(p);
-const t = new Timer(p);
-let b = new Board(p, t);
-const play = new Player(p);
-let game = new Game(p, b, s, t);
+let score = new Score(p);
+let timer = new Timer(p);
+let board = new Board(p, timer);
+
+const game = new Game(p, board, score, timer);
 
 GM.setup = function () {
     game.splitCards();
 }
 
 GM.draw = function (w, h) {
-    t.drawTimer(w, h);
-    game.timerTrigger();
-    t.drawSeconds(w, h);
-
-    if (p.frameCount % 60 == 0) { //seems to be 60 fps?
-        //   t.countDown();
-    }
     game.staticRender(w, h);
-    play.renderTotalScore(w, h);
-
-    if (b.boardIsFull()) {
-        play.updateLevel();
-        play.updateTotalScore();
-        s = new Score(p);
-        b = new Board(p, t);
-        game = new Game(p, b, s, t);
-    }
 }
 
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
-    b.chooseCol(y, game.recentMoves);
+    board.chooseCol(y, game.recentMoves);
 }
 
-export { game, s, t, b, play, GM }; //exporting for tests and one instance throughout code
+export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code
