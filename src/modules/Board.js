@@ -59,7 +59,7 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(w, h); //Says w and h are undefined???
+        this.renderCardsLeft(); //Says w and h are undefined???
     }
 
     renderBoardCards() {
@@ -115,14 +115,14 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft(w, h) {
+    renderCardsLeft() {
         this.p.stroke(255, 0, 0);
         let width = this.boardX * 3;
         let height = this.boardY * 3;
         this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, width - width / 4.75 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
+                this.p.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
             }
         }
     }

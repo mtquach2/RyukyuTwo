@@ -15,7 +15,7 @@ export function getWindow() {
     return { w: x, h: y };
 }
 
-const GM = {
+let GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { }
@@ -58,6 +58,7 @@ GM.draw = function (w, h) {
         //   t.countDown();
     }
     game.staticRender(w, h);
+    play.renderTotalScore(w, h);
 
     if (b.boardIsFull()) {
         play.updateLevel();
@@ -73,4 +74,4 @@ GM.mouseClicked = function (x, y) {
     b.chooseCol(y, game.recentMoves);
 }
 
-export { game, s, t, b, GM }; //exporting for tests and one instance throughout code
+export { game, s, t, b, play, GM }; //exporting for tests and one instance throughout code
