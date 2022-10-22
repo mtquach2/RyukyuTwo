@@ -1,4 +1,4 @@
-import { s } from './GameManager';
+import { score } from './GameManager';
 
 export class Player {
     constructor(p5) {
@@ -16,14 +16,14 @@ export class Player {
     }
 
     updateTotalScore() {
-        this.totalScore += s.currentScore;
+        this.totalScore += score.currentScore;
         console.log("TOTAL SCORE: " + this.totalScore);
     }
 
     updateLevel() {
         this.level += 1;
         console.log("LEVEL: " + this.level);
-        s.clearPoint += 1000;
-        console.log("CLEARPOINT: " + s.clearPoint);
+        score.clearPoint += 1000;
+        console.log("CLEARPOINT: " + score.clearPoint);
     }
 }

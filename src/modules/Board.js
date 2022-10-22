@@ -1,7 +1,4 @@
-import { Game } from './Game';
-import { game, s, t, b } from './GameManager';
 import { Hand } from './Hand';
-import { Player } from './Player';
 
 export class Board {
     constructor(p5, timer) {
@@ -253,12 +250,5 @@ export class Board {
         if (recentMoves.length > 3) {
             recentMoves.shift(); //removes first item from array
         }
-    }
-
-    boardIsFull() {
-        if (this.boardRows[0].isFull()) {
-            return true;
-        }
-        return false;
     }
 }
