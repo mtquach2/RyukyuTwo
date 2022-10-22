@@ -122,7 +122,7 @@ export class Board {
         this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2); //left room for bottom instructions box
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, width - width / 4.75 + (i * width / 20), width / 3.5 + (x * width / 35), 50, 50);
+                this.p.image(this.marker, width - width / 4.75 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
             }
         }
     }
