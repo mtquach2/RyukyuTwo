@@ -1,7 +1,10 @@
+import { score } from "./GameManager";
+
 export class Score {
     constructor(p5) {
         this.p5 = p5
         this.currentScore = 0;
+        this.totalScore = 0;
         this.clearPoint = 6000; //each round +1000
         this.ranks = {
             '5K': 3000,
@@ -40,6 +43,7 @@ export class Score {
 
         this.renderScore();
         this.renderScoreTable();
+        this.renderTotalScore();
     }
 
     renderScore() {
@@ -96,5 +100,19 @@ export class Score {
 
     isWin() {
         return this.currentScore >= this.clearPoint;
+    }
+
+    renderTotalScore() {
+        this.p5.stroke(0, 255, 0);
+        this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
+        this.p5.stroke(255);
+        this.p5.text("TOTAL SCORE:", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
+        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 10, this.scoreY / 9);
+    }
+
+    resetScore() {
+        this.currentScore = 0;
+        this.pointsMap = new Map();
+        this.fillScoreTable();
     }
 }

@@ -71,7 +71,7 @@ export class Hand {
             (royal && straight && flush && 2) ||
             (straight && flush && 3) ||
             (faceDuplicates[4] && 4) ||
-            (suitDuplicates[3] && suitDuplicates[2] && 5) ||
+            (faceDuplicates[3] && faceDuplicates[2] && 5) ||
             (straight && 6) ||
             (flush && 7) ||
             (faceDuplicates[3] && 8) ||
