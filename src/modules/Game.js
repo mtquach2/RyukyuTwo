@@ -1,7 +1,6 @@
 import { Board } from './Board';
 import { Card } from './Card';
-import { Score } from './Score';
-
+import { score } from './GameManager';
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
@@ -41,13 +40,12 @@ export class Game { //TODO need a reset method and something to keep score of ro
 
 	resetGame() {
 		this.board = new Board(this.p5, this.timer);
-		this.score = new Score(this.p5);
-
+		this.score.resetScore();
 		this.board.loadCardsLeft();
-		this.score.fillScoreTable();
 
 		if (this.state == 2) {
 			this.level++;
+			score.totalScore += score.currentScore;
 		}
 		else {
 			this.level = 1;
@@ -94,7 +92,7 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	
 		// Every 60 frames, decrement timer
 		if (this.p5.frameCount % 60 == 0) {
-			this.timer.countDown();
+			// this.timer.countDown();
 		}
 
 		// Update game state if needed

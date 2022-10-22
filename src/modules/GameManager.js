@@ -3,7 +3,6 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
-import { Player } from './Player';
 
 export function getWindow() {
     let w = window,

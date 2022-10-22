@@ -18,7 +18,6 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
-        this.play = new Player(this.p);
     }
 
     addCard(column, card) {
