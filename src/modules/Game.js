@@ -34,6 +34,7 @@ export class Game {
 		}
 
 		this.board.loadCardsLeft();
+		this.board.loadJPFont();
 		this.score.fillScoreTable();
 	}
 
@@ -50,6 +51,7 @@ export class Game {
 		this.board.render(this.displayMap, width, height);
 		this.board.initCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
+		this.board.renderInstructions(width, height);
 
 		this.cancelDisplay(width, height);
 
@@ -145,6 +147,7 @@ export class Game {
 
 	cancelDisplay(w, h) {
 		this.p5.stroke(255, 0, 0);
+		this.p5.noFill();
 		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
 		this.p5.stroke(255);
 		this.p5.textSize(20);

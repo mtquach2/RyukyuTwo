@@ -127,7 +127,6 @@ function gameOver(width, height) {
 
 GM.setup = function () {
     game.splitCards();
-    jpFont = p.loadFont("../../static/jackeyfont.ttf");
 }
 
 GM.draw = function (width, height) {

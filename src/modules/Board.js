@@ -18,6 +18,8 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+
+        this.jpFont;
     }
 
     addCard(column, card) {
@@ -117,7 +119,7 @@ export class Board {
         this.p.stroke(255, 0, 0);
         let width = this.boardX * 3;
         let height = this.boardY * 3;
-        this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2); //left room for bottom instructions box
+        this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
                 this.p.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
@@ -130,6 +132,10 @@ export class Board {
      */
     loadCardsLeft() {
         this.marker = this.p.loadImage('../../static/cards/card_back.png');
+    }
+
+    loadJPFont() {
+        this.jpFont = this.p.loadFont("../../static/jackeyfont.ttf");
     }
 
     /**
@@ -250,4 +256,23 @@ export class Board {
             recentMoves.shift(); //removes first item from array
         }
     }
+
+    renderInstructions(w, h) {
+        let instrX = this.boardX * 2 + this.boardX / 3;
+        let instrY = this.boardY / 10 + this.boardY + h/2
+
+		this.p.stroke(255, 0, 0);
+        this.p.rect(instrX, instrY, w/5, h/8);
+        this.p.textFont(this.jpFont, 32);
+        this.p.stroke(255, 255, 255);
+        this.p.fill(255, 255, 255);
+
+        if (!this.cardSelected || this.currentCard == null) {
+            this.p.text("カードを", instrX + 5, instrY + 5, w/5, h/8);
+        }
+        else {
+            this.p.text("ラインを", instrX + 5, instrY + 5, w/5, h/8);
+        }
+        this.p.text("選んでください。", instrX + 5, instrY + 40, w/5, h/8);
+	}
 }
