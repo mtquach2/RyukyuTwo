@@ -1,5 +1,3 @@
-import { score } from "./GameManager";
-
 export class Score {
     constructor(p5) {
         this.p5 = p5
@@ -92,6 +90,10 @@ export class Score {
     updateScore(rank) {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
+    }
+    
+    updateTotalScore() {
+        this.totalScore += this.currentScore;
     }
 
     getScore() {

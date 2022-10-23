@@ -44,12 +44,113 @@ let board = new Board(p, timer);
 
 const game = new Game(p, board, score, timer);
 
+function resetGame(state) {
+    board = new Board(p, timer);
+    let bonus = 0;
+
+    if (state == 2) {
+        game.level++;
+        score.updateTotalScore();
+        bonus = 1500;
+    }
+    else {
+        game.level = 1;
+    }
+
+    score.resetScore();
+
+    console.log("NEW GAME");
+    console.log("Level to " + game.level + " with bonus " + bonus);
+    score.setClearPoint(game.level, bonus);
+    board.loadCardsLeft();
+    game.board = board;
+    game.setState(1);
+}
+
+function menu(width, height) {
+    // TODO: Implement main menu but better
+    p.stroke(255, 255, 255);
+    p.fill(255, 255, 255);
+    p.rect(width/3, height/3, 400, 150);
+
+    p.stroke(0, 0, 0);
+    p.fill(0, 0, 0);
+    p.textSize(64);
+    p.text("CLICK TO PLAY GAME", width/3, height/3, 400, 150);
+
+    if (p.mouseIsPressed) {
+        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 150) {
+            p.textSize(20);
+            game.setState(1);
+        }
+    }
+}
+
+function omikuji(width, height) {
+    // TODO: Implement omikuji selection an score update
+    p.stroke(255, 255, 255);
+    p.fill(255, 255, 255);
+    p.rect(width/3, height/3, 400, 400);
+
+    p.stroke(0, 0, 0);
+    p.fill(0, 0, 0);
+    p.textSize(64);
+    p.text("OMIKUJI, CLICK FOR 1500 BONUS", width/3, height/3, 400, 400);
+
+    if (p.mouseIsPressed) {
+        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 400) {
+            p.textSize(20);
+            resetGame(2);
+        }
+    }
+}
+
+function gameOver(width, height) {
+    // TODO: Implement a game over screen
+    p.stroke(255, 255, 255);
+    p.fill(255, 255, 255);
+    p.rect(width/3, height/3, 400, 400);
+
+    p.stroke(0, 0, 0);
+    p.fill(0, 0, 0);
+    p.textSize(64);
+    p.text("GAME OVER, CLICK TO RESET", width/3, height/3, 400, 400);
+
+    if (p.mouseIsPressed) {
+        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 400) {
+            p.textSize(20);
+            resetGame(3);
+        }
+    }
+}
+
+
 GM.setup = function () {
     game.splitCards();
 }
 
-GM.draw = function (w, h) {
-    game.staticRender(w, h);
+GM.draw = function (width, height) {
+    const state = game.getState();
+
+    // State is 0, main menu
+    if (state == 0) {
+        menu(width, height);
+    }
+    
+    // State is 1, play game
+    if (state == 1) {
+        game.play(width, height);
+    }
+
+    // State is 2, omikuji
+    if (state == 2) {
+        omikuji(width, height);
+    }
+
+    // State is 3, game over
+    if (state == 3) {
+        gameOver(width, height);
+    }
 }
 
 GM.mouseClicked = function (x, y) {

@@ -4,7 +4,7 @@ import { score } from './GameManager';
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
-export class Game { //TODO need a reset method and something to keep score of rounds
+export class Game {
 	constructor(p5, board, score, timer) {
 		this.p5 = p5
 		this.board = board;
@@ -12,7 +12,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.timer = timer;
 		this.level = 1;
 		this.state = 0;
-		this.bonus = 0;
 
 		this.deck = [];
 		this.mouseWasClicked = false;
@@ -38,45 +37,10 @@ export class Game { //TODO need a reset method and something to keep score of ro
 		this.score.fillScoreTable();
 	}
 
-	resetGame() {
-		this.board = new Board(this.p5, this.timer);
-		this.score.resetScore();
-		this.board.loadCardsLeft();
-
-		if (this.state == 2) {
-			this.level++;
-			score.totalScore += score.currentScore;
-		}
-		else {
-			this.level = 1;
-			this.bonus = 0;
-		}
-
-		console.log("NEW GAME");
-		console.log("Level to " + this.level + " with bonus " + this.bonus);
-		this.score.setClearPoint(this.level, this.bonus);
-		this.state = 1;
-	}
-
-	menu(width, height) {
-		// TODO: Implement main menu but better
-		this.p5.stroke(255, 255, 255);
-		this.p5.fill(255, 255, 255);
-		this.p5.rect(width/3, height/3, 400, 150);
-
-		this.p5.stroke(0, 0, 0);
-		this.p5.fill(0, 0, 0);
-		this.p5.textSize(64);
-		this.p5.text("CLICK TO PLAY GAME", width/3, height/3, 400, 150);
-
-		if (this.p5.mouseIsPressed) {
-			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 150) {
-				this.p5.textSize(20);
-				this.state = 1;
-			}
-		}
-	}
-
+	/**
+	 * Displays the board and top display for the game
+	 * Also, includes logic for selecting a card and column for game
+	 */
 	play(width, height) {
 		// Render game elements
 		this.renderLevel(width, height);
@@ -106,71 +70,6 @@ export class Game { //TODO need a reset method and something to keep score of ro
 				this.state = 3;
 			}
 		}	
-	}
-
-	omikuji(width, height) {
-		// TODO: Implement omikuji selection an score update
-		this.p5.stroke(255, 255, 255);
-		this.p5.fill(255, 255, 255);
-		this.p5.rect(width/3, height/3, 400, 400);
-
-		this.p5.stroke(0, 0, 0);
-		this.p5.fill(0, 0, 0);
-		this.p5.textSize(64);
-		this.p5.text("OMIKUJI, CLICK FOR 1500 BONUS", width/3, height/3, 400, 400);
-
-		if (this.p5.mouseIsPressed) {
-			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 400) {
-				this.p5.textSize(20);
-				this.bonus = 1500;
-				this.resetGame();
-			}
-		}
-	}
-
-	gameOver(width, height) {
-		// TODO: Implement a game over screen
-		this.p5.stroke(255, 255, 255);
-		this.p5.fill(255, 255, 255);
-		this.p5.rect(width/3, height/3, 400, 400);
-
-		this.p5.stroke(0, 0, 0);
-		this.p5.fill(0, 0, 0);
-		this.p5.textSize(64);
-		this.p5.text("GAME OVER, CLICK TO RESET", width/3, height/3, 400, 400);
-
-		if (this.p5.mouseIsPressed) {
-			if (width/3 < this.p5.mouseX && this.p5.mouseX < width/3 + 400 && height/3 < this.p5.mouseY && this.p5.mouseY < height/3 + 400) {
-				this.p5.textSize(20);
-				this.resetGame();
-			}
-		}
-	}
-
-	/**
-	 * Displays the board and top display for the game
-	 * Also, includes logic for selecting a card and column for game
-	 */
-	staticRender(width, height) {
-		// State is 0, load main menu
-		if (this.state == 0) {
-			this.menu(width, height);
-		}
-		
-		// State is 1, play game
-		if (this.state == 1) {
-			this.play(width, height);
-		}
-
-		// State is 2, omikuji
-		if (this.state == 2) {
-			this.omikuji(width, height);
-		}
-
-		// State is 3, game over
-		if (this.state == 3) {
-			this.gameOver(width, height);
-		}
 	}
 
 	renderLevel(w, h) {
@@ -258,5 +157,13 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 */
 	getRank(rank) {
 		this.score.updateScore(rank);
+	}
+
+	getState() {
+		return this.state;
+	}
+
+	setState(state) {
+		this.state = state;
 	}
 };
