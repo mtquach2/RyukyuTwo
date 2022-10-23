@@ -44,15 +44,21 @@ export class Game {
 	play(width, height) {
 		// Render game elements
 		this.renderLevel(width, height);
+
 		this.score.render(width, height);
+
 		this.board.render(this.displayMap, width, height);
 		this.board.initCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
+		
+		this.renderInstructions(width, height);
+
 		this.cancelDisplay(width, height);
 
 		this.timer.drawTimer(width, height);
 		this.timerTrigger();
 		this.timer.drawSeconds(width, height);
+		
 	
 		// Every 60 frames, decrement timer
 		if (this.p5.frameCount % 60 == 0) {
@@ -138,6 +144,10 @@ export class Game {
 			}
 			this.timer.resetTimer();
 		}
+	}
+
+	renderInstructions(w, h) {
+		
 	}
 
 	cancelDisplay(w, h) {
