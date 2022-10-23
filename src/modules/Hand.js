@@ -56,13 +56,9 @@ export class Hand {
         // Flushes are 5 of the same suit, and straights are 5 sequential cards
         const royal = 'A' <= faces[0] && faces[0] <= 'D';
         const flush = suits[0] == suits[4];
-        
-        let straight = this.isStraight(faces);
+        const straight = this.isStraight(faces);
 
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
-        const suitCounts = suits.reduce(this.count, {});
-        const suitDuplicates = Object.values(suitCounts).reduce(this.count, {});
-
         const faceCounts = faces.reduce(this.count, {});
         const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
 
@@ -70,7 +66,7 @@ export class Hand {
             (royal && straight && flush && 2) ||
             (straight && flush && 3) ||
             (faceDuplicates[4] && 4) ||
-            (suitDuplicates[3] && suitDuplicates[2] && 5) ||
+            (faceDuplicates[3] && faceDuplicates[2] && 5) ||
             (straight && 6) ||
             (flush && 7) ||
             (faceDuplicates[3] && 8) ||
