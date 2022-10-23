@@ -12,13 +12,13 @@ const p = new p5(p => {
     GM.setup();
   };
 
-  p.draw = function () {
-    let windowSize = getWindow();
-    p.background(0);
-    GM.draw(windowSize.w, windowSize.h);
-  };
+  // p.draw = function () {
+  //   let windowSize = getWindow();
+  //   p.background(0);
+  //   GM.draw(windowSize.w, windowSize.h);
+  // };
 
-  p.mouseClicked = function mouseClicked() {
-    GM.mouseClicked(p.mouseX, p.mouseY);
-  };
+  // p.mouseClicked = function mouseClicked() {
+  //   GM.mouseClicked(p.mouseX, p.mouseY);
+  // };
 });
