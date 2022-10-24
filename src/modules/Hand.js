@@ -21,7 +21,6 @@ export class Hand {
         this.hand.push(card);
 
         if (this.hand.length == 5) {
-            console.log("Evaluating: ", this.hand);
             this.evaluateHand();
             score.updateScore(this.rankTable[this.rank]); //updates score right when hand is completed
         }
@@ -59,7 +58,7 @@ export class Hand {
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
         const faceCounts = faces.reduce(this.count, {});
         const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
-        
+
         this.rank = (faceDuplicates[5] && 1) ||
             (royal && straight && flush && 2) ||
             (straight && flush && 3) ||
