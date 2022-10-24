@@ -10,10 +10,11 @@ export class Timer {
    */
   drawTimer(w, h) {
     this.p5.stroke(255, 0, 0);
-    this.p5.rect(w - w / 4.5, h / 5, w/5, h/10);
+    this.p5.noFill();
+    this.p5.rect(w - w / 4.5, h / 5 + h / 30, w / 5, h/15);
     this.p5.stroke(255);
     this.p5.textSize(20);
-    this.p5.text("timer:", w - w / 6, h / 4);
+    this.p5.text("TIMER:", w - w / 6, h / 5 + h / 15);
   }
 
   /**
@@ -23,8 +24,7 @@ export class Timer {
   drawSeconds(w, h) {
     this.p5.stroke(255);
     this.p5.textSize(20);
-    this.p5.text(this.seconds, w - w / 10, h / 4);
-    console.log("Seconds left:", this.seconds);
+    this.p5.text(this.seconds, w - w / 15, h / 5 + h / 15);
     if(this.cardPlaced == true || this.seconds == 0){
       if(this.cardPlaced == true){
         console.log("Card has been placed");

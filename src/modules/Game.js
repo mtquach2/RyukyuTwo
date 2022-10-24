@@ -1,19 +1,20 @@
 import { Card } from './Card';
-
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
-export class Game { //TODO need a reset method and something to keep score of rounds
+export class Game {
 	constructor(p5, board, score, timer) {
 		this.p5 = p5
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.level = 1;
+		this.state = 0;
 
 		this.deck = [];
 		this.mouseWasClicked = false;
 		this.displayMap = new Map();
-		this.x = 0;
+
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
 	}
@@ -29,7 +30,9 @@ export class Game { //TODO need a reset method and something to keep score of ro
 				this.deck.push(new Card(this.p5, `${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
+
 		this.board.loadCardsLeft();
+		this.board.loadJPFont();
 		this.score.fillScoreTable();
 	}
 
@@ -37,13 +40,86 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	 * Displays the board and top display for the game
 	 * Also, includes logic for selecting a card and column for game
 	 */
-	staticRender(width, height) {
+	play(width, height) {
+		// Render game elements
+		this.renderLevel(width, height);
+
 		this.score.render(width, height);
+
 		this.board.render(this.displayMap, width, height);
 		this.board.initCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
-		// this.renderDivider( width, height);
+		this.board.renderInstructions(width, height);
+
 		this.cancelDisplay(width, height);
+
+		this.timer.drawTimer(width, height);
+		this.timerTrigger();
+		this.timer.drawSeconds(width, height);
+	
+		// Every 60 frames, decrement timer
+		if (this.p5.frameCount % 60 == 0) {
+			this.timer.countDown();
+		}
+
+		// Update game state if needed
+		if (this.board.isBoardFull()) {
+			if (this.score.isWin()) {
+				console.log("Won with score " + this.score.getScore());
+				this.state = 2;
+			}
+			else {
+				// TODO: Add possibility of getting omikuji instead of straight to game over
+				this.state = 3;
+			}
+		}	
+	}
+
+	intToKanji(number) {
+		let kanji = "";
+		
+		const hundreds = (number / 100) >= 1;
+		const tens = (number / 10) >= 1;
+
+		const kanji_table = {
+			1:"一",
+			2:"二",
+			3:"三",
+			4:"四",
+			5:"五",
+			6:"六",
+			7:"七",
+			8:"八",
+			9:"九",
+			10:"十",
+			100:"百"
+		};
+
+		// Hundreds
+		if (hundreds) {
+			const hundred = Math.floor(number / 100);
+			kanji += kanji_table[hundred] + kanji_table[100];
+		}
+
+		// Tens
+		if (tens) {
+			const ten = Math.floor(number / 10);
+			kanji += kanji_table[ten] + kanji_table[10];
+		}
+
+		// Ones
+		kanji += kanji_table[number % 10];
+
+		return kanji;
+	}
+
+	renderLevel(w, h) {
+		this.p5.stroke(255);
+		this.p5.rect(w/3, h/8, 60, 60);
+		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
+		this.p5.text(`${this.intToKanji(this.level)}`, w/3, h/8, 60, 60);
+		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+		this.p5.text(`面`, w/3, h/8, 60, 60);
 	}
 
 	renderDivider(width, height) { //TODO fix 
@@ -119,14 +195,16 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	}
 
 	cancelDisplay(w, h) {
+		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
 		this.p5.stroke(255, 0, 0);
-		this.p5.rect(w - w / 4.5, h / 25, w / 5, h / 10);
+		this.p5.noFill();
+		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text("cancels left:", w - w / 5.5, h / 10);
+		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
 		this.p5.stroke(255);
 		this.p5.textSize(20);
-		this.p5.text(this.cancelsLeft, w - w / 12, h / 10);
+		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
 	}
 
 	/**
@@ -136,4 +214,14 @@ export class Game { //TODO need a reset method and something to keep score of ro
 	getRank(rank) {
 		this.score.updateScore(rank);
 	}
+
+
+	getState() {
+		return this.state;
+	}
+
+	setState(state) {
+		this.state = state;
+	}
+
 };

@@ -1,4 +1,5 @@
 import { Hand } from './Hand';
+
 export class Board {
     constructor(p5, timer) {
         this.p = p5
@@ -17,24 +18,27 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+        this.jpFont;
         this.columnSelected = false;
     }
 
-    addCard(column, card) {
+    addCard(column, card, score) {
         if (card == null) {
             return;
         }
 
         if (!this.boardCols[column].isFull()) {
-            const row = this.boardCols[column].addCard(card);
-            this.boardRows[row].addCard(card);
+            const row = this.boardCols[column].addCard(card, score);
+            this.boardRows[row].addCard(card, score);
 
             // Major Diagonal
             if (row == column) {
-                this.boardDiag[0].addCard(card);
+                this.boardDiag[0].addCard(card, score);
             }
 
             // TODO: Test reverse diagonal
+            
+
         }
         else {
             return -1;
@@ -52,13 +56,15 @@ export class Board {
         for (let y = 2; y >= 0; y--) {
             this.yPositions[y] = this.boardY / 2 - 33 * y;
         }
+
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(w, h); //Says w and h are undefined???
+        this.renderCardsLeft(); //Says w and h are undefined???
     }
 
     renderBoardCards() {
+        this.p.textAlign(this.p.CENTER, this.p.CENTER);
         // Populates the card evaluation
         for (let i = 0; i < this.boardCols.length; i++) {
             let colHand = this.boardCols[i];
@@ -101,7 +107,7 @@ export class Board {
             }
         }
         for (let i = 0; i < 5; i++) {
-            this.p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
+            this.p.rect(this.boardX + (i + 1) * 65, this.yPositions[0] + 65, 65, 65); //1x5 array
         }
     }
 
@@ -111,14 +117,14 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft(w, h) {
+    renderCardsLeft() {
         this.p.stroke(255, 0, 0);
-        let width = w / 5;
-        let height = h / 2.25;
-        this.p.rect(w - w / 4.5, h / 25 + h / 3, width, height); //left room for bottom instructions box
+        let width = this.boardX * 3;
+        let height = this.boardY * 3;
+        this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, w - w / 4.6 + (i * width / 4), h / 2.5 + (x * height / 15), 50, 50);
+                this.p.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50, 50);
             }
         }
     }
@@ -128,6 +134,10 @@ export class Board {
      */
     loadCardsLeft() {
         this.marker = this.p.loadImage('../../static/cards/card_back.png');
+    }
+
+    loadJPFont() {
+        this.jpFont = this.p.loadFont("../../static/jackeyfont.ttf");
     }
 
     /**
@@ -155,6 +165,15 @@ export class Board {
         return index < 5 && this.boardCols[index].isFull(); //checks to see if column is full 
     }
 
+    isBoardFull() {
+        for (const col of this.boardCols) {
+            if (!col.isFull()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
@@ -179,7 +198,7 @@ export class Board {
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
-            this.currentCard.showImage(bounds, this.boardY - 65);
+            this.currentCard.showImage(bounds, this.yPositions[0] + 65);
         }
     }
 
@@ -187,8 +206,10 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param py mouse's y-axis 
      * @param recentMoves data structure that stores the last 3 recent moves
+     * @param score score object to update
      */
-    chooseCol(py, p, recentMoves) {
+
+    chooseCol(py, recentMoves, score) {
         this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
@@ -232,8 +253,6 @@ export class Board {
                 }
             }
         }
-
-
     }
 
     /**
@@ -245,4 +264,27 @@ export class Board {
             recentMoves.shift(); //removes first item from array
         }
     }
+
+
+    renderInstructions(w, h) {
+        let instrX = this.boardX * 2 + this.boardX / 3;
+        let instrY = this.boardY / 10 + this.boardY + h/2
+
+		this.p.stroke(255, 0, 0);
+        this.p.rect(instrX, instrY, w/5, h/8);
+        this.p.textFont(this.jpFont, 32);
+        this.p.stroke(255, 255, 255);
+        this.p.fill(255, 255, 255);
+
+        this.p.textAlign(this.p.LEFT, this.p.TOP);
+
+        if (!this.cardSelected || this.currentCard == null) {
+            this.p.text("カードを", instrX + 5, instrY + 5, w/5, h/8);
+        }
+        else {
+            this.p.text("ラインを", instrX + 5, instrY + 5, w/5, h/8);
+        }
+        this.p.text("選んでください。", instrX + 5, instrY + 40, w/5, h/8);
+	}
 }
+
