@@ -77,11 +77,9 @@ export class Game {
 
 	intToKanji(number) {
 		let kanji = "";
-		
-		const hundreds = (number / 100) >= 1;
-		const tens = (number / 10) >= 1;
 
 		const kanji_table = {
+			0:"",
 			1:"一",
 			2:"二",
 			3:"三",
@@ -96,19 +94,23 @@ export class Game {
 		};
 
 		// Hundreds
-		if (hundreds) {
+		if ((number / 100) >= 1) {
 			const hundred = Math.floor(number / 100);
-			kanji += kanji_table[hundred] + kanji_table[100];
+			kanji += (hundred != 1 ? kanji_table[hundred] : "") + kanji_table[100];
+
+			number = number % 100;
 		}
 
 		// Tens
-		if (tens) {
+		if ((number / 10) >= 1) {
 			const ten = Math.floor(number / 10);
-			kanji += kanji_table[ten] + kanji_table[10];
+			kanji += (ten != 1 ? kanji_table[ten] : "") + kanji_table[10];
+
+			number = number % 10;
 		}
 
 		// Ones
-		kanji += kanji_table[number % 10];
+		kanji += kanji_table[number];
 
 		return kanji;
 	}
