@@ -45,27 +45,19 @@ export class Score {
     }
 
     renderScore() {
-        // Outline of Score Box
         this.p5.noFill();
-        this.p5.stroke(255, 0, 0);
-        this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 4);
-
-        // Line for bottom of CLEAR POINT
-        this.p5.stroke(0, 0, 255);
-        this.p5.line(this.scoreX / 40, this.scoreY / 10, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 10);
-        this.p5.stroke(255, 255, 255);
-        this.p5.text("CLEAR POINT", this.scoreX / 10, this.scoreY / 15);
-
-        this.p5.text(this.clearPoint, this.scoreX / 10, this.scoreY / 7);
-        // TODO: Change clearPoint based on level
+        this.p5.stroke(0, 255, 0);
+        this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
+        this.p5.stroke(255);
+        this.p5.text("CLEAR POINT: ", this.scoreX / 15, this.scoreY / 15);
+        this.p5.text(this.clearPoint, this.scoreX / 10, this.scoreY / 15 + this.scoreY / 20);
 
         // Line for bounds of TOTAL
         this.p5.stroke(0, 255, 0);
-        this.p5.line(this.scoreX / 40, this.scoreY / 6, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 6);
-        this.p5.line(this.scoreX / 40, this.scoreY / 4.5, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 4.5);
-        this.p5.stroke(255, 255, 255);
-        this.p5.text("TOTAL", this.scoreX / 10, this.scoreY / 5);
-        this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 3.75);
+        this.p5.rect(this.scoreX / 40, this.scoreY / 10 + this.scoreY / 18, this.scoreX / 5, this.scoreY / 10);
+        this.p5.stroke(255);
+        this.p5.text("TOTAL:", this.scoreX / 11, this.scoreY / 10 + this.scoreY / 12);
+        this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 4.25);
     }
 
     renderScoreTable() {

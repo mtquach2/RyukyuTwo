@@ -78,8 +78,10 @@ export class Game {
 	}
 
 	renderLevel(w, h) {
+		this.p5.stroke(255, 0, 0);
+		this.p5.rect(w / 7.75 + w / 3, h/30, w/5, h/20);
 		this.p5.stroke(255);
-		this.p5.text(`LVL ${this.level}`, w/3, h/8, 60, 60);
+		this.p5.text(`LEVEL: \t${this.level}`, w/3 + w/5.5, h/20, 100, 100);
 	}
 
 	renderDivider(width, height) { //TODO fix 
