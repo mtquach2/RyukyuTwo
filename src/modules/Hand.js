@@ -1,5 +1,3 @@
-import { game } from './GameManager';
-
 export class Hand {
     constructor() {
         this.hand = [];
@@ -19,19 +17,18 @@ export class Hand {
         };
     }
 
-    addCard(card) {
+    addCard(card, score) {
         this.hand.push(card);
 
         if (this.hand.length == 5) {
-            console.log("Evaluating: ", this.hand);
-            this.evaluateHand(this.hand);
-            game.getRank(this.rankTable[this.rank]); //updates score right when hand is completed
+            this.evaluateHand();
+            score.updateScore(this.rankTable[this.rank]); //updates score right when hand is completed
         }
 
         return 5 - this.hand.length;
     }
 
-    evaluateHand(hand) {
+    evaluateHand() {
         // Modified version of https://dev.to/miketalbot/real-world-javascript-map-reduce-solving-the-poker-hand-problem-3eie
         const value_format = {
             '02': 'M',
@@ -50,8 +47,8 @@ export class Hand {
         }
 
         // Take the values of each card as a letter and sort them alphabetically (Highest values first) and sort the suits alphabetically
-        const faces = hand.map(card => value_format[card.getValue()]).sort();
-        const suits = hand.map(card => card.getSuit()).sort();
+        const faces = this.hand.map(card => value_format[card.getValue()]).sort();
+        const suits = this.hand.map(card => card.getSuit()).sort();
 
         // Flushes are 5 of the same suit, and straights are 5 sequential cards
         const royal = 'A' <= faces[0] && faces[0] <= 'D';

@@ -156,7 +156,7 @@ GM.draw = function (width, height) {
 
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
-    board.chooseCol(y, game.recentMoves);
+    board.chooseCol(y, game.recentMoves, score);
 }
 
 export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code

@@ -22,18 +22,18 @@ export class Board {
         this.jpFont;
     }
 
-    addCard(column, card) {
+    addCard(column, card, score) {
         if (card == null) {
             return;
         }
 
         if (!this.boardCols[column].isFull()) {
-            const row = this.boardCols[column].addCard(card);
-            this.boardRows[row].addCard(card);
+            const row = this.boardCols[column].addCard(card, score);
+            this.boardRows[row].addCard(card, score);
 
             // Major Diagonal
             if (row == column) {
-                this.boardDiag[0].addCard(card);
+                this.boardDiag[0].addCard(card, score);
             }
 
             // TODO: Test reverse diagonal
@@ -56,6 +56,7 @@ export class Board {
         for (let y = 2; y >= 0; y--) {
             this.yPositions[y] = this.boardY / 2 - 33 * y;
         }
+
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
@@ -63,6 +64,7 @@ export class Board {
     }
 
     renderBoardCards() {
+        this.p.textAlign(this.p.CENTER, this.p.CENTER);
         // Populates the card evaluation
         for (let i = 0; i < this.boardCols.length; i++) {
             let colHand = this.boardCols[i];
@@ -105,7 +107,7 @@ export class Board {
             }
         }
         for (let i = 0; i < 5; i++) {
-            this.p.rect(this.boardX + (i + 1) * 65, this.boardY - 65, 65, 65); //1x5 array
+            this.p.rect(this.boardX + (i + 1) * 65, this.yPositions[0] + 65, 65, 65); //1x5 array
         }
     }
 
@@ -196,7 +198,7 @@ export class Board {
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
-            this.currentCard.showImage(bounds, this.boardY - 65);
+            this.currentCard.showImage(bounds, this.yPositions[0] + 65);
         }
     }
 
@@ -204,8 +206,9 @@ export class Board {
      * Displays selected card into the clicked column 
      * @param py mouse's y-axis 
      * @param recentMoves data structure that stores the last 3 recent moves
+     * @param score score object to update
      */
-    chooseCol(py, recentMoves) {
+    chooseCol(py, recentMoves, score) {
         this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
@@ -216,7 +219,7 @@ export class Board {
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
                 if (this.timer.seconds != 0) {
-                    this.addCard(this.col, this.currentCard);
+                    this.addCard(this.col, this.currentCard, score);
                     recentMoves.push(this.currentCard);
                     this.movesUpdate(recentMoves);
                     this.cardPlaced = true;
@@ -266,6 +269,8 @@ export class Board {
         this.p.textFont(this.jpFont, 32);
         this.p.stroke(255, 255, 255);
         this.p.fill(255, 255, 255);
+
+        this.p.textAlign(this.p.LEFT, this.p.TOP);
 
         if (!this.cardSelected || this.currentCard == null) {
             this.p.text("カードを", instrX + 5, instrY + 5, w/5, h/8);

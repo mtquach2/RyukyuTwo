@@ -45,6 +45,7 @@ export class Score {
     }
 
     renderScore() {
+        this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.noFill();
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
@@ -61,6 +62,8 @@ export class Score {
     }
 
     renderScoreTable() {
+        this.p5.textAlign(this.p5.LEFT, this.p5.BASELINE);
+        
         // Outline of Score Table
         this.p5.stroke(255, 0, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
@@ -97,6 +100,7 @@ export class Score {
     }
 
     renderTotalScore() {
+        this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
         this.p5.stroke(255);
