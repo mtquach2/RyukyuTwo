@@ -63,6 +63,7 @@ function resetGame(state) {
     console.log("Level to " + game.level + " with bonus " + bonus);
     score.setClearPoint(game.level, bonus);
     board.loadCardsLeft();
+    board.loadJPFont();
     game.board = board;
     game.setState(1);
 }
