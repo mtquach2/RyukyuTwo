@@ -1,6 +1,4 @@
-import { Board } from './Board';
 import { Card } from './Card';
-import { score } from './GameManager';
 /**
  * Initializer class. Everything will get initialized/set up here before being put into main.ts
  */
@@ -77,11 +75,51 @@ export class Game {
 		}	
 	}
 
+	intToKanji(number) {
+		let kanji = "";
+		
+		const hundreds = (number / 100) >= 1;
+		const tens = (number / 10) >= 1;
+
+		const kanji_table = {
+			1:"一",
+			2:"二",
+			3:"三",
+			4:"四",
+			5:"五",
+			6:"六",
+			7:"七",
+			8:"八",
+			9:"九",
+			10:"十",
+			100:"百"
+		};
+
+		// Hundreds
+		if (hundreds) {
+			const hundred = Math.floor(number / 100);
+			kanji += kanji_table[hundred] + kanji_table[100];
+		}
+
+		// Tens
+		if (tens) {
+			const ten = Math.floor(number / 10);
+			kanji += kanji_table[ten] + kanji_table[10];
+		}
+
+		// Ones
+		kanji += kanji_table[number % 10];
+
+		return kanji;
+	}
+
 	renderLevel(w, h) {
-		this.p5.stroke(255, 0, 0);
-		this.p5.rect(w / 7.75 + w / 3, h/30, w/5, h/20);
 		this.p5.stroke(255);
-		this.p5.text(`LEVEL: \t${this.level}`, w/3 + w/5.5, h/20, 100, 100);
+		this.p5.rect(w/3, h/8, 60, 60);
+		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
+		this.p5.text(`${this.intToKanji(this.level)}`, w/3, h/8, 60, 60);
+		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+		this.p5.text(`面`, w/3, h/8, 60, 60);
 	}
 
 	renderDivider(width, height) { //TODO fix 
@@ -148,6 +186,7 @@ export class Game {
 	}
 
 	cancelDisplay(w, h) {
+		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
 		this.p5.stroke(255, 0, 0);
 		this.p5.noFill();
 		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
