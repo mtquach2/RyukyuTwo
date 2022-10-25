@@ -219,17 +219,20 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                console.log("COLUMN SELECTED");
-                this.columnSelected = true;
-                if (this.timer.seconds != 0) {
-                    this.addCard(this.col, this.currentCard, score);
-                    recentMoves.push(this.currentCard);
-                    this.movesUpdate(recentMoves);
-                    this.cardPlaced = true;
-                    this.currentCard = null;
-                    this.cardSelected = false;
-                    this.columnSelected = false;
+                if(!(this.currentCard == null)){ //to make sure that player isn't just clicking on the column
+                    console.log("COLUMN SELECTED");
+                    this.columnSelected = true;
+                    if (this.timer.seconds != 0) {
+                        this.addCard(this.col, this.currentCard, score);
+                        recentMoves.push(this.currentCard);
+                        this.movesUpdate(recentMoves);
+                        this.cardPlaced = true;
+                        this.currentCard = null;
+                        this.cardSelected = false;
+                        this.columnSelected = false;
+                    }
                 }
+
             }
             this.col = -1;
         }
