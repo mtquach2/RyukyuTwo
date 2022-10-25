@@ -20,7 +20,6 @@ export class Timer {
   /**
    * Draws a countdown timer indicating to the player how many seconds are remaining
    */
-
   drawSeconds(w, h) {
     this.p5.stroke(255);
     this.p5.textSize(20);

@@ -18,8 +18,9 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
-        this.jpFont;
         this.columnSelected = false;
+      
+        this.jpFont;
     }
 
     addCard(column, card, score) {
@@ -199,6 +200,7 @@ export class Board {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
             this.currentCard.showImage(bounds, this.yPositions[0] + 65);
+            this.cardSelected = true;
         }
     }
 
@@ -210,7 +212,6 @@ export class Board {
      */
 
     chooseCol(py, recentMoves, score) {
-        this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
@@ -219,18 +220,20 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                this.columnSelected = true;
-                if(this.timer.seconds != 0){
-                    console.log("SECONDS IN CHOOSECOL:", this.timer.seconds);
-                    this.addCard(this.col, this.currentCard);
-                    recentMoves.push(this.currentCard);
-                    console.log(recentMoves);
-                    this.movesUpdate(recentMoves);
-                    this.cardPlaced = true;
-                    this.currentCard = null; 
-                    this.cardSelected = false;
-                    this.columnSelected = false;
+                if(!(this.currentCard == null)){ //to make sure that player isn't just clicking on the column
+                    console.log("COLUMN SELECTED");
+                    this.columnSelected = true;
+                    if (this.timer.seconds != 0) {
+                        this.addCard(this.col, this.currentCard, score);
+                        recentMoves.push(this.currentCard);
+                        this.movesUpdate(recentMoves);
+                        this.cardPlaced = true;
+                        this.currentCard = null;
+                        this.cardSelected = false;
+                        this.columnSelected = false;
+                    }
                 }
+
             }
             this.col = -1;
         }
