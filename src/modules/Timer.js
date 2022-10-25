@@ -1,7 +1,7 @@
 export class Timer {
   constructor(p5) {
     this.p5 = p5
-    this.seconds = 5;
+    this.seconds = 60;
     this.cardPlaced = false;
   }
 
@@ -28,7 +28,7 @@ export class Timer {
       if(this.cardPlaced == true){
         console.log("Card has been placed");
       }
-      this.seconds = 5;
+      this.seconds = 60;
       this.cardPlaced = false;
     }
   }
