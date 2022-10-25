@@ -20,6 +20,13 @@ export class Board {
         this.cardSelected = false;
 
         this.jpFont;
+        this.reverseIndices = {
+            4: 0,
+            3: 1,
+            2: 2,
+            1: 3,
+            0: 4
+        };
     }
 
     addCard(column, card, score) {
@@ -36,9 +43,10 @@ export class Board {
                 this.boardDiag[0].addCard(card, score);
             }
 
-            // TODO: Test reverse diagonal
-            
-
+            // Reverse Diagonal
+            if (this.reverseIndices[column] == row) {
+                this.boardDiag[1].addCard(card, score);
+            }
         }
         else {
             return -1;
@@ -60,7 +68,7 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderTopDisplay(displayMap);
-        this.renderCardsLeft(); //Says w and h are undefined???
+        this.renderCardsLeft(w, h);
     }
 
     renderBoardCards() {
@@ -70,14 +78,24 @@ export class Board {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { // Display rank for hands (rows)
-                this.p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX + 10, this.boardY + (i + 1) * 65 + 10, 20, 20);
+                this.p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX, this.boardY + (i + 1) * 65 + 10, 40, 40);
             }
             if (colHand.rank != -1) { // Display rank for hands (columns)
-                this.p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 67.5 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 50, 20, 20);
+                this.p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 20, 40, 40);
             }
             for (let j = 0; j < this.boardRows.length; j++) {
                 colHand.showCard(j, this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65); //displays a card throughout each col starting from the bottom left square going up 
             }
+        }
+
+        let majorHand = this.boardDiag[0];
+        let reversehand = this.boardDiag[1];
+
+        if (majorHand.rank != -1) {
+            this.p.text(`${majorHand.rankTable[majorHand.rank]}`, this.boardX, this.boardY + 10, 40, 40); // Display rank for major diagonal
+        }
+        if (reversehand.rank != -1) {
+            this.p.text(`${reversehand.rankTable[reversehand.rank]}`, this.boardX, this.boardY + (this.boardRows.length + 1) * 65 + 20, 40, 40); // Display rank for reverse diagonal
         }
     }
 
@@ -86,13 +104,16 @@ export class Board {
         this.p.noFill();
         this.p.stroke(255, 0, 0);
         for (let i = 0; i < this.boardCols.length; i++) {
-            this.p.rect(this.boardX, this.boardY + (i + 1) * 65, 40, 40); // Rank box for rows
-            this.p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 40, 40, 40); // Rank box for cols
+            this.p.rect(this.boardX, this.boardY + (i + 1) * 65 + 10, 40, 40); // Rank box for rows
+            this.p.rect(this.boardX + (i + 1) * 65 + 10, this.boardY + (this.boardRows.length + 1) * 65 + 20, 40, 40); // Rank box for cols
 
             for (let j = 0; j < this.boardRows.length; j++) {
                 this.p.rect(this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, 65, 65); // Board
             }
         }
+        
+        this.p.rect(this.boardX, this.boardY + 10, 40, 40); // Rank box for major diagonal
+        this.p.rect(this.boardX, this.boardY + (this.boardRows.length + 1) * 65 + 20, 40, 40); // Rank box for reverse diagonal
     }
 
     /**
@@ -117,10 +138,10 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft() {
+    renderCardsLeft(w, h) {
         this.p.stroke(255, 0, 0);
-        let width = this.boardX * 3;
-        let height = this.boardY * 3;
+        let width = w * 3;
+        let height = h * 3;
         this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
