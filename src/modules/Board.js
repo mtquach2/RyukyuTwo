@@ -138,10 +138,8 @@ export class Board {
      * @param w window width
      * @param h window height
      */
-    renderCardsLeft(w, h) {
+    renderCardsLeft(width, height) {
         this.p.stroke(255, 0, 0);
-        let width = w * 3;
-        let height = h * 3;
         this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
