@@ -156,32 +156,34 @@ export class Game {
 	 */
 	timerTrigger() {
 		if(this.board.cardPlaced == true){
+			// don't need to update recentMoves here because cards is already pushed in chooseCol
+			//this.recentMoves.push(this.board.currentCard);
+			//console.log(this.recentMoves);
+			// this.board.movesUpdate(this.recentMovåes);
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
+			console.log("PLACED W/O TIMER END!")
 		}
-
-		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
-			for (let i = 0; i <= 5; i++) {
-				if (this.board.addCard(i, this.board.currentCard) != -1) {
-					console.log("CARD SELECTD BUT NOT COLUMN");
+		else if(this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
+			for(let i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard) != -1){
+					console.log("CARD SELECTED!");
 					this.recentMoves.push(this.board.currentCard);
 					console.log(this.recentMoves);
 					this.board.movesUpdate(this.recentMoves);
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
-					this.board.columnSelected = false;
-					break;
+					break; 
 				}
 			}
 			this.timer.resetTimer();
 		}
-
-		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
+		else if(this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0){
 			let firstCard = this.board.getFirstCard(this.displayMap);
-			for (let i = 0; i < 5; i++) {
-				if (firstCard != null) {
-					if (this.board.addCard(i, firstCard) != -1) {
-						console.log("CARD DROPPED FROM TOP DECK");
+			for(let i = 0; i < 5; i++){ 
+				if(firstCard != null){
+					if(this.board.addCard(i, firstCard) != -1){
+						console.log("AUTO DROP");
 						this.recentMoves.push(firstCard);
 						console.log(this.recentMoves);
 						this.board.movesUpdate(this.recentMoves);
