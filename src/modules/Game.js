@@ -159,23 +159,26 @@ export class Game {
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
+		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for (let i = 0; i <= 5; i++) {
 				if (this.board.addCard(i, this.board.currentCard) != -1) {
+					console.log("CARD SELECTD BUT NOT COLUMN");
 					this.recentMoves.push(this.board.currentCard);
 					this.board.movesUpdate(this.recentMoves);
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
+					this.board.columnSelected = false;
 					break;
 				}
 			}
 			this.timer.resetTimer();
 		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0) {
+		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
 			for (let i = 0; i < 5; i++) {
 				if (firstCard != null) {
 					if (this.board.addCard(i, firstCard) != -1) {
+						console.log("CARD DROPPED FROM TOP DECK");
 						this.recentMoves.push(firstCard);
 						this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;

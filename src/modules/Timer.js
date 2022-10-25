@@ -1,7 +1,7 @@
 export class Timer {
   constructor(p5) {
     this.p5 = p5
-    this.seconds = 60;
+    this.seconds = 5;
     this.cardPlaced = false;
   }
 
@@ -20,7 +20,6 @@ export class Timer {
   /**
    * Draws a countdown timer indicating to the player how many seconds are remaining
    */
-
   drawSeconds(w, h) {
     this.p5.stroke(255);
     this.p5.textSize(20);
@@ -29,7 +28,7 @@ export class Timer {
       if(this.cardPlaced == true){
         console.log("Card has been placed");
       }
-      this.seconds = 60;
+      this.seconds = 5;
       this.cardPlaced = false;
     }
   }
