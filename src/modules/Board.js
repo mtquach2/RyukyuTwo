@@ -19,7 +19,7 @@ export class Board {
         this.cardPlaced = false;
         this.cardSelected = false;
         this.columnSelected = false;
-
+      
         this.jpFont;
     }
 
@@ -210,10 +210,11 @@ export class Board {
      * @param recentMoves data structure that stores the last 3 recent moves
      * @param score score object to update
      */
+
     chooseCol(py, recentMoves, score) {
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
-                if (this.p.mouseX >= this.boardX + (col + 1) * 65 && this.p.mouseX < this.boardX + (col + 2) * 65) {
+                if (p.mouseX >= this.boardX + (col + 1) * 65 && p.mouseX < this.boardX + (col + 2) * 65) {
                     this.col = col;
                     break;
                 }
@@ -267,6 +268,7 @@ export class Board {
         }
     }
 
+
     renderInstructions(w, h) {
         let instrX = this.boardX * 2 + this.boardX / 3;
         let instrY = this.boardY / 10 + this.boardY + h/2
@@ -288,3 +290,4 @@ export class Board {
         this.p.text("選んでください。", instrX + 5, instrY + 40, w/5, h/8);
 	}
 }
+

@@ -154,16 +154,18 @@ export class Game {
 	/**
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
-	timerTrigger() { //TODO clean up 
-		if (this.board.cardPlaced == true) {
+	timerTrigger() {
+		if(this.board.cardPlaced == true){
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
+
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for (let i = 0; i <= 5; i++) {
 				if (this.board.addCard(i, this.board.currentCard) != -1) {
 					console.log("CARD SELECTD BUT NOT COLUMN");
 					this.recentMoves.push(this.board.currentCard);
+					console.log(this.recentMoves);
 					this.board.movesUpdate(this.recentMoves);
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
@@ -173,6 +175,7 @@ export class Game {
 			}
 			this.timer.resetTimer();
 		}
+
 		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
 			for (let i = 0; i < 5; i++) {
@@ -180,6 +183,7 @@ export class Game {
 					if (this.board.addCard(i, firstCard) != -1) {
 						console.log("CARD DROPPED FROM TOP DECK");
 						this.recentMoves.push(firstCard);
+						console.log(this.recentMoves);
 						this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
@@ -211,6 +215,7 @@ export class Game {
 		this.score.updateScore(rank);
 	}
 
+
 	getState() {
 		return this.state;
 	}
@@ -218,4 +223,5 @@ export class Game {
 	setState(state) {
 		this.state = state;
 	}
+
 };
