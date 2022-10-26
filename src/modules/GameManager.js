@@ -51,13 +51,8 @@ function resetGame(state) {
     board = new Board(p, timer);
     let bonus = 0;
 
-    if (state == 2) {
-        game.level++;
-        score.updateTotalScore();
+    if (state == 3) {
         bonus = 1500;
-    }
-    else {
-        game.level = 1;
     }
 
     score.resetScore();
@@ -104,7 +99,7 @@ function omikuji(width, height) {
     if (p.mouseIsPressed) {
         if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
             p.textSize(20);
-            resetGame(2);
+            resetGame(3);
         }
     }
 }
@@ -123,7 +118,7 @@ function gameOver(width, height) {
     if (p.mouseIsPressed) {
         if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
             p.textSize(20);
-            resetGame(3);
+            resetGame(4);
         }
     }
 }
@@ -146,13 +141,19 @@ function cont(width, height) {
         //game over if no button pressed
         if ((width / 2 + width / 10) < p.mouseX && p.mouseX < (width / 2 + width / 10) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
             console.log("No Button");
-            game.setState(3); 
+            game.setState(4); 
         }
         if ((width / 3 - width / 25) < p.mouseX && p.mouseX < (width / 3 - width / 25) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
             console.log("Yes Button");
-            game.setState(2);
+            game.setState(3);
         }
     }
+}
+
+function win() {
+    game.level++;
+    score.updateTotalScore();
+    resetGame(5);
 }
 
 GM.setup = function () {
@@ -175,19 +176,24 @@ GM.draw = function (width, height) {
         game.play(width, height, scaleX, scaleY);
     }
 
-    // State is 2, omikuji
+    // State is 2, continue?
     if (state == 2) {
+        cont(width, height)
+    }
+
+    // State is 3, omikuji
+    if (state == 3) {
         omikuji(width, height);
     }
 
-    // State is 3, game over
-    if (state == 3) {
+    // State is 4, game over
+    if (state == 4) {
         gameOver(width, height);
     }
 
-    // State is 4, continue? 
-    if (state == 4) {
-        cont(width, height);
+    //State is 5, winner!
+    if (state == 5) {
+        win();
     }
 }
 

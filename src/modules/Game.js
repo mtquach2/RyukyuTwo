@@ -66,11 +66,11 @@ export class Game {
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
 				console.log("Won with score " + this.score.getScore());
-				this.state = 2;
+				this.state = 5;
 			}
 			else {
 				// TODO: Add possibility of getting omikuji instead of straight to game over
-				this.state = 4;
+				this.state = 2;
 			}
 		}
 	}
