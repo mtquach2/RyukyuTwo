@@ -111,7 +111,7 @@ export class Board {
                 this.p.rect(this.boardX + (i + 1) * 65, this.boardY + (j + 1) * 65, 65, 65); // Board
             }
         }
-        
+
         this.p.rect(this.boardX, this.boardY + 10, 40, 40); // Rank box for major diagonal
         this.p.rect(this.boardX, this.boardY + (this.boardRows.length + 1) * 65 + 20, 40, 40); // Rank box for reverse diagonal
     }
@@ -281,10 +281,10 @@ export class Board {
 
     renderInstructions(w, h) {
         let instrX = this.boardX * 2 + this.boardX / 3;
-        let instrY = this.boardY / 10 + this.boardY + h/2
+        let instrY = this.boardY / 10 + this.boardY + h / 2
 
-		this.p.stroke(255, 0, 0);
-        this.p.rect(instrX, instrY, w/5, h/8);
+        this.p.stroke(255, 0, 0);
+        this.p.rect(instrX, instrY, w / 5, h / 8);
         this.p.textFont(this.jpFont, 32);
         this.p.stroke(255, 255, 255);
         this.p.fill(255, 255, 255);
@@ -292,11 +292,11 @@ export class Board {
         this.p.textAlign(this.p.LEFT, this.p.TOP);
 
         if (!this.cardSelected || this.currentCard == null) {
-            this.p.text("カードを", instrX + 5, instrY + 5, w/5, h/8);
+            this.p.text("カードを", instrX + 5, instrY + 5, w / 5, h / 8);
         }
         else {
-            this.p.text("ラインを", instrX + 5, instrY + 5, w/5, h/8);
+            this.p.text("ラインを", instrX + 5, instrY + 5, w / 5, h / 8);
         }
-        this.p.text("選んでください。", instrX + 5, instrY + 40, w/5, h/8);
-	}
+        this.p.text("選んでください。", instrX + 5, instrY + 40, w / 5, h / 8);
+    }
 }

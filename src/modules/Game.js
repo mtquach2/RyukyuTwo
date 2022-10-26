@@ -56,7 +56,7 @@ export class Game {
 		this.timer.drawTimer(width, height);
 		this.timerTrigger();
 		this.timer.drawSeconds(width, height);
-	
+
 		// Every 60 frames, decrement timer
 		if (this.p5.frameCount % 60 == 0) {
 			this.timer.countDown();
@@ -72,25 +72,25 @@ export class Game {
 				// TODO: Add possibility of getting omikuji instead of straight to game over
 				this.state = 3;
 			}
-		}	
+		}
 	}
 
 	intToKanji(number) {
 		let kanji = "";
 
 		const kanji_table = {
-			0:"",
-			1:"一",
-			2:"二",
-			3:"三",
-			4:"四",
-			5:"五",
-			6:"六",
-			7:"七",
-			8:"八",
-			9:"九",
-			10:"十",
-			100:"百"
+			0: "",
+			1: "一",
+			2: "二",
+			3: "三",
+			4: "四",
+			5: "五",
+			6: "六",
+			7: "七",
+			8: "八",
+			9: "九",
+			10: "十",
+			100: "百"
 		};
 
 		// Hundreds
@@ -117,11 +117,11 @@ export class Game {
 
 	renderLevel(w, h) {
 		this.p5.stroke(255);
-		this.p5.rect(w/3, h/8, 60, 60);
+		this.p5.rect(w / 3, h / 8, 60, 60);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
-		this.p5.text(`${this.intToKanji(this.level)}`, w/3, h/8, 60, 60);
+		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 60, 60);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w/3, h/8, 60, 60);
+		this.p5.text(`面`, w / 3, h / 8, 60, 60);
 	}
 
 	renderDivider(width, height) { //TODO fix 

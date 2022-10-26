@@ -63,7 +63,7 @@ export class Score {
 
     renderScoreTable() {
         this.p5.textAlign(this.p5.LEFT, this.p5.BASELINE);
-        
+
         // Outline of Score Table
         this.p5.stroke(255, 0, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
@@ -86,7 +86,7 @@ export class Score {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
     }
-    
+
     updateTotalScore() {
         this.totalScore += this.currentScore;
     }
