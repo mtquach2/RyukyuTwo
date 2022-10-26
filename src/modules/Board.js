@@ -2,7 +2,7 @@ import { Hand } from './Hand';
 
 export class Board {
     constructor(p5, timer) {
-        this.p = p5
+        this.p5 = p5
         this.counts = [12, 12, 12, 12];
         this.currentCard;
         this.col = 0;
@@ -77,16 +77,16 @@ export class Board {
     }
 
     renderBoardCards() {
-        this.p.textAlign(this.p.CENTER, this.p.CENTER);
+        this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         // Populates the card evaluation
         for (let i = 0; i < this.boardCols.length; i++) {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
             if (rowHand.rank != -1) { // Display rank for hands (rows)
-                this.p.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
+                this.p5.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
             }
             if (colHand.rank != -1) { // Display rank for hands (columns)
-                this.p.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
+                this.p5.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
             }
             for (let j = 0; j < this.boardRows.length; j++) {
                 colHand.showCard(j, this.boardX + (i + 1) * 65 * this.scaleX, this.boardY + (j + 1) * 65 * this.scaleY, this.scaleX, this.scaleY); //displays a card throughout each col starting from the bottom left square going up 
@@ -97,43 +97,45 @@ export class Board {
         let reversehand = this.boardDiag[1];
 
         if (majorHand.rank != -1) {
-            this.p.text(`${majorHand.rankTable[majorHand.rank]}`, this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for major diagonal
+            this.p5.text(`${majorHand.rankTable[majorHand.rank]}`, this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for major diagonal
         }
         if (reversehand.rank != -1) {
-            this.p.text(`${reversehand.rankTable[reversehand.rank]}`, this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for reverse diagonal
+            this.p5.text(`${reversehand.rankTable[reversehand.rank]}`, this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for reverse diagonal
         }
     }
 
     renderBoard() {
         // Draws the board outlines
-        this.p.noFill();
-        this.p.stroke(255, 0, 0);
+        this.p5.strokeWeight(3);
+        this.p5.noFill();
+        this.p5.stroke(255, 0, 0);
         for (let i = 0; i < this.boardCols.length; i++) {
-            this.p.rect(this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for rows
-            this.p.rect(this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for cols
+            this.p5.rect(this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for rows
+            this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for cols
 
             for (let j = 0; j < this.boardRows.length; j++) {
-                this.p.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.boardY + (j + 1) * 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); // Board
+                this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.boardY + (j + 1) * 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); // Board
             }
         }
 
-        this.p.rect(this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for major diagonal
-        this.p.rect(this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for reverse diagonal
+        this.p5.rect(this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for major diagonal
+        this.p5.rect(this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for reverse diagonal
     }
 
     /**
      * Creates a 1x4 array/rectangle and displays cards to use for game
      */
     renderTopDisplay() {
-        this.p.noFill();
-        this.p.stroke(0, 0, 255);
+        this.p5.strokeWeight(3);
+        this.p5.noFill();
+        this.p5.stroke(0, 0, 255);
         for (let i = 0; i < 4; i++) {
             for (let y = 0; y < 3; y++) {
-                this.p.rect(this.boardX + (i + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[y], 65 * this.scaleX, 65 * this.scaleY); //top display
+                this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[y], 65 * this.scaleX, 65 * this.scaleY); //top display
             }
         }
         for (let i = 0; i < 5; i++) {
-            this.p.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); //1x5 array
+            this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); //1x5 array
         }
     }
 
@@ -144,11 +146,11 @@ export class Board {
      * @param h window height
      */
     renderCardsLeft(width, height) {
-        this.p.stroke(255, 0, 0);
-        this.p.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
+        this.p5.stroke(255, 0, 0);
+        this.p5.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
+                this.p5.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
             }
         }
     }
@@ -157,11 +159,11 @@ export class Board {
      * Used to load card back image for cards left part
      */
     loadCardsLeft() {
-        this.marker = this.p.loadImage('../../static/cards/card_back.png');
+        this.marker = this.p5.loadImage('../../static/cards/card_back.png');
     }
 
     loadJPFont() {
-        this.jpFont = this.p.loadFont("../../static/jackeyfont.ttf");
+        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
     }
 
     /**
@@ -221,7 +223,7 @@ export class Board {
      */
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
-            let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65 * this.scaleX, this.boardX + 65 * 5 * this.scaleX);
+            let bounds = this.p5.constrain(this.p5.mouseX, this.boardX + 65 * this.scaleX, this.boardX + 65 * 5 * this.scaleX);
             this.currentCard.showImage(bounds, this.yPositions[0] + 65 * this.scaleY, this.scaleX, this.scaleY);
         }
     }
@@ -236,7 +238,7 @@ export class Board {
         this.cardSelected = true;
         if (py >= this.boardY - 65 * this.scaleY && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
-                if (this.p.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
+                if (this.p5.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
                     this.col = col;
                     break;
                 }
@@ -288,20 +290,22 @@ export class Board {
         let instrX = this.boardX * 2 + this.boardX / 3;
         let instrY = this.boardY / 10 + this.boardY + h / 2
 
-        this.p.stroke(255, 0, 0);
-        this.p.rect(instrX, instrY, w / 5, h / 8);
-        this.p.textFont(this.jpFont, 32 * Math.min(this.scaleX, this.scaleY));
-        this.p.stroke(255, 255, 255);
-        this.p.fill(255, 255, 255);
+        this.p5.strokeWeight(3);
+        this.p5.stroke(255, 0, 0);
+        this.p5.rect(instrX, instrY, w / 5, h / 8);
+        this.p5.strokeWeight(1);
+        this.p5.textFont(this.jpFont, 32 * Math.min(this.scaleX, this.scaleY));
+        this.p5.stroke(255, 255, 255);
+        this.p5.fill(255, 255, 255);
 
-        this.p.textAlign(this.p.LEFT, this.p.TOP);
+        this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
 
         if (!this.cardSelected || this.currentCard == null) {
-            this.p.text("カードを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("カードを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
         }
         else {
-            this.p.text("ラインを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("ラインを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
         }
-        this.p.text("選んでください。", instrX + 5 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
+        this.p5.text("選んでください。", instrX + 5 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
     }
 }

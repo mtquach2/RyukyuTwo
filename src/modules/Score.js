@@ -3,7 +3,7 @@ export class Score {
         this.p5 = p5
         this.currentScore = 0;
         this.totalScore = 0;
-        this.clearPoint = 6000; //each round +1000
+        this.clearPoint = 0;
         this.ranks = {
             '5K': 3000,
             'RSF': 2800,
@@ -17,7 +17,6 @@ export class Score {
             '1P': 200,
             'H': 0,
         }
-
 
         this.scaleX = 1;
         this.scaleY = 1;
@@ -51,18 +50,30 @@ export class Score {
     }
 
     renderScore() {
+        // Box for Clear Point
+        this.p5.strokeWeight(3);
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.noFill();
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
-        this.p5.stroke(255);
+
+        this.p5.strokeWeight(1);
+        this.p5.stroke(255, 255, 255);
+        this.p5.fill(255, 255, 255);
+        this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
         this.p5.text("CLEAR POINT: ", this.scoreX / 15, this.scoreY / 15);
         this.p5.text(this.clearPoint, this.scoreX / 10, this.scoreY / 15 + this.scoreY / 20);
 
-        // Line for bounds of TOTAL
+        // Box for Total
+        this.p5.strokeWeight(3);
+        this.p5.noFill();
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 10 + this.scoreY / 18, this.scoreX / 5, this.scoreY / 10);
-        this.p5.stroke(255);
+        
+        this.p5.strokeWeight(1);
+        this.p5.stroke(255, 255, 255);
+        this.p5.fill(255, 255, 255);
+        this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
         this.p5.text("TOTAL:", this.scoreX / 11, this.scoreY / 10 + this.scoreY / 12);
         this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 4.25);
     }
@@ -71,12 +82,16 @@ export class Score {
         this.p5.textAlign(this.p5.LEFT, this.p5.BASELINE);
 
         // Outline of Score Table
+        this.p5.strokeWeight(3);
+        this.p5.noFill();
         this.p5.stroke(255, 0, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
         this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
 
         // Populate text of Score Table
+        this.p5.strokeWeight(1);
         this.p5.stroke(255, 255, 255);
+        this.p5.fill(255, 255, 255);
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
@@ -110,9 +125,14 @@ export class Score {
 
     renderTotalScore() {
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
+        this.p5.strokeWeight(3);
+        this.p5.noFill();
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
-        this.p5.stroke(255);
+
+        this.p5.strokeWeight(1);
+        this.p5.stroke(255, 255, 255);
+        this.p5.fill(255, 255, 255);
         this.p5.text("TOTAL SCORE:", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
         this.p5.text(this.totalScore, this.scoreX - this.scoreX / 10, this.scoreY / 9);
     }

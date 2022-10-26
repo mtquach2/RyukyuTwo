@@ -3,6 +3,7 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
+import { Omikuji } from './Omikuji';
 
 export function getWindow() {
     let w = window,
@@ -44,26 +45,30 @@ const p = new p5(p => {
 let score = new Score(p);
 let timer = new Timer(p);
 let board = new Board(p, timer);
+let state = 0;
 
 const game = new Game(p, board, score, timer);
+const omikuji = new Omikuji(p, score);
 
-function resetGame(state) {
+function resetGame(currentState) {
+    console.log("NEW GAME");
+
     board = new Board(p, timer);
-    let bonus = 0;
+    score.resetScore();
 
-    if (state == 3) {
+    if (currentState == 3) {
         bonus = 1500;
     }
 
     score.resetScore();
+    score.setClearPoint(1, 0);
 
-    console.log("NEW GAME");
-    console.log("Level to " + game.level + " with bonus " + bonus);
-    score.setClearPoint(game.level, bonus);
+
     board.loadCardsLeft();
     board.loadJPFont();
     game.board = board;
-    game.setState(1);
+
+    state = 1;
 }
 
 function menu(width, height) {
@@ -175,8 +180,8 @@ GM.setup = function () {
 GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
-    
-    const state = game.getState();
+
+    console.log("STATE: " + state);
 
     // State is 0, main menu
     if (state == 0) {
@@ -185,28 +190,32 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        game.play(width, height, scaleX, scaleY);
+        console.log("State 1");
+        state = game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, continue?
     if (state == 2) {
-        cont(width, height)
+        console.log("State 2");
+        cont(width, height);
     }
 
     // State is 3, omikuji
     if (state == 3) {
-        omikuji(width, height);
+        console.log("State 3");
+        state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
     }
 
     // State is 4, game over
     if (state == 4) {
+        console.log("State 4");
         gameOver(width, height);
     }
 
     //State is 5, winner!
     if (state == 5) {
+        console.log("State 5");
         win();
-    }
 }
 
 GM.mouseClicked = function (x, y) {
