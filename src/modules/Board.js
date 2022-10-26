@@ -222,7 +222,7 @@ export class Board {
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65 * this.scaleX, this.boardX + 65 * 5 * this.scaleX);
-            this.currentCard.showImage(bounds, this.yPositions[0] + 65, this.scaleX, this.scaleY);
+            this.currentCard.showImage(bounds, this.yPositions[0] + 65 * this.scaleY, this.scaleX, this.scaleY);
         }
     }
 
@@ -234,7 +234,7 @@ export class Board {
      */
     chooseCol(py, recentMoves, score) {
         this.cardSelected = true;
-        if (py >= this.boardY - 65 && py < this.boardY) {
+        if (py >= this.boardY - 65 * this.scaleY && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (this.p.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
                     this.col = col;
