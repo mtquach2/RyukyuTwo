@@ -79,8 +79,10 @@ function menu(width, height) {
 }
 
 function menuState(width, height, x, y) {
+    // Function for p5 mouseClicked and menu()
     if (game.getState() == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
+            // If button is cicked, new game
             p.textSize(20);
             resetGame(1);
         }
@@ -118,6 +120,17 @@ function gameOver(width, height) {
     p.text("GAME OVER, CLICK TO MENU", width / 3, height / 3, 400, 400);
 }
 
+function gameOverState(width, height, x, y) {
+    // Function for P5 mouseClicked and gameOver()
+    if (game.getState() == 4) {
+        if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
+            // Goes to main menu if button is clicked
+            p.textSize(20);
+            game.setState(0);
+        }
+    }
+}
+
 function cont(width, height) {
     // Render Continue? screen after lost game 
     p.stroke(255, 0, 0);
@@ -144,15 +157,6 @@ function contStates(width, height, x, y) {
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
             game.setState(3);
-        }
-    }
-}
-
-function gameOverState(width, height, x, y) {
-    if (game.getState() == 4) {
-        if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
-            p.textSize(20);
-            game.setState(0);
         }
     }
 }
