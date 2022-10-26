@@ -59,7 +59,7 @@ export class Game {
 
 		// Every 60 frames, decrement timer
 		if (this.p5.frameCount % 60 == 0) {
-			// this.timer.countDown();
+			this.timer.countDown();
 		}
 
 		// Update game state if needed

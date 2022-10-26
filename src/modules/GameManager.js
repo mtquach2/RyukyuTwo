@@ -136,15 +136,14 @@ function cont(width, height) {
     p.fill(0);
     p.text("YES", width / 3 - width / 30, height / 2 + height / 15);
     p.text("NO", width / 2 + width / 8, height / 2 + height / 15);
+}
 
-    if (p.mouseIsPressed) {
-        //game over if no button pressed
-        if ((width / 2 + width / 10) < p.mouseX && p.mouseX < (width / 2 + width / 10) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
-            console.log("No Button");
+function contStates(width, height, x, y) {
+    if (game.getState() == 2) {
+        if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
             game.setState(4); 
         }
-        if ((width / 3 - width / 25) < p.mouseX && p.mouseX < (width / 3 - width / 25) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
-            console.log("Yes Button");
+        if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             game.setState(3);
         }
     }
@@ -200,6 +199,7 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
+    contStates(p.windowWidth, p.windowHeight, x, y);
 }
 
 export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code
