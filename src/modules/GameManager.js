@@ -21,21 +21,24 @@ const GM = {
 }
 
 const p = new p5(p => {
+    const windowSize = getWindow();
     p.setup = function setup() {
-        const windowSize = getWindow();
         p.createCanvas(windowSize.w, windowSize.h);
         GM.setup();
     };
 
-    p.draw = function () {
-        const windowSize = getWindow();
+    p.draw = function draw() {
         p.background(0);
-        GM.draw(windowSize.w, windowSize.h);
+        GM.draw(p.windowWidth, p.windowHeight);
     };
 
     p.mouseClicked = function mouseClicked() {
         GM.mouseClicked(p.mouseX, p.mouseY);
     };
+
+    p.windowResized = function windowResized() {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+    }
 });
 
 let score = new Score(p);
@@ -131,6 +134,12 @@ GM.setup = function () {
 }
 
 GM.draw = function (width, height) {
+    let scaleX = width / 1440;
+    let scaleY = height / 790;
+
+    scaleX = scaleX <= 1 ? scaleX : 1/scaleX;
+    scaleY = scaleY <= 1 ? scaleY : 1/scaleY;
+
     const state = game.getState();
 
     // State is 0, main menu
@@ -140,7 +149,7 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        game.play(width, height);
+        game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, omikuji

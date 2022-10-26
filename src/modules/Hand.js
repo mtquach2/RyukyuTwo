@@ -86,9 +86,9 @@ export class Hand {
         return true;
     }
 
-    showCard(index, col, row) {
+    showCard(index, col, row, scaleX, scaleY) {
         if (this.hand[4 - index] != null) {
-            this.hand[4 - index].showImage(col, row)
+            this.hand[4 - index].showImage(col, row, scaleX, scaleY);
         }
     }
 
