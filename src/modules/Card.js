@@ -3,11 +3,12 @@
  */
 export class Card {
 
-	constructor(p5, suit, value, img) {
+	constructor(p5, suit, value, img, col) {
 		this.p = p5
 		this.suit = suit;
 		this.value = value;
 		this.img = img;
+		this.col = col;
 	}
 
 	/**
@@ -29,5 +30,9 @@ export class Card {
 
 	getImage() {
 		return this.img;
+	}
+ 
+	getCol() {
+		return this.col;
 	}
 };

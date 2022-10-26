@@ -17,7 +17,8 @@ export function getWindow() {
 const GM = {
     setup: () => { },
     draw: () => { },
-    mouseClicked: (x, y) => { }
+    mouseClicked: (x, y) => { },
+    keyPressed: (keyCode, BACKSPACE) => { }
 }
 
 const p = new p5(p => {
@@ -36,6 +37,10 @@ const p = new p5(p => {
     p.mouseClicked = function mouseClicked() {
         GM.mouseClicked(p.mouseX, p.mouseY);
     };
+
+    p.keyPressed = function keyPressed(){
+        GM.keyPressed(p.keyCode, p.BACKSPACE);
+    }
 });
 
 let score = new Score(p);
@@ -128,6 +133,7 @@ function gameOver(width, height) {
 
 GM.setup = function () {
     game.splitCards();
+    game.assignColumn();
 }
 
 GM.draw = function (width, height) {
@@ -157,6 +163,16 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
+}
+
+GM.keyPressed = function(keyCode, BACKSPACE){
+    //console.log("keyCode:", keyCode);
+    if(keyCode == BACKSPACE){ //can change BACKSPACE to 8;keyCode for BACKSPACE is 8
+        //console.log("BACKSPACE PRESSED");
+        let lastMove = game.recentMoves.slice(-1); 
+        console.log("LAST MOVE:", lastMove);
+
+    }
 }
 
 export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code

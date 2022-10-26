@@ -149,6 +149,23 @@ export class Game {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
 		}
+		console.log(this.displayMap);
+	}
+
+	assignColumn() {
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					console.log("COL DECK:", colDeck[x])
+					if(!(colDeck == null)){
+						colDeck[x].col = i + 1;
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
 	}
 
 	/**
