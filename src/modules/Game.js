@@ -35,10 +35,6 @@ export class Game {
 		this.score.fillScoreTable();
 	}
 
-	/**
-	 * Displays the board and top display for the game
-	 * Also, includes logic for selecting a card and column for game
-	 */
 	play(width, height, scaleX, scaleY) {
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);
@@ -63,12 +59,10 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				console.log("Won with score " + this.score.getScore());
-				return 2;
+				return 5;
 			}
 			else {
-				console.log("Game Over");
-				return 3;
+				return 2;
 			}
 		}
 

@@ -6,20 +6,20 @@ export class Omikuji {
         this.selected = false;
         this.frameDelay = 300;
 
-        this.omikujiValues = Array.from({length: 16}, () => Math.round((Math.random() * 2000) / 500) * 500);
+        this.omikujiValues = Array.from({ length: 16 }, () => Math.round((Math.random() * 2000) / 500) * 500);
         this.omikujiTable = {
-            0:"凶",
-            500:"半吉",
-            1000:"小吉",
-            1500:"吉",
-            2000:"大吉",
+            0: "凶",
+            500: "半吉",
+            1000: "小吉",
+            1500: "吉",
+            2000: "大吉",
         };
         this.omikujiTranslation = {
-            "凶":"Misfortune,\n+0 bonus points",
-            "半吉":"Half Blessing,\n+500 bonus points",
-            "小吉":"Small Blessing,\n+1000 bonus points",
-            "吉":"Blessing,\n+1500 bonus points",
-            "大吉":"Great Blessing,\n+2000 bonus points",
+            "凶": "Misfortune,\n+0 bonus points",
+            "半吉": "Half Blessing,\n+500 bonus points",
+            "小吉": "Small Blessing,\n+1000 bonus points",
+            "吉": "Blessing,\n+1500 bonus points",
+            "大吉": "Great Blessing,\n+2000 bonus points",
         };
     }
 
@@ -83,7 +83,7 @@ export class Omikuji {
             const blessingText = this.omikujiTable[blessingScore];
 
             this.p5.strokeWeight(8);
-            this.p5.stroke(0,0,0);
+            this.p5.stroke(0, 0, 0);
             this.p5.textSize(36 * Math.min(scaleX, scaleY));
             this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
             if (this.selectedOmikuji < 8) {
@@ -105,20 +105,21 @@ export class Omikuji {
                 this.selectedOmikuji = 0;
                 this.selected = false;
                 this.frameDelay = 500;
-                
+
                 // Transition state
-                return 4;
+                return 6;
             }
         }
         else {
             this.renderInstructions(width, height, scaleX, scaleY);
         }
-        
+
         if (!this.selected && this.p5.frameCount % 5 == 0) {
             this.selectedOmikuji = this.selectedOmikuji < 16 ? ++this.selectedOmikuji : 0;
         }
 
-        return 2;
+        // Continue Omikuji
+        return 3;
     }
 
 }
