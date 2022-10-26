@@ -128,6 +128,32 @@ function gameOver(width, height) {
     }
 }
 
+function cont(width, height) {
+    p.stroke(255, 0, 0);
+    p.fill(255);
+    p.textSize(64);
+    p.text("CONTINUE?", width / 3, height / 3);
+    //NO button
+    p.rect(width / 2 + width / 10, height / 2, 150, 100);
+    //YES button
+    p.rect(width / 3 - width / 25, height / 2, 150, 100);
+    p.noStroke();
+    p.fill(0);
+    p.text("YES", width / 3 - width / 30, height / 2 + height / 15);
+    p.text("NO", width / 2 + width / 8, height / 2 + height / 15);
+
+    if (p.mouseIsPressed) {
+        //game over if no button pressed
+        if ((width / 2 + width / 10) < p.mouseX && p.mouseX < (width / 2 + width / 10) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
+            console.log("No Button");
+            game.setState(3); 
+        }
+        if ((width / 3 - width / 25) < p.mouseX && p.mouseX < (width / 3 - width / 25) + 150 && height / 2 < p.mouseY && p.mouseY < height / 2 + 100) {
+            console.log("Yes Button");
+            game.setState(2);
+        }
+    }
+}
 
 GM.setup = function () {
     game.splitCards();
@@ -157,6 +183,11 @@ GM.draw = function (width, height) {
     // State is 3, game over
     if (state == 3) {
         gameOver(width, height);
+    }
+
+    // State is 4, continue? 
+    if (state == 4) {
+        cont(width, height);
     }
 }
 
