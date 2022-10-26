@@ -9,7 +9,6 @@ export class Game {
 		this.score = score;
 		this.timer = timer;
 		this.level = 1;
-		this.state = 0;
 
 		this.deck = [];
 		this.mouseWasClicked = false;
@@ -62,17 +61,18 @@ export class Game {
 			this.timer.countDown();
 		}
 
-		// Update game state if needed
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
 				console.log("Won with score " + this.score.getScore());
-				this.state = 2;
+				return 2;
 			}
 			else {
-				// TODO: Add possibility of getting omikuji instead of straight to game over
-				this.state = 3;
+				console.log("Game Over");
+				return 3;
 			}
 		}
+
+		return 1;
 	}
 
 	intToKanji(number) {
@@ -116,12 +116,18 @@ export class Game {
 	}
 
 	renderLevel(w, h, scaleX, scaleY) {
-		this.p5.stroke(255);
-		this.p5.rect(w / 3, h / 8, 60 * scaleX, 60 * scaleY);
+		this.p5.strokeWeight(3);
+		this.p5.noFill();
+		this.p5.stroke(255, 255, 255);
+		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
+
+		this.p5.strokeWeight(1);
+		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
-		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 60 * scaleX, 60 * scaleY);
+		this.p5.textSize(40 * Math.min(scaleX, scaleY));
+		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w / 3, h / 8, 60 * scaleX, 60 * scaleY);
+		this.p5.text(`面`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
 	}
 
 	renderDivider(width, height) { //TODO fix 
@@ -189,10 +195,14 @@ export class Game {
 
 	cancelDisplay(w, h, scaleX, scaleY) {
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
+		this.p5.strokeWeight(3);
 		this.p5.stroke(255, 0, 0);
 		this.p5.noFill();
 		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
+
+		this.p5.strokeWeight(1);
 		this.p5.stroke(255);
+		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
 		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
 		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
@@ -204,13 +214,5 @@ export class Game {
 	 */
 	getRank(rank) {
 		this.score.updateScore(rank);
-	}
-
-	getState() {
-		return this.state;
-	}
-
-	setState(state) {
-		this.state = state;
 	}
 };

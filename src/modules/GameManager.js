@@ -3,6 +3,7 @@ import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
 import { Game } from './Game';
+import { Omikuji } from './Omikuji';
 
 export function getWindow() {
     let w = window,
@@ -44,31 +45,26 @@ const p = new p5(p => {
 let score = new Score(p);
 let timer = new Timer(p);
 let board = new Board(p, timer);
+let state = 0;
 
 const game = new Game(p, board, score, timer);
+const omikuji = new Omikuji(p, score);
 
-function resetGame(state) {
+function resetGame(currentState) {
+    console.log("NEW GAME");
+
     board = new Board(p, timer);
-    let bonus = 0;
-
-    if (state == 2) {
-        game.level++;
-        score.updateTotalScore();
-        bonus = 1500;
-    }
-    else {
-        game.level = 1;
-    }
-
     score.resetScore();
 
-    console.log("NEW GAME");
-    console.log("Level to " + game.level + " with bonus " + bonus);
-    score.setClearPoint(game.level, bonus);
+    if (currentState == 3) {
+        score.setClearPoint(1, 0);
+    }
+
     board.loadCardsLeft();
     board.loadJPFont();
     game.board = board;
-    game.setState(1);
+
+    state = 1;
 }
 
 function menu(width, height) {
@@ -85,26 +81,7 @@ function menu(width, height) {
     if (p.mouseIsPressed) {
         if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 150) {
             p.textSize(20);
-            game.setState(1);
-        }
-    }
-}
-
-function omikuji(width, height) {
-    // TODO: Implement omikuji selection an score update
-    p.stroke(255, 255, 255);
-    p.fill(255, 255, 255);
-    p.rect(width / 3, height / 3, 400, 400);
-
-    p.stroke(0, 0, 0);
-    p.fill(0, 0, 0);
-    p.textSize(64);
-    p.text("OMIKUJI, CLICK FOR 1500 BONUS", width / 3, height / 3, 400, 400);
-
-    if (p.mouseIsPressed) {
-        if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
-            p.textSize(20);
-            resetGame(2);
+            state = 1;
         }
     }
 }
@@ -128,7 +105,6 @@ function gameOver(width, height) {
     }
 }
 
-
 GM.setup = function () {
     game.splitCards();
 }
@@ -136,8 +112,8 @@ GM.setup = function () {
 GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
-    
-    const state = game.getState();
+
+    console.log("STATE: " + state);
 
     // State is 0, main menu
     if (state == 0) {
@@ -146,17 +122,24 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        game.play(width, height, scaleX, scaleY);
+        console.log("State 1");
+        state = game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, omikuji
     if (state == 2) {
-        omikuji(width, height);
+        console.log("State 2");
+        state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
     }
 
     // State is 3, game over
     if (state == 3) {
         gameOver(width, height);
+    }
+
+    if (state == 4) {
+        console.log("State 4");
+        resetGame(4);
     }
 }
 
