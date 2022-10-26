@@ -35,11 +35,7 @@ export class Game {
 		this.board.loadJPFont();
 		this.score.fillScoreTable();
 	}
-
-	/**
-	 * Displays the board and top display for the game
-	 * Also, includes logic for selecting a card and column for game
-	 */
+	
 	play(width, height, scaleX, scaleY) {
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);

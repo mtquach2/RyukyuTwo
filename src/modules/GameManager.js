@@ -124,13 +124,14 @@ function gameOver(width, height) {
 }
 
 function cont(width, height) {
+    // Render Continue? screen after lost game 
     p.stroke(255, 0, 0);
     p.fill(255);
     p.textSize(64);
     p.text("CONTINUE?", width / 3, height / 3);
-    //NO button
+    // NO button
     p.rect(width / 2 + width / 10, height / 2, 150, 100);
-    //YES button
+    // YES button
     p.rect(width / 3 - width / 25, height / 2, 150, 100);
     p.noStroke();
     p.fill(0);
@@ -139,17 +140,21 @@ function cont(width, height) {
 }
 
 function contStates(width, height, x, y) {
+    // Function for P5 mouseClicked and cont() 
     if (game.getState() == 2) {
         if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
+            // If NO button is clicked, game over
             game.setState(4); 
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
+            // If YES button is clicked, omikuji
             game.setState(3);
         }
     }
 }
 
 function win() {
+    // Function for winning game 
     game.level++;
     score.updateTotalScore();
     resetGame(5);
