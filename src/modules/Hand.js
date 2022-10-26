@@ -80,16 +80,16 @@ export class Hand {
 
     isStraight(faces) {
         for (let i = 0; i < faces.length - 1; i++) {
-            if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i+1]) {
+            if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i + 1]) {
                 return false;
             }
         }
         return true;
     }
 
-    showCard(index, col, row) {
+    showCard(index, col, row, scaleX, scaleY) {
         if (this.hand[4 - index] != null) {
-            this.hand[4 - index].showImage(col, row)
+            this.hand[4 - index].showImage(col, row, scaleX, scaleY);
         }
     }
 

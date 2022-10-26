@@ -12,11 +12,11 @@ export class Card {
 
 	/**
 	 * Displays the image associated with the given card 
-	 * @param position x-axis for where we want the card
-	 * @param row y-axis for where we want the card
+	 * @param x x-axis for where we want the card
+	 * @param y y-axis for where we want the card
 	 */
-	showImage(position, row) {
-		this.p.image(this.img, position, row, 64, 64);
+	showImage(x, y, scaleX, scaleY) {
+		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}
 
 	getSuit() {

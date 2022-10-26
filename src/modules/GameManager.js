@@ -21,21 +21,24 @@ const GM = {
 }
 
 const p = new p5(p => {
+    const windowSize = getWindow();
     p.setup = function setup() {
-        const windowSize = getWindow();
         p.createCanvas(windowSize.w, windowSize.h);
         GM.setup();
     };
 
-    p.draw = function () {
-        const windowSize = getWindow();
+    p.draw = function draw() {
         p.background(0);
-        GM.draw(windowSize.w, windowSize.h);
+        GM.draw(p.windowWidth, p.windowHeight);
     };
 
     p.mouseClicked = function mouseClicked() {
         GM.mouseClicked(p.mouseX, p.mouseY);
     };
+
+    p.windowResized = function windowResized() {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+    }
 });
 
 let score = new Score(p);
@@ -72,15 +75,15 @@ function menu(width, height) {
     // TODO: Implement main menu but better
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width/3, height/3, 400, 150);
+    p.rect(width / 3, height / 3, 400, 150);
 
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
     p.textSize(64);
-    p.text("CLICK TO PLAY GAME", width/3, height/3, 400, 150);
+    p.text("CLICK TO PLAY GAME", width / 3, height / 3, 400, 150);
 
     if (p.mouseIsPressed) {
-        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 150) {
+        if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 150) {
             p.textSize(20);
             game.setState(1);
         }
@@ -91,15 +94,15 @@ function omikuji(width, height) {
     // TODO: Implement omikuji selection an score update
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width/3, height/3, 400, 400);
+    p.rect(width / 3, height / 3, 400, 400);
 
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
     p.textSize(64);
-    p.text("OMIKUJI, CLICK FOR 1500 BONUS", width/3, height/3, 400, 400);
+    p.text("OMIKUJI, CLICK FOR 1500 BONUS", width / 3, height / 3, 400, 400);
 
     if (p.mouseIsPressed) {
-        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 400) {
+        if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
             p.textSize(20);
             resetGame(2);
         }
@@ -110,15 +113,15 @@ function gameOver(width, height) {
     // TODO: Implement a game over screen
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width/3, height/3, 400, 400);
+    p.rect(width / 3, height / 3, 400, 400);
 
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
     p.textSize(64);
-    p.text("GAME OVER, CLICK TO RESET", width/3, height/3, 400, 400);
+    p.text("GAME OVER, CLICK TO RESET", width / 3, height / 3, 400, 400);
 
     if (p.mouseIsPressed) {
-        if (width/3 < p.mouseX && p.mouseX < width/3 + 400 && height/3 < p.mouseY && p.mouseY < height/3 + 400) {
+        if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
             p.textSize(20);
             resetGame(3);
         }
@@ -131,16 +134,19 @@ GM.setup = function () {
 }
 
 GM.draw = function (width, height) {
+    let scaleX = width / 1440;
+    let scaleY = height / 790;
+    
     const state = game.getState();
 
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
     }
-    
+
     // State is 1, play game
     if (state == 1) {
-        game.play(width, height);
+        game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, omikuji

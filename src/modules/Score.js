@@ -18,6 +18,9 @@ export class Score {
             'H': 0,
         }
 
+
+        this.scaleX = 1;
+        this.scaleY = 1;
         this.scoreX = 0;
         this.scoreY = 0;
 
@@ -35,7 +38,10 @@ export class Score {
         this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
     }
 
-    render(w, h) {
+    render(w, h, scaleX, scaleY) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+
         this.scoreX = w;
         this.scoreY = h;
 
@@ -63,17 +69,20 @@ export class Score {
 
     renderScoreTable() {
         this.p5.textAlign(this.p5.LEFT, this.p5.BASELINE);
-        
+
         // Outline of Score Table
         this.p5.stroke(255, 0, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
+        this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
 
         // Populate text of Score Table
         this.p5.stroke(255, 255, 255);
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-            this.p5.text(`${rank}\t${score}\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40);
+            this.p5.text(`${rank}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
+            this.p5.text(`\t${score}`, this.scoreX / 30 + 50 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
+            this.p5.text(`\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30 + 150 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
         }
     }
 
@@ -86,7 +95,7 @@ export class Score {
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
     }
-    
+
     updateTotalScore() {
         this.totalScore += this.currentScore;
     }
