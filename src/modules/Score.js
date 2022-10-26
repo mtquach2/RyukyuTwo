@@ -80,7 +80,7 @@ export class Score {
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-            this.p5.text(`${rank}`, this.scoreX / 30, this.scoreY/25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
+            this.p5.text(`${rank}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
             this.p5.text(`\t${score}`, this.scoreX / 30 + 50 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
             this.p5.text(`\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30 + 150 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
         }

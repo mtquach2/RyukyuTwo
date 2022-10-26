@@ -137,8 +137,8 @@ GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
 
-    scaleX = scaleX <= 1 ? scaleX : 1/scaleX;
-    scaleY = scaleY <= 1 ? scaleY : 1/scaleY;
+    scaleX = scaleX <= 1 ? scaleX : 1 / scaleX;
+    scaleY = scaleY <= 1 ? scaleY : 1 / scaleY;
 
     const state = game.getState();
 
