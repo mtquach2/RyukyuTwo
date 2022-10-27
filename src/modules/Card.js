@@ -18,7 +18,7 @@ export class Card {
 	 * @param row y-axis for where we want the card
 	 */
 	showImage(position, row) {
-		this.p.image(this.img, position, row, 64, 64);
+		this.p.image(this.img, position - 10, row, 80, 80);
 	}
 
 	getSuit() {

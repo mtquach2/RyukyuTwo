@@ -47,7 +47,7 @@ export class Game {
 		this.score.render(width, height);
 
 		this.board.render(this.displayMap, width, height);
-		this.board.initCards(this.displayMap, width, height);
+		this.board.displayCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
 		this.board.renderInstructions(width, height);
 

@@ -167,14 +167,20 @@ GM.mouseClicked = function (x, y) {
 
 GM.keyPressed = function(keyCode, BACKSPACE){
     //console.log("keyCode:", keyCode);
+    // maybe this should be ESCAPE?
     if(keyCode == BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
-        if(board.currentCard == null){
-            let lastMove = game.recentMoves.slice(-1); 
-            console.log("LAST MOVE:", lastMove);
-            //game.displayMap[lastMove.col] = lastMove;
-            board.counts[lastMove.col]++;
-            console.log(game.displayMap);
+        // if we are dragging a card
+        if(board.currentCard !== null){
+            // change the visibility flag for the card
+            // and set the board.currentCard = null
+            board.unChooseCard()
+
+            // let lastMove = game.recentMoves.slice(-1); 
+            // console.log("LAST MOVE:", lastMove);
+            // //game.displayMap[lastMove.col] = lastMove;
+            // board.counts[lastMove.col]++;
+            // console.log(game.displayMap);
         }
         timer.resetTimer();
 

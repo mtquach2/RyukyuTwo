@@ -4,7 +4,8 @@ export class Board {
     constructor(p5, timer) {
         this.p = p5
         this.counts = [12, 12, 12, 12];
-        this.currentCard;
+        this.currentCard = null;
+        this.draggingColumn = null
         this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -141,6 +142,11 @@ export class Board {
         this.jpFont = this.p.loadFont("../../static/jackeyfont.ttf");
     }
 
+    unChooseCard(){
+        this.draggingColumn = null
+        this.currentCard = null
+    }
+
     /**
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
@@ -156,7 +162,12 @@ export class Board {
             for (let i = 0; i < 4; i++) {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
-                    this.counts[i]--;
+                    this.draggingColumn = i
+
+                    // this below shouldn't happen until the card is PLACED
+                    // it should just render maybe as blank before the card is dropped, so that cancel can be implemented
+                    // we have to NOT display the current card while dragging            
+                    // this.counts[i]--;
                 }
             }
             this.cardSelected = true;
@@ -184,12 +195,17 @@ export class Board {
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
      */
-    initCards(displayMap) {
+    displayCards(displayMap) {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
-                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l]);
+                    // show the card
+                    let c = displayMap.get(i)[this.counts[i] + offset]
+                    if (this.currentCard !== c){
+                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
+                    }
+                    
                 }
                 offset++;
             }
@@ -223,11 +239,11 @@ export class Board {
                     break;
                 }
             }
-            if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                if(!(this.currentCard == null)){ //to make sure that player isn't just clicking on the column
+            if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
+                if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
                     console.log("COLUMN SELECTED");
                     this.columnSelected = true;
-                    if (this.timer.seconds != 0) {
+                    if (this.timer.seconds !== 0) {
                         this.addCard(this.col, this.currentCard, score);
                         // this.currentCard.loc = "B";
                         recentMoves.push(this.currentCard);
@@ -235,6 +251,8 @@ export class Board {
                         this.movesUpdate(recentMoves);
                         this.cardPlaced = true;
                         this.currentCard = null;
+                        this.counts[this.draggingColumn] -= 1
+                        this.draggingColumn = null
                         this.cardSelected = false;
                         this.columnSelected = false;
                     }
