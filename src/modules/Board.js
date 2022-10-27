@@ -159,6 +159,9 @@ export class Board {
                     this.counts[i]--;
                 }
             }
+            this.cardSelected = true;
+            //this.currentCard.loc = "C";
+            //console.log("current card: ", this.currentCard); //gets repeated in draw() can't push here
         }
     }
 
@@ -196,11 +199,10 @@ export class Board {
      * Moves with mouse's x-axis
      * @param mouseWasClicked boolean to check to see if a card was previously selected
      */
-    displayCard(mouseWasClicked) {
+    displayCard(mouseWasClicked, recentMoves) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
             this.currentCard.showImage(bounds, this.yPositions[0] + 65);
-            this.cardSelected = true;
         }
     }
 
@@ -225,7 +227,9 @@ export class Board {
                     this.columnSelected = true;
                     if (this.timer.seconds != 0) {
                         this.addCard(this.col, this.currentCard, score);
+                        this.currentCard.loc = "B";
                         recentMoves.push(this.currentCard);
+                        console.log("RECENT MOVES: ", recentMoves);
                         this.movesUpdate(recentMoves);
                         this.cardPlaced = true;
                         this.currentCard = null;
