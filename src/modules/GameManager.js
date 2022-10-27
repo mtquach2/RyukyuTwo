@@ -108,7 +108,7 @@ function gameOverState(width, height, x, y) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
             // Goes to main menu if button is clicked
             p.textSize(20);
-            state = 0;
+            resetGame(4);
         }
     }
 }
@@ -137,7 +137,7 @@ function continueScreenStates(width, height, x, y) {
     if (state == 2) {
         if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If NO button is clicked, game over
-            resetGame(4);
+            state = 4;
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
