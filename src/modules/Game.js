@@ -34,7 +34,7 @@ export class Game {
 		this.board.loadJPFont();
 		this.score.fillScoreTable();
 	}
-	
+
 	play(width, height, scaleX, scaleY) {
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);
@@ -59,18 +59,12 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				console.log("Won with score " + this.score.getScore());
-				return 5; 
+				return 5;
 			}
 			else {
-				// TODO: Add possibility of getting omikuji instead of straight to game over
 				return 2;
 			}
-    else {
-      console.log("Game Over");
-      return 4;
-    }
-  }
+		}
 
 		return 1;
 	}

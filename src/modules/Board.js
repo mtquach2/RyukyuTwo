@@ -78,6 +78,8 @@ export class Board {
 
     renderBoardCards() {
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+        this.p5.fill(255, 0, 0);
+        this.p5.strokeWeight(1);
         // Populates the card evaluation
         for (let i = 0; i < this.boardCols.length; i++) {
             let colHand = this.boardCols[i];

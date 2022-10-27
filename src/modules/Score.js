@@ -3,7 +3,7 @@ export class Score {
         this.p5 = p5
         this.currentScore = 0;
         this.totalScore = 0;
-        this.clearPoint = 0;
+        this.clearPoint = 5000;
         this.ranks = {
             '5K': 3000,
             'RSF': 2800,
@@ -69,7 +69,7 @@ export class Score {
         this.p5.noFill();
         this.p5.stroke(0, 255, 0);
         this.p5.rect(this.scoreX / 40, this.scoreY / 10 + this.scoreY / 18, this.scoreX / 5, this.scoreY / 10);
-        
+
         this.p5.strokeWeight(1);
         this.p5.stroke(255, 255, 255);
         this.p5.fill(255, 255, 255);

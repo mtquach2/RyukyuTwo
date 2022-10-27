@@ -1,4 +1,6 @@
 import p5 from 'p5';
+// import 'p5/lib/addons/p5.sound';
+
 import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
@@ -26,6 +28,9 @@ const p = new p5(p => {
     p.setup = function setup() {
         p.createCanvas(windowSize.w, windowSize.h);
         GM.setup();
+        // let song = p.loadSound('/sounds/startup.wav');
+        let beat = new Audio('/static/sounds/startup.wav');
+        beat.play()
     };
 
     p.draw = function draw() {
@@ -51,24 +56,20 @@ const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
 
 function resetGame(currentState) {
-    console.log("NEW GAME");
+    score.resetScore();
 
     board = new Board(p, timer);
-    score.resetScore();
-
-    if (currentState == 3) {
-        bonus = 1500;
-    }
-
-    score.resetScore();
-    score.setClearPoint(1, 0);
-
-
     board.loadCardsLeft();
     board.loadJPFont();
     game.board = board;
 
-    state = 1;
+    if (currentState == 4) {
+        score.setClearPoint(1, 0);
+        state = 0;
+    }
+    else {
+        state = 1;
+    }
 }
 
 function menu(width, height) {
@@ -85,33 +86,15 @@ function menu(width, height) {
 
 function menuState(width, height, x, y) {
     // Function for p5 mouseClicked and menu()
-    if (game.getState() == 0) {
+    if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
             p.textSize(20);
-            resetGame(1);
+            state = 1;
         }
     }
 }
 
-function omikuji(width, height) {
-    // TODO: Implement omikuji selection an score update
-    p.stroke(255, 255, 255);
-    p.fill(255, 255, 255);
-    p.rect(width / 3, height / 3, 400, 400);
-
-    p.stroke(0, 0, 0);
-    p.fill(0, 0, 0);
-    p.textSize(64);
-    p.text("OMIKUJI, CLICK FOR 1500 BONUS", width / 3, height / 3, 400, 400);
-
-    if (p.mouseIsPressed) {
-        if (width / 3 < p.mouseX && p.mouseX < width / 3 + 400 && height / 3 < p.mouseY && p.mouseY < height / 3 + 400) {
-            p.textSize(20);
-            resetGame(3);
-        }
-    }
-}
 
 function gameOver(width, height) {
     // TODO: Implement a game over screen
@@ -127,41 +110,42 @@ function gameOver(width, height) {
 
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
-    if (game.getState() == 4) {
+    if (state == 4) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
             // Goes to main menu if button is clicked
             p.textSize(20);
-            game.setState(0);
+            resetGame(4);
         }
     }
 }
-
-function cont(width, height) {
-    // Render Continue? screen after lost game 
+function continueScreen(width, height, scaleX, scaleY) {    // Render Continue? screen after lost game 
     p.stroke(255, 0, 0);
-    p.fill(255);
-    p.textSize(64);
+    p.fill(255, 255, 255);
+    p.textSize(64 * Math.min(scaleX, scaleY));
     p.text("CONTINUE?", width / 3, height / 3);
+
     // NO button
     p.rect(width / 2 + width / 10, height / 2, 150, 100);
+
     // YES button
     p.rect(width / 3 - width / 25, height / 2, 150, 100);
+
     p.noStroke();
-    p.fill(0);
+    p.fill(0, 0, 0);
     p.text("YES", width / 3 - width / 30, height / 2 + height / 15);
     p.text("NO", width / 2 + width / 8, height / 2 + height / 15);
 }
 
-function contStates(width, height, x, y) {
+function continueScreenStates(width, height, x, y) {
     // Function for P5 mouseClicked and cont() 
-    if (game.getState() == 2) {
+    if (state == 2) {
         if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If NO button is clicked, game over
-            game.setState(4); 
+            state = 4;
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
-            game.setState(3);
+            state = 3;
         }
     }
 }
@@ -181,8 +165,6 @@ GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
 
-    console.log("STATE: " + state);
-
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
@@ -190,40 +172,38 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        console.log("State 1");
         state = game.play(width, height, scaleX, scaleY);
     }
 
-    // State is 2, continue?
-    if (state == 2) {
-        console.log("State 2");
-        cont(width, height);
+    // State is 2, continue screen
+    if (state == 2) {   
+        continueScreen(width, height, scaleX, scaleY);
     }
 
     // State is 3, omikuji
     if (state == 3) {
-        console.log("State 3");
         state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
     }
 
     // State is 4, game over
     if (state == 4) {
-        console.log("State 4");
         gameOver(width, height);
     }
 
-    //State is 5, winner!
+    // State is 5, won
     if (state == 5) {
-        console.log("State 5");
         win();
+    if (state == 4) {
+        gameOver(width, height);
+    }
 }
 
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
-    contStates(p.windowWidth, p.windowHeight, x, y);
-    gameOverState(p.windowWidth, p.windowHeight, x, y);
+    continueScreenStates(p.windowWidth, p.windowHeight, x, y);
     menuState(p.windowWidth, p.windowHeight, x, y);
+    gameOverState(p.windowWidth, p.windowHeight, x, y);
 }
 
 export { game, score, timer, board, GM }; //exporting for tests and one instance throughout code
