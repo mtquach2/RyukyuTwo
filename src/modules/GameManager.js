@@ -1,4 +1,6 @@
 import p5 from 'p5';
+// import 'p5/lib/addons/p5.sound';
+
 import { Board } from './Board';
 import { Timer } from './Timer';
 import { Score } from './Score';
@@ -26,6 +28,9 @@ const p = new p5(p => {
     p.setup = function setup() {
         p.createCanvas(windowSize.w, windowSize.h);
         GM.setup();
+        // let song = p.loadSound('/sounds/startup.wav');
+        let beat = new Audio('/static/sounds/startup.wav');
+        beat.play()
     };
 
     p.draw = function draw() {
