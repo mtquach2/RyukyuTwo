@@ -193,6 +193,7 @@ GM.draw = function (width, height) {
     // State is 5, won
     if (state == 5) {
         win();
+    }
     if (state == 4) {
         gameOver(width, height);
     }
