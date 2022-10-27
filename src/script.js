@@ -207,7 +207,7 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     let sound = new Audio('/static/sounds/pop.wav');
     sound.play();
-    sound.volume = 0.3;
+    sound.volume = 0.2;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
