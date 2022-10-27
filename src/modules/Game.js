@@ -135,7 +135,7 @@ export class Game {
 	 * @param px mouseX value
 	 */
 	updateTopDisplay(px, py) {
-		this.currentCard = this.board.clicked(px, py, this.displayMap);
+		this.currentCard = this.board.clicked(px, py, this.displayMap, this.recentMoves);
 		this.mouseWasClicked = true;
 	}
 
@@ -152,6 +152,9 @@ export class Game {
 		console.log(this.displayMap);
 	}
 
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
 	assignColumn() {
 		for(let i = 0; i < 4; i++){
 			for(let x = 0; x < 13; x++){
@@ -159,7 +162,7 @@ export class Game {
 					let colDeck = this.displayMap.get(i);
 					console.log("COL DECK:", colDeck[x])
 					if(!(colDeck == null)){
-						colDeck[x].col = i + 1;
+						colDeck[x].col = i; //to match the number with counts[]
 					}
 				}
 			}
@@ -180,6 +183,7 @@ export class Game {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
 					console.log("CARD SELECTD BUT NOT COLUMN");
+					//this.board.currentCard.loc = "B";
 					this.recentMoves.push(this.board.currentCard);
 					console.log(this.recentMoves);
 					this.board.movesUpdate(this.recentMoves);
@@ -197,6 +201,7 @@ export class Game {
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
 						console.log("CARD DROPPED FROM TOP DECK");
+						//this.board.currentCard.loc = "B";
 						this.recentMoves.push(firstCard);
 						console.log(this.recentMoves);
 						this.board.movesUpdate(this.recentMoves);

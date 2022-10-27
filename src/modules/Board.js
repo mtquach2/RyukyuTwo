@@ -148,7 +148,7 @@ export class Board {
      * @param py where our mouse's y-axis is at
      * @param displayMap map for deck of card
      */
-    clicked(px, py, displayMap) {
+    clicked(px, py, displayMap, recentMoves) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
             if (this.currentCard != null) {
                 return;
@@ -160,8 +160,10 @@ export class Board {
                 }
             }
             this.cardSelected = true;
-            //this.currentCard.loc = "C";
-            //console.log("current card: ", this.currentCard); //gets repeated in draw() can't push here
+            // this.currentCard.loc = "C";
+            // console.log("location change to C: ", this.currentCard.loc); //gets repeated in draw() can't push here
+            // recentMoves.push(this.currentCard);
+            // console.log("current card: ", this.currentCard);
         }
     }
 
@@ -199,7 +201,7 @@ export class Board {
      * Moves with mouse's x-axis
      * @param mouseWasClicked boolean to check to see if a card was previously selected
      */
-    displayCard(mouseWasClicked, recentMoves) {
+    displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
             let bounds = this.p.constrain(this.p.mouseX, this.boardX + 65, this.boardX + 65 * 5);
             this.currentCard.showImage(bounds, this.yPositions[0] + 65);
@@ -227,7 +229,7 @@ export class Board {
                     this.columnSelected = true;
                     if (this.timer.seconds != 0) {
                         this.addCard(this.col, this.currentCard, score);
-                        this.currentCard.loc = "B";
+                        // this.currentCard.loc = "B";
                         recentMoves.push(this.currentCard);
                         console.log("RECENT MOVES: ", recentMoves);
                         this.movesUpdate(recentMoves);

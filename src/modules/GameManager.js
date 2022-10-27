@@ -167,10 +167,16 @@ GM.mouseClicked = function (x, y) {
 
 GM.keyPressed = function(keyCode, BACKSPACE){
     //console.log("keyCode:", keyCode);
-    if(keyCode == BACKSPACE){ //can change BACKSPACE to 8;keyCode for BACKSPACE is 8
-        //console.log("BACKSPACE PRESSED");
-        let lastMove = game.recentMoves.slice(-1); 
-        console.log("LAST MOVE:", lastMove);
+    if(keyCode == BACKSPACE){ //keyCode for BACKSPACE is 8
+        console.log("BACKSPACE PRESSED");
+        if(board.currentCard == null){
+            let lastMove = game.recentMoves.slice(-1); 
+            console.log("LAST MOVE:", lastMove);
+            //game.displayMap[lastMove.col] = lastMove;
+            board.counts[lastMove.col]++;
+            console.log(game.displayMap);
+        }
+        timer.resetTimer();
 
     }
 }
