@@ -90,6 +90,9 @@ function menuState(width, height, x, y) {
     if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
+            let sound = new Audio('/static/sounds/gong.mp3');
+            sound.volume = 0.5;
+            sound.play();
             p.textSize(20);
             state = 1;
         }
@@ -112,14 +115,17 @@ function gameOver(width, height) {
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
+        let sound = new Audio('/static/sounds/gameover.mp3');
+        sound.play();
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
             // Goes to main menu if button is clicked
             p.textSize(20);
-            resetGame(4);
+            resetGame(4); // TODO: Code automatically skips to resetting game instead of displaying gameOver screen
         }
     }
 }
-function continueScreen(width, height, scaleX, scaleY) {    // Render Continue? screen after lost game 
+function continueScreen(width, height, scaleX, scaleY) {   
+    // Render Continue? screen after lost game 
     p.stroke(255, 0, 0);
     p.fill(255, 255, 255);
     p.textSize(64 * Math.min(scaleX, scaleY));
@@ -153,6 +159,8 @@ function continueScreenStates(width, height, x, y) {
 
 function win() {
     // Function for winning game 
+    let sound = new Audio('/static/sounds/win.mp3');
+    sound.play();
     game.level++;
     score.updateTotalScore();
     resetGame(5);
@@ -165,7 +173,6 @@ GM.setup = function () {
 GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
-
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
@@ -195,15 +202,12 @@ GM.draw = function (width, height) {
     if (state == 5) {
         win();
     }
-    if (state == 4) {
-        gameOver(width, height);
-    }
 }
 
 GM.mouseClicked = function (x, y) {
     let sound = new Audio('/static/sounds/pop.wav');
     sound.play();
-    sound.volume = 0.2;
+    sound.volume = 0.3;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);

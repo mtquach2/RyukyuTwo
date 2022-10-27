@@ -62,6 +62,8 @@ export class Game {
 				return 5;
 			}
 			else {
+				let sound = new Audio('/static/sounds/continue.mp3');
+    			sound.play();
 				return 2;
 			}
 		}
