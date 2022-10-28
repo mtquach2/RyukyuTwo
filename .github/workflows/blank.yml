@@ -34,3 +34,5 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+      - name: Push to SFTP
+        uses: AbleLincoln/push-to-sftp@v1.2
