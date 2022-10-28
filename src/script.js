@@ -202,6 +202,10 @@ GM.draw = function (width, height) {
     if (state == 5) {
         win();
     }
+
+    if (state == 6) {
+        resetGame(6);
+    }
 }
 
 GM.mouseClicked = function (x, y) {
