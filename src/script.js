@@ -60,7 +60,13 @@ let state = 0;
 
 const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
-let omikujiSound;
+
+let omikujiSound = new Audio('/static/sounds/spinner.mp3');
+let gameSound = new Audio('/static/sounds/music.mp3');
+let menuSound = new Audio('/static/sounds/gong.mp3');
+let winSound = new Audio('/static/sounds/win.mp3');
+let popSound = new Audio('/static/sounds/pop.wav');
+let gameOverSound = new Audio('/static/sounds/gameover.mp3');
 
 function resetGame(currentState) {
     score.resetScore();
@@ -96,10 +102,9 @@ function menuState(width, height, x, y) {
     if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
-            let sound = new Audio('/static/sounds/gong.mp3');
-            sound.volume = 0.5;
-            sound.play();
-            let gameSound = new Audio('/static/sounds/music.mp3');
+            menuSound.volume = 0.5;
+            menuSound.play();
+    
             gameSound.volume = 0.3;
             gameSound.loop = true;
             gameSound.play();
@@ -125,8 +130,7 @@ function gameOver(width, height) {
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
-        let sound = new Audio('/static/sounds/gameover.mp3');
-        sound.play();
+        gameOverSound.play();
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
             // Goes to main menu if button is clicked
             p.textSize(20);
@@ -162,10 +166,10 @@ function continueScreenStates(width, height, x, y) {
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
-            omikujiSound = new Audio('/static/sounds/spinner.mp3');
             omikujiSound.volume = 0.2;
             omikujiSound.loop = true;
             omikujiSound.play();
+
             state = 3;
         }
     }
@@ -173,8 +177,7 @@ function continueScreenStates(width, height, x, y) {
 
 function win() {
     // Function for winning game 
-    let sound = new Audio('/static/sounds/win.mp3');
-    sound.play();
+    winSound.play();
     game.level++;
     score.updateTotalScore();
     resetGame(5);
@@ -225,9 +228,8 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    let sound = new Audio('/static/sounds/pop.wav');
-    sound.play();
-    sound.volume = 0.2;
+    popSound.play();
+    popSound.volume = 0.2;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
