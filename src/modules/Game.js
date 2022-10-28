@@ -16,6 +16,10 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
+		let sound = new Audio('/static/sounds/music.mp3');
+		sound.volume = 0.3;
+		sound.loop = true;
+		sound.play();
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
@@ -62,6 +66,9 @@ export class Game {
 				return 5;
 			}
 			else {
+				let sound = new Audio('/static/sounds/continue.mp3');
+				sound.volume = 0.5;
+    			sound.play();
 				return 2;
 			}
 		}
