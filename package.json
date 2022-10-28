@@ -5,6 +5,7 @@
   "main": "script.js",
   "type": "module",
   "dependencies": {
+    "firebase": "^9.13.0",
     "p5": "^1.4.2",
     "p5.play": "^3.0.108",
     "requirejs": "^2.3.6"
