@@ -56,6 +56,11 @@ let state = 0;
 const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
 
+let gameSound = new Audio('/static/sounds/music.mp3');
+gameSound.volume = 0.3;
+gameSound.loop = true;
+gameSound.play();
+
 function resetGame(currentState) {
     score.resetScore();
 
