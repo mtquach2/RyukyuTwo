@@ -17,5 +17,5 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig); //Use this variable to access Firebase tools
+export const app = initializeApp(firebaseConfig); //Use this variable to access Firebase tools
 const analytics = getAnalytics(app);

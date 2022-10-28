@@ -1,5 +1,5 @@
 import p5 from 'p5';
-
+// import { app } from '/src/FB'; THIS IS THE IMPORT WE WILL USE FOR FIREBASE
 import { Board } from '../src/modules/Board';
 import { Timer } from '../src/modules/Timer';
 import { Score } from '../src/modules/Score';
