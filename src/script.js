@@ -20,7 +20,8 @@ const GM = {
     preload: () => { },
     setup: () => { },
     draw: () => { },
-    mouseClicked: (x, y) => { }
+    mouseClicked: (x, y) => { },
+    keyPressed: () => { }
 }
 
 const p = new p5(p => {
@@ -46,6 +47,10 @@ const p = new p5(p => {
     p.windowResized = function windowResized() {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
     }
+
+    p.keyPressed = function keyPressed() {
+        GM.keyPressed();
+    }
 });
 
 let score = new Score(p);
@@ -55,11 +60,7 @@ let state = 0;
 
 const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
-
-let gameSound = new Audio('/static/sounds/music.mp3');
-gameSound.volume = 0.3;
-gameSound.loop = true;
-gameSound.play();
+let omikujiSound;
 
 function resetGame(currentState) {
     score.resetScore();
@@ -98,6 +99,10 @@ function menuState(width, height, x, y) {
             let sound = new Audio('/static/sounds/gong.mp3');
             sound.volume = 0.5;
             sound.play();
+            let gameSound = new Audio('/static/sounds/music.mp3');
+            gameSound.volume = 0.3;
+            gameSound.loop = true;
+            gameSound.play();
             p.textSize(20);
             state = 1;
         }
@@ -157,6 +162,10 @@ function continueScreenStates(width, height, x, y) {
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
+            omikujiSound = new Audio('/static/sounds/spinner.mp3');
+            omikujiSound.volume = 0.2;
+            omikujiSound.loop = true;
+            omikujiSound.play();
             state = 3;
         }
     }
@@ -178,6 +187,7 @@ GM.setup = function () {
 GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
+
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
@@ -207,6 +217,11 @@ GM.draw = function (width, height) {
     if (state == 5) {
         win();
     }
+
+    // State is 6, omikuji returns
+    if (state == 6) {
+        resetGame(6);
+    }
 }
 
 GM.mouseClicked = function (x, y) {
@@ -218,4 +233,12 @@ GM.mouseClicked = function (x, y) {
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
     menuState(p.windowWidth, p.windowHeight, x, y);
     gameOverState(p.windowWidth, p.windowHeight, x, y);
+}
+
+GM.keyPressed = function () {
+    if (p.keyCode == 32) {
+        console.log("Space bar was pressed");
+        omikujiSound.pause();
+        stop.currentTime = 0; 
+    }
 }

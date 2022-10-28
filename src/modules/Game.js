@@ -117,8 +117,6 @@ export class Game {
 		this.p5.noFill();
 		this.p5.stroke(255, 255, 255);
 		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
-
-		console.log(this.level);
 		this.p5.strokeWeight(1);
 		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
