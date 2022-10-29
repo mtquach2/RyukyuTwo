@@ -203,6 +203,7 @@ GM.draw = function (width, height) {
         win();
     }
 
+    // State is 6, omikuji bonus is added and the game should reset
     if (state == 6) {
         resetGame(6);
     }
