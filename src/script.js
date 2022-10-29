@@ -62,7 +62,7 @@ const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
 
 let omikujiSound = new Audio('/static/sounds/spinner.mp3');
-let gameSound = new Audio('/static/sounds/music.mp3');
+let gameSound = new Audio('/static/sounds/japanese_music.mp3');
 let menuSound = new Audio('/static/sounds/gong.mp3');
 let winSound = new Audio('/static/sounds/win.mp3');
 let popSound = new Audio('/static/sounds/pop.wav');
@@ -105,7 +105,7 @@ function menuState(width, height, x, y) {
             menuSound.volume = 0.5;
             menuSound.play();
     
-            gameSound.volume = 0.3;
+            gameSound.volume = 0.5;
             gameSound.loop = true;
             gameSound.play();
             p.textSize(20);
