@@ -1,4 +1,6 @@
-import { score } from '../src/modules/GameManager';
+import { Score } from '../src/modules/Score';
+
+const score = new Score(null);
 
 beforeEach(() => {
     score.currentScore = 0;
