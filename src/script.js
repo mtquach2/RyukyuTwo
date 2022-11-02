@@ -20,7 +20,8 @@ const GM = {
     preload: () => { },
     setup: () => { },
     draw: () => { },
-    mouseClicked: (x, y) => { }
+    mouseClicked: (x, y) => { },
+    keyPressed: () => { }
 }
 
 const p = new p5(p => {
@@ -46,6 +47,10 @@ const p = new p5(p => {
     p.windowResized = function windowResized() {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
     }
+
+    p.keyPressed = function keyPressed() {
+        GM.keyPressed();
+    }
 });
 
 let score = new Score(p);
@@ -55,6 +60,13 @@ let state = 0;
 
 const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
+
+let omikujiSound = new Audio('/static/sounds/spinner.mp3');
+let gameSound = new Audio('/static/sounds/japanese_music.mp3');
+let menuSound = new Audio('/static/sounds/gong.mp3');
+let winSound = new Audio('/static/sounds/win.mp3');
+let popSound = new Audio('/static/sounds/pop.wav');
+let gameOverSound = new Audio('/static/sounds/gameover.mp3');
 
 function resetGame(currentState) {
     score.resetScore();
@@ -90,9 +102,12 @@ function menuState(width, height, x, y) {
     if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
-            let sound = new Audio('/static/sounds/gong.mp3');
-            sound.volume = 0.5;
-            sound.play();
+            menuSound.volume = 0.5;
+            menuSound.play();
+    
+            gameSound.volume = 0.5;
+            gameSound.loop = true;
+            gameSound.play();
             p.textSize(20);
             state = 1;
         }
@@ -115,8 +130,7 @@ function gameOver(width, height) {
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
-        let sound = new Audio('/static/sounds/gameover.mp3');
-        sound.play();
+        gameOverSound.play();
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
             // Goes to main menu if button is clicked
             p.textSize(20);
@@ -152,6 +166,10 @@ function continueScreenStates(width, height, x, y) {
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
+            omikujiSound.volume = 0.2;
+            omikujiSound.loop = true;
+            omikujiSound.play();
+
             state = 3;
         }
     }
@@ -159,8 +177,7 @@ function continueScreenStates(width, height, x, y) {
 
 function win() {
     // Function for winning game 
-    let sound = new Audio('/static/sounds/win.mp3');
-    sound.play();
+    winSound.play();
     game.level++;
     score.updateTotalScore();
     resetGame(5);
@@ -173,6 +190,7 @@ GM.setup = function () {
 GM.draw = function (width, height) {
     let scaleX = width / 1440;
     let scaleY = height / 790;
+
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
@@ -203,19 +221,30 @@ GM.draw = function (width, height) {
         win();
     }
 
+<<<<<<< HEAD
+    // State is 6, omikuji returns
+=======
     // State is 6, omikuji bonus is added and the game should reset
+>>>>>>> ff4f5c866e2060987b6e409a9e783ae1a40fe2cf
     if (state == 6) {
         resetGame(6);
     }
 }
 
 GM.mouseClicked = function (x, y) {
-    let sound = new Audio('/static/sounds/pop.wav');
-    sound.play();
-    sound.volume = 0.2;
+    popSound.play();
+    popSound.volume = 0.2;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
     menuState(p.windowWidth, p.windowHeight, x, y);
     gameOverState(p.windowWidth, p.windowHeight, x, y);
+}
+
+GM.keyPressed = function () {
+    if (p.keyCode == 32) {
+        console.log("Space bar was pressed");
+        omikujiSound.pause();
+        stop.currentTime = 0; 
+    }
 }
