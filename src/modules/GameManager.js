@@ -18,7 +18,7 @@ const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { },
-    keyPressed: (keyCode, BACKSPACE) => { }
+    keyPressed: (keyCode, BACKSPACE, ESCAPE) => { }
 }
 
 const p = new p5(p => {
@@ -39,7 +39,7 @@ const p = new p5(p => {
     };
 
     p.keyPressed = function keyPressed(){
-        GM.keyPressed(p.keyCode, p.BACKSPACE);
+        GM.keyPressed(p.keyCode, p.BACKSPACE, p.ESCAPE);
     }
 });
 
@@ -165,11 +165,11 @@ GM.mouseClicked = function (x, y) {
     board.chooseCol(y, game.recentMoves, score);
 }
 
-GM.keyPressed = function(keyCode, BACKSPACE){
+GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
     //console.log("keyCode:", keyCode);
     // maybe this should be ESCAPE?
-    if(keyCode == BACKSPACE){ //keyCode for BACKSPACE is 8
-        console.log("BACKSPACE PRESSED");
+    if(keyCode == ESCAPE){ //keyCode for BACKSPACE is 8
+        console.log("ESCAPE PRESSED");
         // if we are dragging a card
         if(board.currentCard !== null){
             // change the visibility flag for the card
@@ -184,6 +184,10 @@ GM.keyPressed = function(keyCode, BACKSPACE){
         }
         timer.resetTimer();
 
+    }
+
+    if(keyCode == BACKSPACE){
+        console.log("BACKSPACE PRESSED");
     }
 }
 
