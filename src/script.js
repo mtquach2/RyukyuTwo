@@ -65,7 +65,6 @@ let omikujiSound = new Audio('/static/sounds/spinner.mp3');
 let gameSound = new Audio('/static/sounds/japanese_music.mp3');
 let menuSound = new Audio('/static/sounds/gong.mp3');
 let winSound = new Audio('/static/sounds/win.mp3');
-let popSound = new Audio('/static/sounds/pop.wav');
 let gameOverSound = new Audio('/static/sounds/gameover.mp3');
 
 function resetGame(currentState) {
@@ -105,7 +104,7 @@ function menuState(width, height, x, y) {
             menuSound.volume = 0.5;
             menuSound.play();
     
-            gameSound.volume = 0.2;
+            gameSound.volume = 0.1;
             gameSound.loop = true;
             gameSound.play();
             p.textSize(20);
@@ -228,6 +227,7 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
+    const popSound = new Audio('/static/sounds/pop.wav');
     popSound.play();
     popSound.volume = 0.2;
     game.updateTopDisplay(x, y);

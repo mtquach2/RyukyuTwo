@@ -176,7 +176,7 @@ export class Board {
      * @param displayMap map for deck of card
      */
     clicked(px, py, displayMap) {
-        if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
+        if (py >= this.yPositions[0] && py < this.yPositions[0] + 80) {
             if (this.currentCard != null) {
                 return;
             }
