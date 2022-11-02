@@ -82,6 +82,8 @@ function resetGame(currentState) {
     else {
         state = 1;
     }
+
+    game.reShuffle();
 }
 
 function menu(width, height) {
