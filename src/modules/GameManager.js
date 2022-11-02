@@ -49,6 +49,9 @@ let board = new Board(p, timer);
 
 const game = new Game(p, board, score, timer);
 
+let boardStates = []; 
+let scoreStates = [];
+
 function resetGame(state) {
     board = new Board(p, timer);
     let bonus = 0;
@@ -130,6 +133,21 @@ function gameOver(width, height) {
     }
 }
 
+function stateSaver(){
+    if(board.cardDropped === true){ 
+        //when a card is dropped save state of whole game
+        this.boardStates.push(board);
+        this.scoreStates.push(score);
+    }
+
+    if(boardStates.length > 3){
+        boardStates.shift();
+    }
+    if(scoreStates.length > 3){
+        scoreStates.shift();
+    }
+}
+
 
 GM.setup = function () {
     game.splitCards();
@@ -168,7 +186,7 @@ GM.mouseClicked = function (x, y) {
 GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
     //console.log("keyCode:", keyCode);
     // maybe this should be ESCAPE?
-    if(keyCode == ESCAPE){ //keyCode for BACKSPACE is 8
+    if(keyCode === ESCAPE){ 
         console.log("ESCAPE PRESSED");
         // if we are dragging a card
         if(board.currentCard !== null){
@@ -186,8 +204,10 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
 
     }
 
-    if(keyCode == BACKSPACE){
+    if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
+        game.board = boardStates.slice(-1);
+        game.score = scoreStates.slice(-1);
     }
 }
 

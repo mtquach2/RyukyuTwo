@@ -20,6 +20,7 @@ export class Board {
         this.cardPlaced = false;
         this.cardSelected = false;
         this.columnSelected = false;
+        this.cardDropped = false;
 
         this.jpFont;
     }
@@ -246,6 +247,7 @@ export class Board {
                     if (this.timer.seconds !== 0) {
                         this.addCard(this.col, this.currentCard, score);
                         // this.currentCard.loc = "B";
+                        this.cardDropped = true;
                         recentMoves.push(this.currentCard);
                         console.log("RECENT MOVES: ", recentMoves);
                         this.movesUpdate(recentMoves);
