@@ -105,7 +105,7 @@ function menuState(width, height, x, y) {
             menuSound.volume = 0.5;
             menuSound.play();
     
-            gameSound.volume = 0.5;
+            gameSound.volume = 0.2;
             gameSound.loop = true;
             gameSound.play();
             p.textSize(20);
@@ -220,7 +220,7 @@ GM.draw = function (width, height) {
     if (state == 5) {
         win();
     }
-    
+
     // State is 6, omikuji bonus is added and the game should reset
     if (state == 6) {
         resetGame(6);
