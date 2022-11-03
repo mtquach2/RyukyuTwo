@@ -6,6 +6,7 @@ export class Omikuji {
         this.selected = false;
         this.frameDelay = 300;
 
+        this.jpFont;
         this.omikujiValues = Array.from({ length: 16 }, () => Math.round((Math.random() * 2000) / 500) * 500);
         this.omikujiTable = {
             0: "凶",
@@ -21,6 +22,10 @@ export class Omikuji {
             "吉": "Blessing,\n+1500 bonus points",
             "大吉": "Great Blessing,\n+2000 bonus points",
         };
+    }
+
+    loadJPFont() {
+        this.jpFont = this.p5.loadFont("../../static/BestTen-DOT.otf");
     }
 
     renderTitle(width, height, scaleX, scaleY) {
@@ -68,6 +73,7 @@ export class Omikuji {
     }
 
     omikuji(level, width, height, scaleX, scaleY) {
+        this.p5.textFont(this.jpFont);
         this.renderTitle(width, height, scaleX, scaleY);
         this.renderBoxes(width, height, scaleX, scaleY);
 

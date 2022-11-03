@@ -186,6 +186,7 @@ function win() {
 
 GM.setup = function () {
     game.splitCards();
+    omikuji.loadJPFont();
 }
 
 GM.draw = function (width, height) {
