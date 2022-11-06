@@ -197,7 +197,7 @@ export class Game {
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
 	timerTrigger() {
-		if (this.board.cardPlaced == true) {
+		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;

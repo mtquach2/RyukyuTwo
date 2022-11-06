@@ -191,6 +191,20 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
         game.board = game.boardStates.slice(-1);
         game.score = game.scoreStates.slice(-1);
         game.displayMap = game.mapStates.slice(-1);
+
+        game.play(game.width, game.height);
+        // game.score.render(game.width, game.height);
+
+		// game.board.render(allCards, game.width, game.height);
+		// game.board.displayCards(allCards, width, height);
+		// game.board.displayCard(this.mouseWasClicked, width, height);
+		// game.board.renderInstructions(width, height);
+
+		// this.cancelDisplay(width, height);
+
+		// this.timer.drawTimer(width, height);
+		// this.timerTrigger();
+		// this.timer.drawSeconds(width, height);
     }
 }
 
