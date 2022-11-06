@@ -49,9 +49,6 @@ let board = new Board(p, timer);
 
 const game = new Game(p, board, score, timer);
 
-let boardStates = []; 
-let scoreStates = [];
-
 function resetGame(state) {
     board = new Board(p, timer);
     let bonus = 0;
@@ -133,21 +130,6 @@ function gameOver(width, height) {
     }
 }
 
-function stateSaver(){
-    if(board.cardDropped === true){ 
-        //when a card is dropped save state of whole game
-        this.boardStates.push(board);
-        this.scoreStates.push(score);
-    }
-
-    if(boardStates.length > 3){
-        boardStates.shift();
-    }
-    if(scoreStates.length > 3){
-        scoreStates.shift();
-    }
-}
-
 
 GM.setup = function () {
     game.splitCards();
@@ -180,7 +162,7 @@ GM.draw = function (width, height) {
 
 GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
-    board.chooseCol(y, game.recentMoves, score);
+    board.chooseCol(y, score);
 }
 
 GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
@@ -206,8 +188,9 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
 
     if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
-        game.board = boardStates.slice(-1);
-        game.score = scoreStates.slice(-1);
+        game.board = game.boardStates.slice(-1);
+        game.score = game.scoreStates.slice(-1);
+        game.displayMap = game.mapStates.slice(-1);
     }
 }
 

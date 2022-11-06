@@ -17,6 +17,9 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
+		this.boardStates = []; 
+		this.scoreStates = [];
+		this.mapStates = [];
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
@@ -73,6 +76,25 @@ export class Game {
 				this.state = 3;
 			}
 		}	
+	}
+
+	stateSaver(){
+		this.boardStates.push(this.board);
+		this.scoreStates.push(this.score);
+		this.mapStates.push(this.displayMap);
+	
+		if(this.boardStates.length > 3){
+			this.boardStates.shift();
+		}
+		if(this.scoreStates.length > 3){
+			this.scoreStates.shift();
+		}
+		if(this.mapStates.length > 3){
+			this.mapStates.shift();
+		}
+
+		console.log("In stateSaver");
+		console.log("BOARD:", this.board);
 	}
 
 	intToKanji(number) {
@@ -176,6 +198,7 @@ export class Game {
 	 */
 	timerTrigger() {
 		if (this.board.cardPlaced == true) {
+			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
@@ -184,9 +207,10 @@ export class Game {
 				if(this.board.addCard(i, this.board.currentCard) != -1){
 					console.log("CARD SELECTD BUT NOT COLUMN");
 					//this.board.currentCard.loc = "B";
-					this.recentMoves.push(this.board.currentCard);
-					console.log(this.recentMoves);
-					this.board.movesUpdate(this.recentMoves);
+					// this.recentMoves.push(this.board.currentCard);
+					// console.log(this.recentMoves);
+					// this.board.movesUpdate(this.recentMoves);
+					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
 					this.board.columnSelected = false;
@@ -201,10 +225,11 @@ export class Game {
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
 						console.log("CARD DROPPED FROM TOP DECK");
+						this.stateSaver();
 						//this.board.currentCard.loc = "B";
-						this.recentMoves.push(firstCard);
-						console.log(this.recentMoves);
-						this.board.movesUpdate(this.recentMoves);
+						// this.recentMoves.push(firstCard);
+						// console.log(this.recentMoves);
+						// this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}

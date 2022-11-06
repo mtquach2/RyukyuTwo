@@ -20,7 +20,7 @@ export class Board {
         this.cardPlaced = false;
         this.cardSelected = false;
         this.columnSelected = false;
-        this.cardDropped = false;
+        //this.cardDropped = false;
 
         this.jpFont;
     }
@@ -230,9 +230,9 @@ export class Board {
      * @param py mouse's y-axis 
      * @param recentMoves data structure that stores the last 3 recent moves
      * @param score score object to update
-     */
+     */ 
 
-    chooseCol(py, recentMoves, score) {
+    chooseCol(py, score) {
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (this.p.mouseX >= this.boardX + (col + 1) * 65 && this.p.mouseX < this.boardX + (col + 2) * 65) {
@@ -247,10 +247,10 @@ export class Board {
                     if (this.timer.seconds !== 0) {
                         this.addCard(this.col, this.currentCard, score);
                         // this.currentCard.loc = "B";
-                        this.cardDropped = true;
-                        recentMoves.push(this.currentCard);
-                        console.log("RECENT MOVES: ", recentMoves);
-                        this.movesUpdate(recentMoves);
+                        //this.cardDropped = true;
+                        //recentMoves.push(this.currentCard);
+                        //console.log("RECENT MOVES: ", recentMoves);
+                        //this.movesUpdate(recentMoves);
                         this.cardPlaced = true;
                         this.currentCard = null;
                         this.counts[this.draggingColumn] -= 1
