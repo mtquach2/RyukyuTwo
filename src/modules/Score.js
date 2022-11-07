@@ -1,3 +1,6 @@
+import { db } from '/src/FB';
+import { addDoc, collection, setDoc } from "firebase/firestore";
+
 export class Score {
     constructor(p5) {
         this.p5 = p5
@@ -15,7 +18,7 @@ export class Score {
             '3K': 800,
             '2P': 600,
             '1P': 200,
-            'H': 0,
+            'H': 5000,
         }
 
         this.scaleX = 1;
@@ -35,6 +38,7 @@ export class Score {
 
     setClearPoint(level, bonus) {
         this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
+        console.log(this.clearPoint);
     }
 
     render(w, h, scaleX, scaleY) {
@@ -111,8 +115,18 @@ export class Score {
         this.currentScore += this.ranks[rank];
     }
 
-    updateTotalScore() {
+    async updateTotalScore() {
         this.totalScore += this.currentScore;
+        try {
+            const docRef = await addDoc(collection(db, "Leaderboard"), {
+                description: 'Total Score',
+                score: this.totalScore
+            });
+          
+            console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
     }
 
     getScore() {
