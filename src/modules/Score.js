@@ -18,7 +18,7 @@ export class Score {
             '3K': 800,
             '2P': 600,
             '1P': 200,
-            'H': 5000,
+            'H': 0,
         }
 
         this.scaleX = 1;
