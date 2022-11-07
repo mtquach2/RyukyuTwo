@@ -154,6 +154,15 @@ export class Game {
 	}
 
 	/**
+	 * Shuffles the deck for a reset
+	*/
+	reShuffle() {
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
+		}
+	}
+
+	/**
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
 	timerTrigger() { //TODO clean up 
