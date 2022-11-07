@@ -188,23 +188,34 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
 
     if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
-        game.board = game.boardStates.slice(-1);
-        game.score = game.scoreStates.slice(-1);
-        game.displayMap = game.mapStates.slice(-1);
+        // game.board = game.boardStates.slice(-1);
+        // game.score = game.scoreStates.slice(-1);
+        // game.displayMap = game.mapStates.slice(-1);
 
-        game.play(game.width, game.height);
-        // game.score.render(game.width, game.height);
+        // game.play(game.width, game.height);
+        console.log("BOARD BEFORE CHANGE:", game.board);
+        game.board = game.boardStates.slice(-1)[0]; //returns array
+        console.log("BOARD AFTER CHANGE:", game.board);
+        console.log("SCORE BEFORE CHANGE:", game.score);
+        game.score = game.scoreStates.slice(-1)[0];
+        console.log("SCORE AFTER CHANGE:", game.score);
+        console.log("DISPLAYMAP BEFORE CHANGE:", game.displayMap);
+        let displayMapCopy = game.mapStates.slice(-1)[0];
+        game.displayMap = displayMapCopy;
+        console.log("DISPLAYMAP AFTER CHANGE:", game.displayMap);
 
-		// game.board.render(allCards, game.width, game.height);
-		// game.board.displayCards(allCards, width, height);
-		// game.board.displayCard(this.mouseWasClicked, width, height);
-		// game.board.renderInstructions(width, height);
+        // game.this.score.render(game.width, game.height);
 
-		// this.cancelDisplay(width, height);
+	    // game.board.render(displayMapCopy, game.width, game.height);
+		// game.board.displayCards(displayMapCopy, game.width, game.height);
+		// game.board.displayCard(game.mouseWasClicked, game.width, game.height);
+		// game.board.renderInstructions(game.width, game.height);
 
-		// this.timer.drawTimer(width, height);
-		// this.timerTrigger();
-		// this.timer.drawSeconds(width, height);
+	    // game.cancelDisplay(game.width, game.height);
+
+		// game.timer.drawTimer(game.width, game.height);
+		// game.timerTrigger();
+		// game.timer.drawSeconds(game.width, game.height);
     }
 }
 

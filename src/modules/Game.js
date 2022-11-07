@@ -80,7 +80,9 @@ export class Game {
 
 	stateSaver(){
 		this.boardStates.push(this.board);
+		console.log("STATE SAVER BOARD:", this.boardStates);
 		this.scoreStates.push(this.score);
+		
 		this.mapStates.push(this.displayMap);
 	
 		if(this.boardStates.length > 3){
@@ -92,9 +94,6 @@ export class Game {
 		if(this.mapStates.length > 3){
 			this.mapStates.shift();
 		}
-
-		console.log("In stateSaver");
-		console.log("BOARD:", this.board);
 	}
 
 	intToKanji(number) {
@@ -178,6 +177,7 @@ export class Game {
 	 * Assign the column numbers to each card after it is splitted 
 	 */
 	assignColumn() {
+		//don't need
 		for(let i = 0; i < 4; i++){
 			for(let x = 0; x < 13; x++){
 				if(this.displayMap.get(i).length != 0){
