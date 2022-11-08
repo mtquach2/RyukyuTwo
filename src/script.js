@@ -122,15 +122,25 @@ function gameOver(width, height) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width / 2, height - height / 5, 150, 100);
 
+    //Displays leaderboard
+    p.textSize(42);
+    p.text("LEADERBOARD", width / 3 + width / 10, height / 10);
+    var data = score.getDataframe();
+    p.textSize(24);
+    for (let i = 0; i < data.length; i++) { // TODO: getDataframe() not working because of async???
+        console.log("HERE");
+        p.text("HERE", width / 3 + width / 10, height / 2);
+        p.text(data[i], width / 3 + width / 10, height / 20 + (i + 1) * 30);
+    }
+
+    // Displays main menu button
+    p.rect(width / 2, height - height / 5, 150, 100);
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
     p.textSize(24);
     p.text("MAIN MENU", width / 2, height - height / 7);
 
-    // var user = p.createInput();
-    // score.addLeaderboad(user);
 }
 
 function gameOverState(width, height, x, y) {
@@ -168,6 +178,10 @@ function continueScreenStates(width, height, x, y) {
     if (state == 2) {
         if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If NO button is clicked, game over
+            var user = prompt("Enter Name: ");
+            if (user != null) {
+                score.addLeaderboad(user);
+            }
             state = 4;
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
@@ -200,8 +214,7 @@ GM.draw = function (width, height) {
 
     // State is 0, main menu
     if (state == 0) {
-        // menu(width, height);
-        gameOver(width, height);
+        menu(width, height);
     }
 
     // State is 1, play game

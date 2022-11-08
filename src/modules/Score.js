@@ -1,5 +1,5 @@
 import { db } from '/src/FB';
-import { addDoc, collection, setDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 export class Score {
     constructor(p5) {
@@ -148,6 +148,7 @@ export class Score {
     }
 
     async addLeaderboad(name) {
+        // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 description: 'Total Score',
@@ -160,4 +161,15 @@ export class Score {
             console.error("Error adding document: ", e);
           }
     }
+
+    async getDataframe() {
+        // Retrieves all of the leaderboard data and adds it to an array
+        var data = [];
+        const querySnapshot = await getDocs(collection(db, "Leaderboard"));
+        querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+        });
+        data.sort(function(a, b){return b - a});
+        return data;
+    } 
 }
