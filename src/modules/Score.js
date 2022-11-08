@@ -149,6 +149,7 @@ export class Score {
 
     async addLeaderboad(name) {
         // Adds the username and their final score to the database
+        // TODO: Add check to make sure name is not null before adding to database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 description: 'Total Score',
