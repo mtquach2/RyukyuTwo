@@ -1,5 +1,4 @@
 import p5 from 'p5';
-// import { app } from '/src/FB'; THIS IS THE IMPORT WE WILL USE FOR FIREBASE
 import { Board } from '../src/modules/Board';
 import { Timer } from '../src/modules/Timer';
 import { Score } from '../src/modules/Score';
@@ -118,21 +117,27 @@ function menuState(width, height, x, y) {
 
 function gameOver(width, height) {
     // TODO: Implement a game over screen
+    gameSound.pause();
+    gameSound.currentTime = 0;
+
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width / 3, height / 3, 400, 400);
+    p.rect(width / 2, height - height / 5, 150, 100);
 
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
-    p.textSize(64);
-    p.text("GAME OVER, CLICK TO MENU", width / 3, height / 3, 400, 400);
+    p.textSize(24);
+    p.text("MAIN MENU", width / 2, height - height / 7);
+
+    // var user = p.createInput();
+    // score.addLeaderboad(user);
 }
 
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
         gameOverSound.play();
-        if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
+        if (width / 2 < x && x < width / 2 + 150 && (height - height / 5) < y && y < (height - height / 5) + 100) {
             // Goes to main menu if button is clicked
             p.textSize(20);
             resetGame(4); // TODO: Code automatically skips to resetting game instead of displaying gameOver screen
@@ -195,7 +200,8 @@ GM.draw = function (width, height) {
 
     // State is 0, main menu
     if (state == 0) {
-        menu(width, height);
+        // menu(width, height);
+        gameOver(width, height);
     }
 
     // State is 1, play game

@@ -115,18 +115,8 @@ export class Score {
         this.currentScore += this.ranks[rank];
     }
 
-    async updateTotalScore() {
+    updateTotalScore() {
         this.totalScore += this.currentScore;
-        try {
-            const docRef = await addDoc(collection(db, "Leaderboard"), {
-                description: 'Total Score',
-                score: this.totalScore
-            });
-          
-            console.log("Document written with ID: ", docRef.id);
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
     }
 
     getScore() {
@@ -155,5 +145,19 @@ export class Score {
         this.currentScore = 0;
         this.pointsMap = new Map();
         this.fillScoreTable();
+    }
+
+    async addLeaderboad(name) {
+        try {
+            const docRef = await addDoc(collection(db, "Leaderboard"), {
+                description: 'Total Score',
+                name: name,
+                score: this.totalScore
+            });
+          
+            console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
     }
 }
