@@ -127,6 +127,7 @@ function gameOver(width, height) {
     p.textSize(42);
     p.text("LEADERBOARD", width / 3 + width / 10, height / 10);
     score.renderLeaderboard();
+    
     // Displays main menu button
     p.rect(width / 2, height - height / 5, 150, 100);
     p.stroke(0, 0, 0);

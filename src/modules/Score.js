@@ -169,8 +169,6 @@ export class Score {
         querySnapshot.forEach((doc) => {
             this.data.push(doc.data());
         });
-        
-        console.log(this.data);
     } 
 
     renderLeaderboard() {
