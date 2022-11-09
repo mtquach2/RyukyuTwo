@@ -143,6 +143,7 @@ export class Score {
 
     resetScore() {
         this.currentScore = 0;
+        this.totalScore = 0;
         this.pointsMap = new Map();
         this.fillScoreTable();
     }
@@ -179,5 +180,5 @@ export class Score {
             }
             this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
         }
-    }
+    } // TODO: Check for duplicates in dataframe
 }
