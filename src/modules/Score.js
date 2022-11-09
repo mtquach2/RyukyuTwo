@@ -28,6 +28,7 @@ export class Score {
 
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
+        this.data = [];
     }
 
 
@@ -38,7 +39,6 @@ export class Score {
 
     setClearPoint(level, bonus) {
         this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
-        console.log(this.clearPoint);
     }
 
     render(w, h, scaleX, scaleY) {
@@ -152,7 +152,6 @@ export class Score {
         // TODO: Add check to make sure name is not null before adding to database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
-                description: 'Total Score',
                 name: name,
                 score: this.totalScore
             });
@@ -165,12 +164,30 @@ export class Score {
 
     async getDataframe() {
         // Retrieves all of the leaderboard data and adds it to an array
-        var data = [];
         const querySnapshot = await getDocs(collection(db, "Leaderboard"));
+
         querySnapshot.forEach((doc) => {
-            data.push(doc.data());
+            this.data.push(doc.data());
         });
-        data.sort(function(a, b){return b - a});
-        return data;
+        this.sortData();
     } 
+
+    sortData() {
+        var items = Object.keys(this.data).map(
+            (key) => { return [key, this.data[key]]});
+        items.sort(
+            (first, second) => { console.log(second[1]); return second[1] - first[1] }
+        );
+        console.log(items);
+    }
+
+    renderLeaderboard() {
+        for (let i = 0; i < this.data.length; i++) { 
+            //change to only display first 10 of the leaderboard 
+            if (i == 10) {
+                break;
+            }
+            this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
+        }
+    }
 }

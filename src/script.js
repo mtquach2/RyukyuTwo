@@ -126,14 +126,7 @@ function gameOver(width, height) {
     //Displays leaderboard
     p.textSize(42);
     p.text("LEADERBOARD", width / 3 + width / 10, height / 10);
-    var data = score.getDataframe();
-    p.textSize(24);
-    for (let i = 0; i < data.length; i++) { // TODO: getDataframe() not working because of async???
-        console.log("HERE");
-        p.text("HERE", width / 3 + width / 10, height / 2);
-        p.text(data[i], width / 3 + width / 10, height / 20 + (i + 1) * 30);
-    }
-
+    score.renderLeaderboard();
     // Displays main menu button
     p.rect(width / 2, height - height / 5, 150, 100);
     p.stroke(0, 0, 0);
@@ -149,8 +142,10 @@ function gameOverState(width, height, x, y) {
         gameOverSound.play();
         if (width / 2 < x && x < width / 2 + 150 && (height - height / 5) < y && y < (height - height / 5) + 100) {
             // Goes to main menu if button is clicked
+            gameOverSound.pause();
+            gameOverSound.currentTime = 0;
             p.textSize(20);
-            resetGame(4); // TODO: Code automatically skips to resetting game instead of displaying gameOver screen
+            resetGame(4);
         }
     }
 }
@@ -181,6 +176,7 @@ function continueScreenStates(width, height, x, y) {
             var user = prompt("Enter Name: ");
             if (user != null) {
                 score.addLeaderboad(user);
+                score.getDataframe();
             }
             state = 4;
         }
@@ -200,6 +196,7 @@ function win() {
     winSound.play();
     game.level++;
     score.updateTotalScore();
+    score.setClearPoint(game.level, 0);
     resetGame(5);
 }
 
@@ -215,6 +212,7 @@ GM.draw = function (width, height) {
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
+        // gameOver(width, height);
     }
 
     // State is 1, play game
