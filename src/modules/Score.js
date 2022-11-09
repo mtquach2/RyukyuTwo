@@ -38,7 +38,7 @@ export class Score {
     }
 
     setClearPoint(level, bonus) {
-        this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
+        this.clearPoint = 5000 + (1000 * (level - 1)) - bonus;
     }
 
     render(w, h, scaleX, scaleY) {
