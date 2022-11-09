@@ -1,5 +1,5 @@
 import { db } from '/src/FB';
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 
 export class Score {
     constructor(p5) {
@@ -149,7 +149,6 @@ export class Score {
 
     async addLeaderboad(name) {
         // Adds the username and their final score to the database
-        // TODO: Add check to make sure name is not null before adding to database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 name: name,
@@ -164,26 +163,19 @@ export class Score {
 
     async getDataframe() {
         // Retrieves all of the leaderboard data and adds it to an array
-        const querySnapshot = await getDocs(collection(db, "Leaderboard"));
-
+        const df = collection(db, "Leaderboard");
+        const sortedQueries = query(df, orderBy("score", "desc")); //sorts the data in descending order by score
+        const querySnapshot = await getDocs(sortedQueries);
         querySnapshot.forEach((doc) => {
             this.data.push(doc.data());
         });
-        this.sortData();
+        
+        console.log(this.data);
     } 
 
-    sortData() {
-        var items = Object.keys(this.data).map(
-            (key) => { return [key, this.data[key]]});
-        items.sort(
-            (first, second) => { console.log(second[1]); return second[1] - first[1] }
-        );
-        console.log(items);
-    }
-
     renderLeaderboard() {
+        // Renders all of the names and scores for the leaderboard on gameOver screen
         for (let i = 0; i < this.data.length; i++) { 
-            //change to only display first 10 of the leaderboard 
             if (i == 10) {
                 break;
             }
