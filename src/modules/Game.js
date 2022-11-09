@@ -17,9 +17,11 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
-		this.boardStates = []; 
-		this.scoreStates = [];
-		this.mapStates = [];
+		// this.boardStates = []; 
+		// this.scoreStates = [];
+		//this.mapStates = [];
+		this.gameStateSaver = [];
+
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
@@ -79,21 +81,42 @@ export class Game {
 	}
 
 	stateSaver(){
-		this.boardStates.push(this.board);
-		console.log("STATE SAVER BOARD:", this.boardStates);
-		this.scoreStates.push(this.score);
+		// let boardCopy = this.board
+		// this.boardStates.push(boardCopy);
+		// //const clone = _.cloneDeep(this.board);
+		// const clone = structuredClone(this.board);
+		// this.boardStates.push(clone);
+		// //console.log("STATE SAVER BOARD:", this.boardStates);
+		// this.scoreStates.push(this.score);
 		
-		this.mapStates.push(this.displayMap);
+		// this.mapStates.push(this.displayMap);
+
+		let currBoard = this.board.boardCols.map(r => {
+			return r.hand.map(c => {
+				return `${c.value}${c.suit}`
+			})
+		})
+
+		const gameState = {
+			//score : this.score.currentScore,
+			board : currBoard, 
+		}
+
+		this.gameStateSaver.push(gameState);
+
+		if(this.gameStateSaver.length > 3){
+			this.gameStateSaver.shift();
+		}
 	
-		if(this.boardStates.length > 3){
-			this.boardStates.shift();
-		}
-		if(this.scoreStates.length > 3){
-			this.scoreStates.shift();
-		}
-		if(this.mapStates.length > 3){
-			this.mapStates.shift();
-		}
+		// if(this.boardStates.length > 3){
+		// 	this.boardStates.shift();
+		// }
+		// if(this.scoreStates.length > 3){
+		// 	this.scoreStates.shift();
+		// }
+		// if(this.mapStates.length > 3){
+		// 	this.mapStates.shift();
+		// }
 	}
 
 	intToKanji(number) {
@@ -182,7 +205,6 @@ export class Game {
 			for(let x = 0; x < 13; x++){
 				if(this.displayMap.get(i).length != 0){
 					let colDeck = this.displayMap.get(i);
-					console.log("COL DECK:", colDeck[x])
 					if(!(colDeck == null)){
 						colDeck[x].col = i; //to match the number with counts[]
 					}
