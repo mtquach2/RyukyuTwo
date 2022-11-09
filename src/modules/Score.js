@@ -28,7 +28,7 @@ export class Score {
 
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
-        this.data = [];
+        this.data = new Set();
     }
 
 
@@ -38,7 +38,7 @@ export class Score {
     }
 
     setClearPoint(level, bonus) {
-        this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
+        this.clearPoint = 5000 + (1000 * (level - 1)) - bonus;
     }
 
     render(w, h, scaleX, scaleY) {
@@ -168,7 +168,7 @@ export class Score {
         const sortedQueries = query(df, orderBy("score", "desc")); //sorts the data in descending order by score
         const querySnapshot = await getDocs(sortedQueries);
         querySnapshot.forEach((doc) => {
-            this.data.push(doc.data());
+            this.data.add(doc.data());
         });
     } 
 
