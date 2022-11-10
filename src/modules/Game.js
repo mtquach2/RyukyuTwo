@@ -81,6 +81,7 @@ export class Game {
 	}
 
 	stateSaver(){
+		//console.log("DECK:", this.deck)
 		// let boardCopy = this.board
 		// this.boardStates.push(boardCopy);
 		// //const clone = _.cloneDeep(this.board);

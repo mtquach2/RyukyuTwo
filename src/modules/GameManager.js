@@ -191,6 +191,8 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
         console.log("BACKSPACE PRESSED");
 
         let temp = game.gameStateSaver.slice(-1)[0];
+        board.updateHands(temp, game.deck);
+        //console.log("TEMP:", temp);
         console.log("ARRAY:", temp.board);
 
 

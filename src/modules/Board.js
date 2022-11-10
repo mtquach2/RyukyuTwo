@@ -1,3 +1,4 @@
+import { Card } from './Card';
 import { Hand } from './Hand';
 
 export class Board {
@@ -281,6 +282,98 @@ export class Board {
                 }
             }
         }
+    }
+
+    updateHands(boardState, deck){
+        //console.log(this.deck);
+        console.log("ORIGINAL BOARDCOLS:", this.boardCols);
+        //empty the whole board
+        this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardDiag = [new Hand(), new Hand()];
+
+        for(var i = 0; i < boardState.board.length; i++){
+            let newHand = new Hand();
+            for(var j = 0; j < boardState.board[i].length ; j++){
+                if(boardState.board[i][j] !== ''){ //will never be not empty
+                    let value = '';
+                    let suit = '';
+                    if(boardState.board[i][j].charAt(0) === '0'){
+                        value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
+                        suit = boardState.board[i][j].charAt(2);
+                    }
+                    else{
+                        value = boardState.board[i][j].charAt(0);
+                        suit = boardState.board[i][j].charAt(1);
+                    }
+                    console.log("VALUE IS:", value);
+                    console.log("SUIT IS:", suit);
+                    let card = this.findCard(deck, suit, value);
+                    console.log("THIS IS THE CARD FOUND:", card);
+                    //newHand.hand.push(card);
+                    this.boardCols[i].addCard(card);
+                }
+
+            }
+
+            //this.boardCols[i].push(card);
+        }
+        console.log("AFTER BOARDCOLS:", this.boardCols);
+
+
+
+
+
+
+
+
+        // for(var i = 0; i < boardState.board.length; i++){
+        //     let newHand = new Hand();
+        //     for(var j = 0; j < boardState.board[i].length; j++){
+        //         //let newCard = new Card()
+        //         let value = '';
+        //         let suit = '';
+        //         if(boardState.board[i][j] !== ''){
+        //             if (boardState.board[i][j].charAt(0) === '0'){
+        //                 value += boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
+        //             }
+        //             suit = boardState.board[i][j].charAt(2);
+        //             value = value;
+        //             suit = suit; 
+        //             console.log("value:", value);
+        //             console.log("suit:", suit);
+        //         }
+        //         //newCard.img = this.p.loadImage(`../../static/cards/card_${suit}_${value}.png`);
+
+        //         console.log("CARD:",boardState.board[i][j]);
+        //         //this.boardCols[i].addCard(boardState.board[i][j])
+        //         let card = this.findCard(deck, suit, value);
+        //         newHand.hand.push(card);
+        //     }
+        //     this.boardCols[i].addCard(newHand);
+        // }
+
+        //console.log("NEW BOARD COLS:", this.boardCols);
+
+    }
+
+    findCard(deck, suit, value){
+        // console.log("LOOKING FOR VALUE:", value);
+        // console.log("LOOKING FOR SUIT:", suit);
+        let cardFound = new Card();
+        for(var i = 0; i < deck.length; i++){
+            //console.log("VALUE FROM DECK:",deck[i]);
+            let deckValue = deck[i].getValue();
+            let deckSuit = deck[i].getSuit();
+            //console.log("DECK VALUE:", deckValue);
+            if(deckValue == value && deckSuit == suit){
+                cardFound = deck[i];
+                console.log("DECK CARD:", deck[i]);
+                break;
+            }
+        }
+        console.log("CARDFOUND:", cardFound);
+        return cardFound;
     }
 
     /**
