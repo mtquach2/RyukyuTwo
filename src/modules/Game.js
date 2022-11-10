@@ -87,13 +87,22 @@ export class Game {
 			})
 		})
 
-		console.log("Current score:", this.score.currentScore);
+		//console.log("COUNTS BEFORE:", this.board.counts);
+
+		let cardDisplay = [];
+		for(var i = 0; i < 4; i++){
+			cardDisplay.push(this.board.counts[i]);
+		}
+
+		//console.log("COUNTS AFTER:", cardDisplay);
+
+
 		const gameState = {
 			score : this.score.currentScore,
 			board : currBoard, 
+			counts : cardDisplay
 		}
 
-		console.log("GAMESTATE SCORE:", gameState.score);
 		this.gameStateSaver.push(gameState);
 		//this.score.currentScore = gameState.score;
 

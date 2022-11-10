@@ -194,6 +194,9 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
         //doesn't work on consecuetive cancels
         let temp = game.gameStateSaver.slice(-2)[0];
         board.updateHands(temp, game.deck);
+        console.log("COUNTS BEFORE CHANGE:", board.counts);
+        board.updateTopDisplay(temp, game.displayMap);
+        console.log("COUNTS AFTER CHANGE:", board.counts);
         score.currentScore = temp.score;
 
         console.log("ARRAY:", temp.board);

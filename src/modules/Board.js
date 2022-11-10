@@ -258,7 +258,7 @@ export class Board {
                         this.draggingColumn = null
                         this.cardSelected = false;
                         this.columnSelected = false;
-                        console.log("COUNTS ARRAY:", this.counts);
+                        // console.log("COUNTS ARRAY:", this.counts);
                     }
                 }
             }
@@ -315,12 +315,13 @@ export class Board {
 
             }
         }
-        
+
         
         console.log("AFTER BOARDCOLS:", this.boardCols);
     }
 
     updateTopDisplay(displayState, displayMap){
+        this.counts = displayState.counts;
 
     }
 
