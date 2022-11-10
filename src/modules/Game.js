@@ -81,31 +81,23 @@ export class Game {
 	}
 
 	stateSaver(){
-		//console.log("DECK:", this.deck)
-		// let boardCopy = this.board
-		// this.boardStates.push(boardCopy);
-		// //const clone = _.cloneDeep(this.board);
-		// const clone = structuredClone(this.board);
-		// this.boardStates.push(clone);
-		// //console.log("STATE SAVER BOARD:", this.boardStates);
-		// this.scoreStates.push(this.score);
-		
-		// this.mapStates.push(this.displayMap);
-
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
 				return `${c.value}${c.suit}`
 			})
 		})
 
+		console.log("Current score:", this.score.currentScore);
 		const gameState = {
-			//score : this.score.currentScore,
+			score : this.score.currentScore,
 			board : currBoard, 
 		}
 
+		console.log("GAMESTATE SCORE:", gameState.score);
 		this.gameStateSaver.push(gameState);
+		//this.score.currentScore = gameState.score;
 
-		if(this.gameStateSaver.length > 3){
+		if(this.gameStateSaver.length > 4){
 			this.gameStateSaver.shift();
 		}
 	

@@ -190,41 +190,13 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
     if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
 
-        let temp = game.gameStateSaver.slice(-1)[0];
+        //if not clicking any card go back two "states", going back 1 will just return to latest card drop
+        //doesn't work on consecuetive cancels
+        let temp = game.gameStateSaver.slice(-2)[0];
         board.updateHands(temp, game.deck);
-        //console.log("TEMP:", temp);
+        score.currentScore = temp.score;
+
         console.log("ARRAY:", temp.board);
-
-
-        // game.board = game.boardStates.slice(-1);
-        // game.score = game.scoreStates.slice(-1);
-        // game.displayMap = game.mapStates.slice(-1);
-
-        // game.play(game.width, game.height);
-        // console.log("BOARD BEFORE CHANGE:", game.board);
-        // const b = game.boardStates.slice(-1)[0]; //returns array
-        // game.board = game.boardStates.slice(-1)[0];
-        // console.log("BOARD AFTER CHANGE:", game.board);
-        // console.log("SCORE BEFORE CHANGE:", game.score);
-        // game.score = game.scoreStates.slice(-1)[0];
-        // console.log("SCORE AFTER CHANGE:", game.score);
-        // console.log("DISPLAYMAP BEFORE CHANGE:", game.displayMap);
-        // let displayMapCopy = game.mapStates.slice(-1)[0];
-        // game.displayMap = displayMapCopy;
-        // console.log("DISPLAYMAP AFTER CHANGE:", game.displayMap);
-
-        // game.this.score.render(game.width, game.height);
-
-	    // game.board.render(displayMapCopy, game.width, game.height);
-		// game.board.displayCards(displayMapCopy, game.width, game.height);
-		// game.board.displayCard(game.mouseWasClicked, game.width, game.height);
-		// game.board.renderInstructions(game.width, game.height);
-
-	    // game.cancelDisplay(game.width, game.height);
-
-		// game.timer.drawTimer(game.width, game.height);
-		// game.timerTrigger();
-		// game.timer.drawSeconds(game.width, game.height);
     }
 }
 

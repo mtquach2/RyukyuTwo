@@ -258,6 +258,7 @@ export class Board {
                         this.draggingColumn = null
                         this.cardSelected = false;
                         this.columnSelected = false;
+                        console.log("COUNTS ARRAY:", this.counts);
                     }
                 }
             }
@@ -293,7 +294,6 @@ export class Board {
         this.boardDiag = [new Hand(), new Hand()];
 
         for(var i = 0; i < boardState.board.length; i++){
-            let newHand = new Hand();
             for(var j = 0; j < boardState.board[i].length ; j++){
                 if(boardState.board[i][j] !== ''){ //will never be not empty
                     let value = '';
@@ -306,54 +306,21 @@ export class Board {
                         value = boardState.board[i][j].charAt(0);
                         suit = boardState.board[i][j].charAt(1);
                     }
-                    console.log("VALUE IS:", value);
-                    console.log("SUIT IS:", suit);
+                    //console.log("VALUE IS:", value);
+                    //console.log("SUIT IS:", suit);
                     let card = this.findCard(deck, suit, value);
                     console.log("THIS IS THE CARD FOUND:", card);
-                    //newHand.hand.push(card);
                     this.boardCols[i].addCard(card);
                 }
 
             }
-
-            //this.boardCols[i].push(card);
         }
+        
+        
         console.log("AFTER BOARDCOLS:", this.boardCols);
+    }
 
-
-
-
-
-
-
-
-        // for(var i = 0; i < boardState.board.length; i++){
-        //     let newHand = new Hand();
-        //     for(var j = 0; j < boardState.board[i].length; j++){
-        //         //let newCard = new Card()
-        //         let value = '';
-        //         let suit = '';
-        //         if(boardState.board[i][j] !== ''){
-        //             if (boardState.board[i][j].charAt(0) === '0'){
-        //                 value += boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
-        //             }
-        //             suit = boardState.board[i][j].charAt(2);
-        //             value = value;
-        //             suit = suit; 
-        //             console.log("value:", value);
-        //             console.log("suit:", suit);
-        //         }
-        //         //newCard.img = this.p.loadImage(`../../static/cards/card_${suit}_${value}.png`);
-
-        //         console.log("CARD:",boardState.board[i][j]);
-        //         //this.boardCols[i].addCard(boardState.board[i][j])
-        //         let card = this.findCard(deck, suit, value);
-        //         newHand.hand.push(card);
-        //     }
-        //     this.boardCols[i].addCard(newHand);
-        // }
-
-        //console.log("NEW BOARD COLS:", this.boardCols);
+    updateTopDisplay(displayState, displayMap){
 
     }
 
