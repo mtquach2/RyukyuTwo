@@ -1,3 +1,6 @@
+import { db } from '/src/FB';
+import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+
 export class Score {
     constructor(p5) {
         this.p5 = p5
@@ -25,6 +28,7 @@ export class Score {
 
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
+        this.data = [];
     }
 
 
@@ -34,7 +38,7 @@ export class Score {
     }
 
     setClearPoint(level, bonus) {
-        this.clearPoint = this.clearPoint + (1000 * (level - 1)) - bonus;
+        this.clearPoint = 5000 + (1000 * (level - 1)) - bonus;
     }
 
     render(w, h, scaleX, scaleY) {
@@ -141,5 +145,43 @@ export class Score {
         this.currentScore = 0;
         this.pointsMap = new Map();
         this.fillScoreTable();
+    }
+
+    async addLeaderboad(name) {
+        // Adds the username and their final score to the database
+        try {
+            const docRef = await addDoc(collection(db, "Leaderboard"), {
+                name: name,
+                score: this.totalScore
+            });
+          
+            console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+    }
+
+    async getDataframe() {
+        // Retrieves all of the leaderboard data and adds it to an array
+        const df = collection(db, "Leaderboard");
+        const sortedQueries = query(df, orderBy("score", "desc")); //sorts the data in descending order by score
+        const querySnapshot = await getDocs(sortedQueries);
+        querySnapshot.forEach((doc) => {
+            this.data.push(doc.data());
+        });
+    } 
+
+    renderLeaderboard() {
+        // Renders all of the names and scores for the leaderboard on gameOver screen
+        for (let i = 0; i < this.data.length; i++) { 
+            if (i == 10) {
+                break;
+            }
+            this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
+        }
+    }
+
+    resetTotalScore() {
+        this.totalScore = 0;
     }
 }

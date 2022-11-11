@@ -1,5 +1,4 @@
 import p5 from 'p5';
-// import { app } from '/src/FB'; THIS IS THE IMPORT WE WILL USE FOR FIREBASE
 import { Board } from '../src/modules/Board';
 import { Timer } from '../src/modules/Timer';
 import { Score } from '../src/modules/Score';
@@ -77,6 +76,8 @@ function resetGame(currentState) {
 
     if (currentState == 4) {
         score.setClearPoint(1, 0);
+        score.resetTotalScore();
+        game.resetLevel();
         state = 0;
     }
     else {
@@ -103,7 +104,7 @@ function menuState(width, height, x, y) {
     if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
-            menuSound.volume = 0.5;
+            menuSound.volume = 0.3;
             menuSound.play();
     
             gameSound.volume = 0.1;
@@ -118,24 +119,37 @@ function menuState(width, height, x, y) {
 
 function gameOver(width, height) {
     // TODO: Implement a game over screen
+    gameSound.pause();
+    gameSound.currentTime = 0;
+
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width / 3, height / 3, 400, 400);
 
+    //Displays leaderboard
+    p.textSize(42);
+    p.text("LEADERBOARD", width / 3 + width / 10, height / 10);
+    score.renderLeaderboard();
+
+    // Displays main menu button
+    p.rect(width / 2, height - height / 5, 150, 100);
     p.stroke(0, 0, 0);
     p.fill(0, 0, 0);
-    p.textSize(64);
-    p.text("GAME OVER, CLICK TO MENU", width / 3, height / 3, 400, 400);
+    p.textSize(24);
+    p.text("MAIN MENU", width / 2, height - height / 7);
+
 }
 
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
+        gameOverSound.volume = 0.5;
         gameOverSound.play();
-        if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 400) {
+        if (width / 2 < x && x < width / 2 + 150 && (height - height / 5) < y && y < (height - height / 5) + 100) {
             // Goes to main menu if button is clicked
+            gameOverSound.pause();
+            gameOverSound.currentTime = 0;
             p.textSize(20);
-            resetGame(4); // TODO: Code automatically skips to resetting game instead of displaying gameOver screen
+            resetGame(4);
         }
     }
 }
@@ -163,6 +177,11 @@ function continueScreenStates(width, height, x, y) {
     if (state == 2) {
         if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
             // If NO button is clicked, game over
+            var user = prompt("Enter Name: ");
+            if (user != null) {
+                score.addLeaderboad(user);
+                score.getDataframe();
+            }
             state = 4;
         }
         if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
@@ -181,6 +200,7 @@ function win() {
     winSound.play();
     game.level++;
     score.updateTotalScore();
+    score.setClearPoint(game.level, 0);
     resetGame(5);
 }
 
@@ -196,6 +216,7 @@ GM.draw = function (width, height) {
     // State is 0, main menu
     if (state == 0) {
         menu(width, height);
+        // gameOver(width, height);
     }
 
     // State is 1, play game
@@ -232,7 +253,7 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     const popSound = new Audio('/static/sounds/pop.wav');
     popSound.play();
-    popSound.volume = 0.2;
+    popSound.volume = 0.15;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);

@@ -186,7 +186,10 @@ export class Board {
                     this.counts[i]--;
                 }
             }
-        }
+        } // TODO: Change px & py to be counter for arrow keys 
+        // If arrow key right +65 pixels, if arrow key left -65 pixels 
+        // Make a yellow rectangle the same size of one of the rectangles in the array -> Selection object
+            // If selection object is on that specific column get that current column/card
     }
 
     isFull(index) {
