@@ -5,6 +5,7 @@
   "main": "script.js",
   "type": "module",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "firebase": "^9.13.0",
     "p5": "^1.4.2",
     "p5.play": "^3.0.108",

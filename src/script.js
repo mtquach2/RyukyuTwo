@@ -102,7 +102,7 @@ function menuState(width, height, x, y) {
     if (state == 0) {
         if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
             // If button is cicked, new game
-            menuSound.volume = 0.5;
+            menuSound.volume = 0.3;
             menuSound.play();
     
             gameSound.volume = 0.1;
@@ -127,7 +127,7 @@ function gameOver(width, height) {
     p.textSize(42);
     p.text("LEADERBOARD", width / 3 + width / 10, height / 10);
     score.renderLeaderboard();
-    
+
     // Displays main menu button
     p.rect(width / 2, height - height / 5, 150, 100);
     p.stroke(0, 0, 0);
@@ -140,6 +140,7 @@ function gameOver(width, height) {
 function gameOverState(width, height, x, y) {
     // Function for P5 mouseClicked and gameOver()
     if (state == 4) {
+        gameOverSound.volume = 0.5;
         gameOverSound.play();
         if (width / 2 < x && x < width / 2 + 150 && (height - height / 5) < y && y < (height - height / 5) + 100) {
             // Goes to main menu if button is clicked
@@ -250,7 +251,7 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     const popSound = new Audio('/static/sounds/pop.wav');
     popSound.play();
-    popSound.volume = 0.2;
+    popSound.volume = 0.15;
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
