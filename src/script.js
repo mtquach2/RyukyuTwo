@@ -76,6 +76,7 @@ function resetGame(currentState) {
 
     if (currentState == 4) {
         score.setClearPoint(1, 0);
+        score.resetTotalScore();
         state = 0;
     }
     else {

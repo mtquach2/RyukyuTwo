@@ -18,7 +18,7 @@ export class Score {
             '3K': 800,
             '2P': 600,
             '1P': 200,
-            'H': 0,
+            'H': 1000,
         }
 
         this.scaleX = 1;
@@ -143,7 +143,6 @@ export class Score {
 
     resetScore() {
         this.currentScore = 0;
-        this.totalScore = 0;
         this.pointsMap = new Map();
         this.fillScoreTable();
     }
@@ -180,5 +179,9 @@ export class Score {
             }
             this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
         }
+    }
+
+    resetTotalScore() {
+        this.totalScore = 0;
     }
 }
