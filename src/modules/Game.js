@@ -220,4 +220,8 @@ export class Game {
 	getRank(rank) {
 		this.score.updateScore(rank);
 	}
+
+	resetLevel() {
+		this.level = 1;
+	}
 };
