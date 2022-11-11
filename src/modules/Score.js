@@ -28,7 +28,7 @@ export class Score {
 
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
-        this.data = new Set();
+        this.data = [];
     }
 
 
@@ -168,7 +168,7 @@ export class Score {
         const sortedQueries = query(df, orderBy("score", "desc")); //sorts the data in descending order by score
         const querySnapshot = await getDocs(sortedQueries);
         querySnapshot.forEach((doc) => {
-            this.data.add(doc.data());
+            this.data.push(doc.data());
         });
     } 
 
@@ -178,9 +178,7 @@ export class Score {
             if (i == 10) {
                 break;
             }
-            console.log("Attempting to write leaderboard data");
-            console.log(this.data[i].name);
             this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
         }
-    } // TODO: Check for duplicates in dataframe
+    }
 }
