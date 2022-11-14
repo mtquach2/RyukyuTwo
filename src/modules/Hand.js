@@ -1,10 +1,9 @@
-import { Card } from "./Card";
-
 export class Hand {
     constructor() {
         this.hand = [];
-        this.rank = -1;
+        this.rank = 0;
         this.rankTable = {
+            0: "🌸",
             1: '5K',
             2: 'RSF',
             3: 'SF',

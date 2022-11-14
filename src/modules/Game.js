@@ -16,6 +16,8 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
+
+		this.paperFrameLong;
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
@@ -30,9 +32,9 @@ export class Game {
 			}
 		}
 
-		this.board.loadCardsLeft();
-		this.board.loadJPFont();
+		this.board.load();
 		this.score.fillScoreTable();
+		this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
 	}
 
 	play(width, height, scaleX, scaleY) {
@@ -64,7 +66,7 @@ export class Game {
 			else {
 				let sound = new Audio('/static/sounds/continue.mp3');
 				sound.volume = 0.5;
-    			sound.play();
+				sound.play();
 				return 2;
 			}
 		}
@@ -115,21 +117,17 @@ export class Game {
 	renderLevel(w, h, scaleX, scaleY) {
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
-		this.p5.stroke(255, 255, 255);
+		this.p5.stroke(204, 97, 61);
 		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
+
 		this.p5.strokeWeight(1);
+		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
 		this.p5.textSize(40 * Math.min(scaleX, scaleY));
 		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
 		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
-	}
-
-	renderDivider(width, height) { //TODO fix 
-		this.p5.stroke(0, 255, 0);
-		this.p5.line(width / 4, 0, width / 4, height);
-		this.p5.line(width * 2 / 3, 0, width * 2 / 3, height);
 	}
 
 	/**
@@ -200,17 +198,16 @@ export class Game {
 
 	cancelDisplay(w, h, scaleX, scaleY) {
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.strokeWeight(3);
-		this.p5.stroke(255, 0, 0);
-		this.p5.noFill();
-		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
+		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
 
-		this.p5.strokeWeight(1);
-		this.p5.stroke(255);
+		this.p5.strokeWeight(3);
+		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
-		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
-		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
+		this.p5.text("CANCELS", w - w / 6, h / 5.25);
+
+		this.p5.textFont("Helvetica");
+		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
 	}
 
 	/**

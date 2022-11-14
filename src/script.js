@@ -32,6 +32,8 @@ const p = new p5(p => {
         okinawaWindow = p.loadImage("/static/UI/okinawaWindowAnimation.gif");
         jpFont = p.loadFont("/static/BestTen-DOT.otf");
         game.load();
+        score.load();
+        timer.load();
     };
 
     p.setup = function setup() {
@@ -40,7 +42,7 @@ const p = new p5(p => {
     };
 
     p.draw = function draw() {
-        p.background(0);
+        p.background(238, 230, 205);
         GM.draw(p.windowWidth, p.windowHeight);
     };
 
@@ -83,8 +85,7 @@ function resetGame(currentState) {
     score.resetScore();
 
     board = new Board(p, timer);
-    board.loadCardsLeft();
-    board.loadJPFont();
+    board.load();
     game.board = board;
 
     if (currentState == 4) {
@@ -111,22 +112,22 @@ function menu(width, height, scaleX, scaleY) {
     // Ryukyu text
     p.textFont(jpFont, 256 * Math.min(scaleX, scaleY));
     p.textAlign(p.CENTER);
-    p.strokeWeight(8);  
+    p.strokeWeight(8);
     p.stroke(246, 198, 4);
     p.fill(245, 67, 44);
-    p.text("琉", width/4, height/2);
-    p.text("球", width * .75, height/2);
+    p.text("琉", width / 4, height / 2);
+    p.text("球", width * .75, height / 2);
 
     // Gif of Okinawa through window
     // Image Source https://www.tsunagujapan.com/50-things-to-do-in-okinawa/
     p.stroke(150, 75, 0);
     p.noFill();
-    p.image(okinawaWindow, width/3, height/4, width/3, height/2);
-    p.rect(width/3, height/4, width/3, height/2);
+    p.image(okinawaWindow, width / 3, height / 4, width / 3, height / 2);
+    p.rect(width / 3, height / 4, width / 3, height / 2);
 
-    p.strokeWeight(3);  
+    p.strokeWeight(3);
     p.stroke(87, 50, 14);
-    p.rect(width/3, height/4, width/3, height/2);
+    p.rect(width / 3, height / 4, width / 3, height / 2);
 
     // Start Button Image
     p.imageMode(p.CENTER);
@@ -135,9 +136,9 @@ function menu(width, height, scaleX, scaleY) {
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
     p.textSize(32);
-    p.strokeWeight(2);  
+    p.strokeWeight(2);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("START", width/2, height*.8 + 5);
+    p.text("START", width / 2, height * .8 + 5);
 }
 
 function menuState() {
@@ -193,7 +194,7 @@ function gameOverState(width, height, x, y) {
         }
     }
 }
-function continueScreen(width, height, scaleX, scaleY) {   
+function continueScreen(width, height, scaleX, scaleY) {
     // Render Continue? screen after lost game 
     p.stroke(255, 0, 0);
     p.fill(255, 255, 255);
@@ -265,7 +266,7 @@ GM.draw = function (width, height) {
     }
 
     // State is 2, continue screen
-    if (state == 2) {   
+    if (state == 2) {
         continueScreen(width, height, scaleX, scaleY);
     }
 
@@ -304,6 +305,6 @@ GM.keyPressed = function () {
     if (p.keyCode == 32) {
         console.log("Space bar was pressed");
         omikujiSound.pause();
-        stop.currentTime = 0; 
+        stop.currentTime = 0;
     }
 }
