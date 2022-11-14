@@ -189,17 +189,18 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
 
     if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
         console.log("BACKSPACE PRESSED");
-
-        //if not clicking any card go back two "states", going back 1 will just return to latest card drop
-        //doesn't work on consecuetive cancels
-        let temp = game.gameStateSaver.splice(-2)[0];
-        //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
-        board.updateHands(temp, game.deck);
-        board.updateTopDisplay(temp, game.displayMap);
-        score.currentScore = temp.score;
-        game.stateSaver();
-        console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
-        timer.resetTimer();
+        if(game.cancelsLeft > 0){
+            //console.log("BOARD:", game.gameStateSaver);
+            let temp = game.gameStateSaver.splice(-2)[0];
+            //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
+            board.updateHands(temp, game.deck);
+            board.updateTopDisplay(temp, game.displayMap);
+            score.currentScore = temp.score;
+            game.stateSaver();
+            console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
+            timer.resetTimer();
+            game.cancelsLeft--;
+        }
 
 
     }

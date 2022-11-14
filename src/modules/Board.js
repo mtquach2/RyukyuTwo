@@ -312,7 +312,7 @@ export class Board {
                 if(boardState.board[i][j] !== ''){ //will never be not empty
                     let value = '';
                     let suit = '';
-                    if(boardState.board[i][j].charAt(0) === '0'){
+                    if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
                         value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
                         suit = boardState.board[i][j].charAt(2);
                     }
@@ -348,20 +348,22 @@ export class Board {
     findCard(deck, suit, value){
         // console.log("LOOKING FOR VALUE:", value);
         // console.log("LOOKING FOR SUIT:", suit);
-        let cardFound = new Card();
+        //let cardFound = new Card();
         for(var i = 0; i < deck.length; i++){
             //console.log("VALUE FROM DECK:",deck[i]);
             let deckValue = deck[i].getValue();
             let deckSuit = deck[i].getSuit();
             //console.log("DECK VALUE:", deckValue);
-            if(deckValue == value && deckSuit == suit){
-                cardFound = deck[i];
+            if(deckValue === value && deckSuit === suit){
+                return deck[i];
                 //console.log("DECK CARD:", deck[i]);
-                break;
+    
             }
         }
+        console.log("SUIT AND VALUE:", value, suit);
+        return null;
         //console.log("CARDFOUND:", cardFound);
-        return cardFound;
+        //return cardFound;
     }
 
     /**
