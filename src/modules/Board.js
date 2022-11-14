@@ -24,6 +24,13 @@ export class Board {
         //this.cardDropped = false;
 
         this.jpFont;
+        this.reverseIndices = {
+            4: 0,
+            3: 1,
+            2: 2,
+            1: 3,
+            0: 4
+        };
     }
 
     addCard(column, card, score) {
@@ -41,6 +48,10 @@ export class Board {
             }
 
             // TODO: Test reverse diagonal
+            // Reverse Diagonal
+            if (this.reverseIndices[column] == row) {
+                this.boardDiag[1].addCard(card, score);
+            }
             
 
         }
@@ -287,14 +298,17 @@ export class Board {
 
     updateHands(boardState, deck){
         //console.log(this.deck);
-        console.log("ORIGINAL BOARDCOLS:", this.boardCols);
+        //console.log("ORIGINAL BOARDCOLS:", this.boardCols);
         //empty the whole board
+        console.log("ORIGINAL BOARDROWS:", this.boardRows);
+        console.log("ORIGINAL DIAGIONALS:", this.boardDiag)
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
 
         for(var i = 0; i < boardState.board.length; i++){
             for(var j = 0; j < boardState.board[i].length ; j++){
+                console.log("Looking for:", boardState.board[i][j]);
                 if(boardState.board[i][j] !== ''){ //will never be not empty
                     let value = '';
                     let suit = '';
@@ -310,14 +324,20 @@ export class Board {
                     //console.log("SUIT IS:", suit);
                     let card = this.findCard(deck, suit, value);
                     console.log("THIS IS THE CARD FOUND:", card);
-                    this.boardCols[i].addCard(card);
+                    this.boardCols[i].addCard(card, boardState.score);
+                    this.boardRows[this.reverseIndices[j]].addCard(card, boardState.score);
+                    if(i === j){
+                        this.boardDiag[0].addCard(card, boardState.score);
+                    }
+
                 }
 
             }
         }
 
-        
-        console.log("AFTER BOARDCOLS:", this.boardCols);
+        console.log("AFTER BOARDROWS:", this.boardRows);
+        console.log("AFTER DIAGONALS:", this.boardDiag);
+        //console.log("AFTER BOARDCOLS:", this.boardCols);
     }
 
     updateTopDisplay(displayState, displayMap){
@@ -336,11 +356,11 @@ export class Board {
             //console.log("DECK VALUE:", deckValue);
             if(deckValue == value && deckSuit == suit){
                 cardFound = deck[i];
-                console.log("DECK CARD:", deck[i]);
+                //console.log("DECK CARD:", deck[i]);
                 break;
             }
         }
-        console.log("CARDFOUND:", cardFound);
+        //console.log("CARDFOUND:", cardFound);
         return cardFound;
     }
 

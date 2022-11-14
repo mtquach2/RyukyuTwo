@@ -192,14 +192,16 @@ GM.keyPressed = function(keyCode, BACKSPACE, ESCAPE){
 
         //if not clicking any card go back two "states", going back 1 will just return to latest card drop
         //doesn't work on consecuetive cancels
-        let temp = game.gameStateSaver.slice(-2)[0];
+        let temp = game.gameStateSaver.splice(-2)[0];
+        //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
         board.updateHands(temp, game.deck);
-        console.log("COUNTS BEFORE CHANGE:", board.counts);
         board.updateTopDisplay(temp, game.displayMap);
-        console.log("COUNTS AFTER CHANGE:", board.counts);
         score.currentScore = temp.score;
+        game.stateSaver();
+        console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
+        timer.resetTimer();
 
-        console.log("ARRAY:", temp.board);
+
     }
 }
 
