@@ -157,7 +157,7 @@ export class Score {
         this.fillScoreTable();
     }
 
-    async addLeaderboad(name) {
+    async addLeaderboard(name) {
         // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
@@ -183,11 +183,12 @@ export class Score {
 
     renderLeaderboard() {
         // Renders all of the names and scores for the leaderboard on gameOver screen
+        this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
         for (let i = 0; i < this.data.length; i++) {
             if (i == 10) {
                 break;
             }
-            this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
+            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 
