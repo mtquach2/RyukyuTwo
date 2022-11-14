@@ -185,7 +185,7 @@ function gameOver(width, height, scaleX, scaleY) {
     p.strokeWeight(2);
     p.textAlign(p.CENTER, p.BASELINE);
     p.text("MENU", width / 2, height * .8 + 5);
-    
+
     if (p.keyIsPressed && p.keyCode == 13) {
         // If Enter pressed, return to menu
         p.keyCode = 0;
