@@ -195,28 +195,36 @@ function gameOverState(width, height, x, y) {
     }
 }
 function continueScreen(width, height, scaleX, scaleY) {
+    p.imageMode(p.CORNER);
+    p.background(mainMenuBackground);
+
     // Render Continue? screen after lost game 
-    p.stroke(255, 0, 0);
+    p.strokeWeight(3);
+    p.stroke(0, 0, 0);
     p.fill(255, 255, 255);
+    p.textAlign(p.CENTER, p.CENTER);
     p.textSize(64 * Math.min(scaleX, scaleY));
-    p.text("CONTINUE?", width / 3, height / 3);
+    p.text("CONTINUE?", width / 2, height / 3);
+
+    p.textAlign(p.CENTER, p.CENTER);
 
     // NO button
-    p.rect(width / 2 + width / 10, height / 2, 150, 100);
+    p.image(mainMenuButtonSelected, width / 2 + width / 10, height / 2, 200 * scaleX, 100 * scaleY);
 
     // YES button
-    p.rect(width / 3 - width / 25, height / 2, 150, 100);
+    p.image(mainMenuButtonSelected, width / 3 - width / 25, height / 2, 200 * scaleX, 100 * scaleY);
 
-    p.noStroke();
-    p.fill(0, 0, 0);
-    p.text("YES", width / 3 - width / 30, height / 2 + height / 15);
-    p.text("NO", width / 2 + width / 8, height / 2 + height / 15);
+    p.stroke(0, 0, 0)
+    p.fill(255, 255, 255);
+    p.textAlign(p.LEFT, p.CENTER);
+    p.text("YES", width / 3 - width / 25 + 40 * scaleX, height / 2 + 50 * scaleY);
+    p.text("NO", width / 2 + width / 10 + 55 * scaleX, height / 2 + 50 * scaleY);
 }
 
 function continueScreenStates(width, height, x, y) {
     // Function for P5 mouseClicked and cont() 
     if (state == 2) {
-        if ((width / 2 + width / 10) < x && x < (width / 2 + width / 10) + 150 && height / 2 < y && y < height / 2 + 100) {
+        if ((width / 2 + width / 10 + 40) < x && x < (width / 2 + width / 10) + 200 && height / 2 < y && y < height / 2 + 100) {
             // If NO button is clicked, game over
             var user = prompt("Enter Name: ");
             if (user != null) {
@@ -225,7 +233,7 @@ function continueScreenStates(width, height, x, y) {
             }
             state = 4;
         }
-        if ((width / 3 - width / 25) < x && x < (width / 3 - width / 25) + 150 && height / 2 < y && y < height / 2 + 100) {
+        if ((width / 3 - width / 25 + 55) < x && x < (width / 3 - width / 25) + 200 && height / 2 < y && y < height / 2 + 100) {
             // If YES button is clicked, omikuji
             omikujiSound.volume = 0.2;
             omikujiSound.loop = true;
