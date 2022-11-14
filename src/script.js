@@ -26,7 +26,12 @@ const GM = {
 const p = new p5(p => {
     const windowSize = getWindow();
     p.preload = function preload() {
-      game.load();
+        mainMenuBackground = p.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
+        mainMenuButtonSelected = p.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
+        mainMenuButtonUnselected = p.loadImage("/static/UI/Buttons/ButtonBlankUnselected.png");
+        okinawaWindow = p.loadImage("/static/UI/okinawaWindowAnimation.gif");
+        jpFont = p.loadFont("/static/BestTen-DOT.otf");
+        game.load();
     };
 
     p.setup = function setup() {
@@ -60,11 +65,19 @@ let state = 0;
 const game = new Game(p, board, score, timer);
 const omikuji = new Omikuji(p, score);
 
-let omikujiSound = new Audio('/static/sounds/spinner.mp3');
-let gameSound = new Audio('/static/sounds/japanese_music.mp3');
-let menuSound = new Audio('/static/sounds/gong.mp3');
-let winSound = new Audio('/static/sounds/win.mp3');
-let gameOverSound = new Audio('/static/sounds/gameover.mp3');
+const omikujiSound = new Audio('/static/sounds/spinner.mp3');
+const gameSound = new Audio('/static/sounds/japanese_music.mp3');
+const menuSound = new Audio('/static/sounds/gong.mp3');
+const winSound = new Audio('/static/sounds/win.mp3');
+const gameOverSound = new Audio('/static/sounds/gameover.mp3');
+const okinawaAmbient = new Audio('/static/sounds/Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music).mp3');
+
+let mainMenuBackground;
+let mainMenuButtonSelected;
+let mainMenuButtonUnselected;
+let okinawaWindow;
+
+let jpFont;
 
 function resetGame(currentState) {
     score.resetScore();
@@ -87,32 +100,59 @@ function resetGame(currentState) {
     game.reShuffle();
 }
 
-function menu(width, height) {
-    // TODO: Implement main menu but better
+function menu(width, height, scaleX, scaleY) {
+    okinawaAmbient.volume = .1;
+    okinawaAmbient.play();
+    // Background Image
+    p.imageMode(p.CORNER);
+    p.background(mainMenuBackground);
+
+    console.log(scaleX, scaleY);
+    // Ryukyu text
+    p.textFont(jpFont, 256 * Math.min(scaleX, scaleY));
+    p.textAlign(p.CENTER);
+    p.strokeWeight(8);  
+    p.stroke(246, 198, 4);
+    p.fill(245, 67, 44);
+    p.text("琉", width/4, height/2);
+    p.text("球", width * .75, height/2);
+
+    // Gif of Okinawa through window
+    // Image Source https://www.tsunagujapan.com/50-things-to-do-in-okinawa/
+    p.stroke(150, 75, 0);
+    p.noFill();
+    p.image(okinawaWindow, width/3, height/4, width/3, height/2);
+    p.rect(width/3, height/4, width/3, height/2);
+
+    p.strokeWeight(3);  
+    p.stroke(87, 50, 14);
+    p.rect(width/3, height/4, width/3, height/2);
+
+    // Start Button Image
+    p.imageMode(p.CENTER);
+    p.image(mainMenuButtonSelected, width / 2, height * .8);
+
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.rect(width / 3, height / 3, 400, 150);
-
-    p.stroke(0, 0, 0);
-    p.fill(0, 0, 0);
-    p.textSize(64);
-    p.text("CLICK TO PLAY GAME", width / 3, height / 3, 400, 150);
+    p.textSize(32);
+    p.strokeWeight(2);  
+    p.textAlign(p.CENTER, p.BASELINE);
+    p.text("START", width/2, height*.8 + 5);
 }
 
-function menuState(width, height, x, y) {
-    // Function for p5 mouseClicked and menu()
-    if (state == 0) {
-        if (width / 3 < x && x < width / 3 + 400 && height / 3 < y && y < height / 3 + 150) {
-            // If button is cicked, new game
-            menuSound.volume = 0.3;
-            menuSound.play();
-    
-            gameSound.volume = 0.1;
-            gameSound.loop = true;
-            gameSound.play();
-            p.textSize(20);
-            state = 1;
-        }
+function menuState() {
+    if (p.keyPressed && p.keyCode == 13) {
+        // If Enter pressed, start game
+        okinawaAmbient.pause();
+
+        menuSound.volume = 0.3;
+        menuSound.play();
+
+        gameSound.volume = 0.1;
+        gameSound.loop = true;
+        gameSound.play();
+        p.textSize(20);
+        state = 1;
     }
 }
 
@@ -215,8 +255,8 @@ GM.draw = function (width, height) {
 
     // State is 0, main menu
     if (state == 0) {
-        menu(width, height);
-        // gameOver(width, height);
+        menu(width, height, scaleX, scaleY);
+        menuState();
     }
 
     // State is 1, play game
@@ -257,7 +297,6 @@ GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
-    menuState(p.windowWidth, p.windowHeight, x, y);
     gameOverState(p.windowWidth, p.windowHeight, x, y);
 }
 
