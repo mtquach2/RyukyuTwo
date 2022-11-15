@@ -5,6 +5,7 @@ export class Board {
         this.p5 = p5
         this.counts = [12, 12, 12, 12];
         this.currentCard;
+        this.draggingColumn = null
         this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
