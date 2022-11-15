@@ -1,8 +1,9 @@
 export class Hand {
     constructor() {
         this.hand = [];
-        this.rank = -1;
+        this.rank = 0;
         this.rankTable = {
+            0: "🌸",
             1: '5K',
             2: 'RSF',
             3: 'SF',
@@ -21,7 +22,6 @@ export class Hand {
         this.hand.push(card);
 
         if (this.hand.length == 5) {
-            console.log("Evaluating: ", this.hand);
             this.evaluateHand();
             score.updateScore(this.rankTable[this.rank]); //updates score right when hand is completed
         }
@@ -52,14 +52,14 @@ export class Hand {
         const suits = this.hand.map(card => card.getSuit()).sort();
 
         // Flushes are 5 of the same suit, and straights are 5 sequential cards
-        const royal = 'A' <= faces[0] && faces[0] <= 'D';
+        const royal = 'A' <= faces[4] && faces[4] <= 'D';
         const flush = suits[0] == suits[4];
         const straight = this.isStraight(faces);
 
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
         const faceCounts = faces.reduce(this.count, {});
         const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
-        
+
         this.rank = (faceDuplicates[5] && 1) ||
             (royal && straight && flush && 2) ||
             (straight && flush && 3) ||
@@ -80,16 +80,16 @@ export class Hand {
 
     isStraight(faces) {
         for (let i = 0; i < faces.length - 1; i++) {
-            if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i+1]) {
+            if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i + 1]) {
                 return false;
             }
         }
         return true;
     }
 
-    showCard(index, col, row) {
+    showCard(index, col, row, scaleX, scaleY) {
         if (this.hand[4 - index] != null) {
-            this.hand[4 - index].showImage(col, row)
+            this.hand[4 - index].showImage(col, row, scaleX, scaleY);
         }
     }
 

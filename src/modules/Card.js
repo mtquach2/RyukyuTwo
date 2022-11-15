@@ -8,17 +8,16 @@ export class Card {
 		this.suit = suit;
 		this.value = value;
 		this.img = img;
-		this.col = col;
-		this.loc = loc;
 	}
 
 	/**
 	 * Displays the image associated with the given card 
-	 * @param position x-axis for where we want the card
-	 * @param row y-axis for where we want the card
+	 * @param x x-axis for where we want the card
+	 * @param y y-axis for where we want the card
 	 */
-	showImage(position, row) {
-		this.p.image(this.img, position - 10, row, 80, 80);
+	 showImage(x, y, scaleX, scaleY) {
+		this.p.imageMode(this.p.CORNER);
+		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}
 
 	getSuit() {
@@ -31,9 +30,5 @@ export class Card {
 
 	getImage() {
 		return this.img;
-	}
- 
-	getCol() {
-		return this.col;
 	}
 };

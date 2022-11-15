@@ -17,11 +17,9 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
-		// this.boardStates = []; 
-		// this.scoreStates = [];
-		//this.mapStates = [];
 		this.gameStateSaver = [];
 
+		this.paperFrameLong;
 	}
 	/**
 	 * Method to preload images and initializes Card objects for an entire deck of cards
@@ -36,48 +34,46 @@ export class Game {
 			}
 		}
 
-		this.board.loadCardsLeft();
-		this.board.loadJPFont();
+		this.board.load();
 		this.score.fillScoreTable();
+		this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
 	}
 
-	/**
-	 * Displays the board and top display for the game
-	 * Also, includes logic for selecting a card and column for game
-	 */
-	play(width, height) {
+	play(width, height, scaleX, scaleY) {
 		// Render game elements
-		this.renderLevel(width, height);
+		this.renderLevel(width, height, scaleX, scaleY);
 
-		this.score.render(width, height);
+		this.score.render(width, height, scaleX, scaleY);
 
-		this.board.render(this.displayMap, width, height);
+		this.board.render(this.displayMap, width, height, scaleX, scaleY);
 		this.board.displayCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
 		this.board.renderInstructions(width, height);
 
-		this.cancelDisplay(width, height);
+		this.cancelDisplay(width, height, scaleX, scaleY);
 
-		this.timer.drawTimer(width, height);
+		this.timer.drawTimer(width, height, scaleX, scaleY);
 		this.timerTrigger();
-		this.timer.drawSeconds(width, height);
-	
+		this.timer.drawSeconds(width, height, scaleX, scaleY);
+
 		// Every 60 frames, decrement timer
 		if (this.p5.frameCount % 60 == 0) {
 			this.timer.countDown();
 		}
 
-		// Update game state if needed
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				console.log("Won with score " + this.score.getScore());
-				this.state = 2;
+				return 5;
 			}
 			else {
-				// TODO: Add possibility of getting omikuji instead of straight to game over
-				this.state = 3;
+				let sound = new Audio('/static/sounds/continue.mp3');
+				sound.volume = 0.5;
+				sound.play();
+				return 2;
 			}
-		}	
+		}
+
+		return 1;
 	}
 
 	stateSaver(){
@@ -125,18 +121,18 @@ export class Game {
 		let kanji = "";
 
 		const kanji_table = {
-			0:"",
-			1:"一",
-			2:"二",
-			3:"三",
-			4:"四",
-			5:"五",
-			6:"六",
-			7:"七",
-			8:"八",
-			9:"九",
-			10:"十",
-			100:"百"
+			0: "",
+			1: "一",
+			2: "二",
+			3: "三",
+			4: "四",
+			5: "五",
+			6: "六",
+			7: "七",
+			8: "八",
+			9: "九",
+			10: "十",
+			100: "百"
 		};
 
 		// Hundreds
@@ -161,19 +157,20 @@ export class Game {
 		return kanji;
 	}
 
-	renderLevel(w, h) {
-		this.p5.stroke(255);
-		this.p5.rect(w/3, h/8, 60, 60);
-		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
-		this.p5.text(`${this.intToKanji(this.level)}`, w/3, h/8, 60, 60);
-		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w/3, h/8, 60, 60);
-	}
+	renderLevel(w, h, scaleX, scaleY) {
+		this.p5.strokeWeight(3);
+		this.p5.noFill();
+		this.p5.stroke(204, 97, 61);
+		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
 
-	renderDivider(width, height) { //TODO fix 
-		this.p5.stroke(0, 255, 0);
-		this.p5.line(width / 4, 0, width / 4, height);
-		this.p5.line(width * 2 / 3, 0, width * 2 / 3, height);
+		this.p5.strokeWeight(1);
+		this.p5.stroke(0, 0, 0);
+		this.p5.fill(255, 255, 255);
+		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
+		this.p5.textSize(40 * Math.min(scaleX, scaleY));
+		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
+		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
 	/**
@@ -218,9 +215,65 @@ export class Game {
 	}
 
 	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	 assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Shuffles the deck for a reset
+	*/
+	reShuffle() {
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
+		}
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	 assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Shuffles the deck for a reset
+	*/
+	reShuffle() {
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
+		}
+	}
+
+	/**
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
-	timerTrigger() {
+	 timerTrigger() {
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
@@ -263,17 +316,18 @@ export class Game {
 		}
 	}
 
-	cancelDisplay(w, h) {
+	cancelDisplay(w, h, scaleX, scaleY) {
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.stroke(255, 0, 0);
-		this.p5.noFill();
-		this.p5.rect(w - w / 4.5, h / 6.5, w / 5, h / 15);
-		this.p5.stroke(255);
-		this.p5.textSize(20);
-		this.p5.text("CANCELS LEFT:", w - w / 4.75, h / 5.25);
-		this.p5.stroke(255);
-		this.p5.textSize(20);
-		this.p5.text(this.cancelsLeft, w - w / 20, h / 5.25);
+		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
+
+		this.p5.strokeWeight(3);
+		this.p5.stroke(0, 0, 0);
+		this.p5.fill(255, 255, 255);
+		this.p5.textSize(20 * Math.min(scaleX, scaleY));
+		this.p5.text("CANCELS", w - w / 6, h / 5.25);
+
+		this.p5.textFont("Helvetica");
+		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
 	}
 
 	/**
@@ -284,6 +338,9 @@ export class Game {
 		this.score.updateScore(rank);
 	}
 
+	resetLevel() {
+		this.level = 1;
+	}
 
 	getState() {
 		return this.state;
