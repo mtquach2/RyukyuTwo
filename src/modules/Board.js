@@ -4,7 +4,7 @@ export class Board {
     constructor(p5, timer) {
         this.p5 = p5
         this.counts = [12, 12, 12, 12];
-        this.currentCard;
+        this.currentCard = null;
         this.draggingColumn = null
         this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -21,19 +21,8 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
-        this.columnSelected = false;
 
         this.jpFont;
-        this.reverseIndices = {
-            4: 0,
-            3: 1,
-            2: 2,
-            1: 3,
-            0: 4
-        };
-
-        this.paperFrameLight;
-        this.paperFrameLong;
     }
 
     addCard(column, card, score) {
@@ -50,10 +39,9 @@ export class Board {
                 this.boardDiag[0].addCard(card, score);
             }
 
-            // Reverse Diagonal
-            if (this.reverseIndices[column] == row) {
-                this.boardDiag[1].addCard(card, score);
-            }
+            // TODO: Test reverse diagonal
+            
+
         }
         else {
             return -1;
@@ -187,6 +175,11 @@ export class Board {
         this.currentCard = null
     }
 
+    unChooseCard(){
+        this.draggingColumn = null
+        this.currentCard = null
+    }
+
     /**
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
@@ -194,7 +187,7 @@ export class Board {
      * @param py where our mouse's y-axis is at
      * @param displayMap map for deck of card
      */
-    clicked(px, py, displayMap) {
+    clicked(px, py, displayMap, recentMoves) {
         if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
             if (this.currentCard != null) {
                 return;
@@ -202,24 +195,10 @@ export class Board {
             for (let i = 0; i < 4; i++) {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
-                    this.draggingColumn = i
-
-                    // this below shouldn't happen until the card is PLACED
-                    // it should just render maybe as blank before the card is dropped, so that cancel can be implemented
-                    // we have to NOT display the current card while dragging            
-                    // this.counts[i]--;
+                    this.counts[i]--;
                 }
             }
-            this.cardSelected = true;
-            // this.currentCard.loc = "C";
-            // console.log("location change to C: ", this.currentCard.loc); //gets repeated in draw() can't push here
-            // recentMoves.push(this.currentCard);
-            // console.log("current card: ", this.currentCard);
-
-        }// TODO: Change px & py to be counter for arrow keys 
-        // If arrow key right +65 pixels, if arrow key left -65 pixels 
-        // Make a yellow rectangle the same size of one of the rectangles in the array -> Selection object
-        // If selection object is on that specific column get that current column/card
+        }
     }
 
     isFull(index) {
@@ -255,17 +234,12 @@ export class Board {
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
      */
-     displayCards(displayMap) {
+    initCards(displayMap) {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
-                    // show the card
-                    let c = displayMap.get(i)[this.counts[i] + offset]
-                    if (this.currentCard !== c){
-                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
-                    }
-                    
+                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l]);
                 }
                 offset++;
             }
@@ -290,9 +264,9 @@ export class Board {
      * @param recentMoves data structure that stores the last 3 recent moves
      * @param score score object to update
      */
-    chooseCol(py, score) {
+    chooseCol(py, recentMoves, score) {
         this.cardSelected = true;
-        if (py >= this.boardY - 65 * this.scaleY && py < this.boardY) {
+        if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
                     this.col = col;
@@ -300,24 +274,13 @@ export class Board {
                 }
             }
             if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
-                    console.log("COLUMN SELECTED");
-                    this.columnSelected = true;
-                    if (this.timer.seconds !== 0) {
-                        this.addCard(this.col, this.currentCard, score);
-                        // this.currentCard.loc = "B";
-                        //this.cardDropped = true;
-                        //recentMoves.push(this.currentCard);
-                        //console.log("RECENT MOVES: ", recentMoves);
-                        //this.movesUpdate(recentMoves);
-                        this.cardPlaced = true;
-                        this.currentCard = null;
-                        this.counts[this.draggingColumn] -= 1
-                        this.draggingColumn = null
-                        this.cardSelected = false;
-                        this.columnSelected = false;
-                        // console.log("COUNTS ARRAY:", this.counts);
-                    }
+                if (this.timer.seconds != 0) {
+                    this.addCard(this.col, this.currentCard, score);
+                    recentMoves.push(this.currentCard);
+                    this.movesUpdate(recentMoves);
+                    this.cardPlaced = true;
+                    this.currentCard = null;
+                    this.cardSelected = false;
                 }
             }
             this.col = -1;
@@ -343,76 +306,6 @@ export class Board {
         }
     }
 
-    updateHands(boardState, deck){
-        //console.log(this.deck);
-        //console.log("ORIGINAL BOARDCOLS:", this.boardCols);
-        //empty the whole board
-        console.log("ORIGINAL BOARDROWS:", this.boardRows);
-        console.log("ORIGINAL DIAGIONALS:", this.boardDiag)
-        this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
-        this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
-        this.boardDiag = [new Hand(), new Hand()];
-
-        for(var i = 0; i < boardState.board.length; i++){
-            for(var j = 0; j < boardState.board[i].length ; j++){
-                console.log("Looking for:", boardState.board[i][j]);
-                if(boardState.board[i][j] !== ''){ //will never be not empty
-                    let value = '';
-                    let suit = '';
-                    if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
-                        value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
-                        suit = boardState.board[i][j].charAt(2);
-                    }
-                    else{
-                        value = boardState.board[i][j].charAt(0);
-                        suit = boardState.board[i][j].charAt(1);
-                    }
-                    //console.log("VALUE IS:", value);
-                    //console.log("SUIT IS:", suit);
-                    let card = this.findCard(deck, suit, value);
-                    console.log("THIS IS THE CARD FOUND:", card);
-                    this.boardCols[i].addCard(card, boardState.score);
-                    this.boardRows[this.reverseIndices[j]].addCard(card, boardState.score);
-                    if(i === j){
-                        this.boardDiag[0].addCard(card, boardState.score);
-                    }
-
-                }
-
-            }
-        }
-
-        console.log("AFTER BOARDROWS:", this.boardRows);
-        console.log("AFTER DIAGONALS:", this.boardDiag);
-        //console.log("AFTER BOARDCOLS:", this.boardCols);
-    }
-
-    updateTopDisplay(displayState, displayMap){
-        this.counts = displayState.counts;
-
-    }
-
-    findCard(deck, suit, value){
-        // console.log("LOOKING FOR VALUE:", value);
-        // console.log("LOOKING FOR SUIT:", suit);
-        //let cardFound = new Card();
-        for(var i = 0; i < deck.length; i++){
-            //console.log("VALUE FROM DECK:",deck[i]);
-            let deckValue = deck[i].getValue();
-            let deckSuit = deck[i].getSuit();
-            //console.log("DECK VALUE:", deckValue);
-            if(deckValue === value && deckSuit === suit){
-                return deck[i];
-                //console.log("DECK CARD:", deck[i]);
-    
-            }
-        }
-        console.log("SUIT AND VALUE:", value, suit);
-        return null;
-        //console.log("CARDFOUND:", cardFound);
-        //return cardFound;
-    }
-
     /**
      * Keeps track of the latest three moves. Removes the first move whenever a new move is added
      * @param recentMoves data structure that stores last 3 moves
@@ -422,6 +315,7 @@ export class Board {
             recentMoves.shift(); //removes first item from array
         }
     }
+
 
     renderInstructions(w, h) {
         let instrX = this.boardX * 2 + this.boardX / 3;
@@ -444,3 +338,4 @@ export class Board {
         this.p5.text("選んでください。", instrX + 10 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
     }
 }
+

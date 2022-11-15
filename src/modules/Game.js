@@ -192,6 +192,54 @@ export class Game {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
 		}
+		console.log(this.displayMap);
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	 assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Shuffles the deck for a reset
+	*/
+	reShuffle() {
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
+		}
 	}
 
 	/**
@@ -301,4 +349,5 @@ export class Game {
 	setState(state) {
 		this.state = state;
 	}
+
 };

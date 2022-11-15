@@ -8,8 +8,6 @@ export class Card {
 		this.suit = suit;
 		this.value = value;
 		this.img = img;
-		this.col = col;
-		this.loc = loc;
 	}
 
 	/**
@@ -17,7 +15,7 @@ export class Card {
 	 * @param x x-axis for where we want the card
 	 * @param y y-axis for where we want the card
 	 */
-	showImage(x, y, scaleX, scaleY) {
+	 showImage(x, y, scaleX, scaleY) {
 		this.p.imageMode(this.p.CORNER);
 		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}
@@ -32,9 +30,5 @@ export class Card {
 
 	getImage() {
 		return this.img;
-	}
-
-	getCol() {
-		return this.col;
 	}
 };
