@@ -4,7 +4,8 @@ export class Board {
     constructor(p5, timer) {
         this.p5 = p5
         this.counts = [12, 12, 12, 12];
-        this.currentCard;
+        this.currentCard = null;
+        this.draggingColumn = null
         this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -22,16 +23,6 @@ export class Board {
         this.cardSelected = false;
 
         this.jpFont;
-        this.reverseIndices = {
-            4: 0,
-            3: 1,
-            2: 2,
-            1: 3,
-            0: 4
-        };
-
-        this.paperFrameLight;
-        this.paperFrameLong;
     }
 
     addCard(column, card, score) {
@@ -48,10 +39,9 @@ export class Board {
                 this.boardDiag[0].addCard(card, score);
             }
 
-            // Reverse Diagonal
-            if (this.reverseIndices[column] == row) {
-                this.boardDiag[1].addCard(card, score);
-            }
+            // TODO: Test reverse diagonal
+            
+
         }
         else {
             return -1;
@@ -180,6 +170,16 @@ export class Board {
         }
     }
 
+    unChooseCard(){
+        this.draggingColumn = null
+        this.currentCard = null
+    }
+
+    unChooseCard(){
+        this.draggingColumn = null
+        this.currentCard = null
+    }
+
     /**
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
@@ -187,8 +187,8 @@ export class Board {
      * @param py where our mouse's y-axis is at
      * @param displayMap map for deck of card
      */
-    clicked(px, py, displayMap) {
-        if (py >= this.yPositions[0] && py < this.yPositions[0] + 65 * this.scaleY) {
+    clicked(px, py, displayMap, recentMoves) {
+        if (py >= this.yPositions[0] && py < this.yPositions[0] + 65) {
             if (this.currentCard != null) {
                 return;
             }
@@ -198,10 +198,7 @@ export class Board {
                     this.counts[i]--;
                 }
             }
-        } // TODO: Change px & py to be counter for arrow keys 
-        // If arrow key right +65 pixels, if arrow key left -65 pixels 
-        // Make a yellow rectangle the same size of one of the rectangles in the array -> Selection object
-        // If selection object is on that specific column get that current column/card
+        }
     }
 
     isFull(index) {
@@ -217,16 +214,21 @@ export class Board {
         return true;
     }
 
-    /**
+   /**
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
      */
-    initCards(displayMap) {
+    displayCards(displayMap) {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
-                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l], this.scaleX, this.scaleY);
+                    // show the card
+                    let c = displayMap.get(i)[this.counts[i] + offset]
+                    if (this.currentCard !== c){
+                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
+                    }
+                    
                 }
                 offset++;
             }
@@ -253,7 +255,7 @@ export class Board {
      */
     chooseCol(py, recentMoves, score) {
         this.cardSelected = true;
-        if (py >= this.boardY - 65 * this.scaleY && py < this.boardY) {
+        if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
                     this.col = col;
@@ -303,6 +305,7 @@ export class Board {
         }
     }
 
+
     renderInstructions(w, h) {
         let instrX = this.boardX * 2 + this.boardX / 3;
         let instrY = this.boardY / 10 + this.boardY + h / 2
@@ -324,3 +327,4 @@ export class Board {
         this.p5.text("選んでください。", instrX + 10 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
     }
 }
+

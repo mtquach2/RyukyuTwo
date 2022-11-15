@@ -20,7 +20,7 @@ const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { },
-    keyPressed: () => { }
+    keyPressed: (keyCode, BACKSPACE, ESCAPE) => { }
 }
 
 const p = new p5(p => {
@@ -56,7 +56,7 @@ const p = new p5(p => {
     }
 
     p.keyPressed = function keyPressed() {
-        GM.keyPressed();
+        GM.keyPressed(p.keyCode, p.BACKSPACE, p.ESCAPE);
     }
 });
 
@@ -185,7 +185,7 @@ function gameOver(width, height, scaleX, scaleY) {
     p.strokeWeight(2);
     p.textAlign(p.CENTER, p.BASELINE);
     p.text("MENU", width / 2, height * .8 + 5);
-    
+
     if (p.keyIsPressed && p.keyCode == 13) {
         // If Enter pressed, return to menu
         p.keyCode = 0;
@@ -361,6 +361,7 @@ function win() {
 
 GM.setup = function () {
     game.splitCards();
+    game.assignColumn();
     omikuji.loadJPFont();
 }
 
@@ -419,10 +420,48 @@ GM.mouseClicked = function (x, y) {
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
 }
 
-GM.keyPressed = function () {
+GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
     if (p.keyCode == 32) {
         console.log("Space bar was pressed");
         omikujiSound.pause();
         stop.currentTime = 0;
+    }
+
+    //console.log("keyCode:", keyCode);
+    // maybe this should be ESCAPE?
+    if(keyCode === ESCAPE){ 
+        console.log("ESCAPE PRESSED");
+        // if we are dragging a card
+        if(board.currentCard !== null){
+            // change the visibility flag for the card
+            // and set the board.currentCard = null
+            board.unChooseCard()
+
+            // let lastMove = game.recentMoves.slice(-1); 
+            // console.log("LAST MOVE:", lastMove);
+            // //game.displayMap[lastMove.col] = lastMove;
+            // board.counts[lastMove.col]++;
+            // console.log(game.displayMap);
+        }
+        timer.resetTimer();
+
+    }
+
+    if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
+        console.log("BACKSPACE PRESSED");
+        if(game.cancelsLeft > 0){
+            //console.log("BOARD:", game.gameStateSaver);
+            let temp = game.gameStateSaver.splice(-2)[0];
+            //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
+            board.updateHands(temp, game.deck);
+            board.updateTopDisplay(temp, game.displayMap);
+            score.currentScore = temp.score;
+            game.stateSaver();
+            console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
+            timer.resetTimer();
+            game.cancelsLeft--;
+        }
+
+
     }
 }

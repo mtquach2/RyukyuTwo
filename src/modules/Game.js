@@ -9,6 +9,7 @@ export class Game {
 		this.score = score;
 		this.timer = timer;
 		this.level = 1;
+		this.state = 0;
 
 		this.deck = [];
 		this.mouseWasClicked = false;
@@ -16,6 +17,7 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.recentMoves = [];
+		this.gameStateSaver = [];
 
 		this.paperFrameLong;
 	}
@@ -44,7 +46,7 @@ export class Game {
 		this.score.render(width, height, scaleX, scaleY);
 
 		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.initCards(this.displayMap, width, height);
+		this.board.displayCards(this.displayMap, width, height);
 		this.board.displayCard(this.mouseWasClicked, width, height);
 		this.board.renderInstructions(width, height);
 
@@ -72,6 +74,47 @@ export class Game {
 		}
 
 		return 1;
+	}
+
+	stateSaver(){
+		let currBoard = this.board.boardCols.map(r => {
+			return r.hand.map(c => {
+				return `${c.value}${c.suit}`
+			})
+		})
+
+		//console.log("COUNTS BEFORE:", this.board.counts);
+
+		let cardDisplay = [];
+		for(var i = 0; i < 4; i++){
+			cardDisplay.push(this.board.counts[i]);
+		}
+
+		//console.log("COUNTS AFTER:", cardDisplay);
+
+
+		const gameState = {
+			score : this.score.currentScore,
+			board : currBoard, 
+			counts : cardDisplay
+		}
+
+		this.gameStateSaver.push(gameState);
+		//this.score.currentScore = gameState.score;
+
+		if(this.gameStateSaver.length > 4){
+			this.gameStateSaver.shift();
+		}
+	
+		// if(this.boardStates.length > 3){
+		// 	this.boardStates.shift();
+		// }
+		// if(this.scoreStates.length > 3){
+		// 	this.scoreStates.shift();
+		// }
+		// if(this.mapStates.length > 3){
+		// 	this.mapStates.shift();
+		// }
 	}
 
 	intToKanji(number) {
@@ -135,7 +178,7 @@ export class Game {
 	 * @param px mouseX value
 	 */
 	updateTopDisplay(px, py) {
-		this.currentCard = this.board.clicked(px, py, this.displayMap);
+		this.currentCard = this.board.clicked(px, py, this.displayMap, this.recentMoves);
 		this.mouseWasClicked = true;
 	}
 
@@ -149,6 +192,73 @@ export class Game {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
 		}
+		console.log(this.displayMap);
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	 assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
+	}
+
+	/**
+	 * Shuffles the deck for a reset
+	*/
+	reShuffle() {
+		for (let i = 0; i < 4; i++) {
+			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
+		}
+	}
+
+	/**
+	 * Assign the column numbers to each card after it is splitted 
+	 */
+	 assignColumn() {
+		//don't need
+		for(let i = 0; i < 4; i++){
+			for(let x = 0; x < 13; x++){
+				if(this.displayMap.get(i).length != 0){
+					let colDeck = this.displayMap.get(i);
+					if(!(colDeck == null)){
+						colDeck[x].col = i; //to match the number with counts[]
+					}
+				}
+			}
+		}
+		console.log(this.displayMap);
+
 	}
 
 	/**
@@ -163,30 +273,40 @@ export class Game {
 	/**
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
-	timerTrigger() { //TODO clean up 
-		if (this.board.cardPlaced == true) {
+	 timerTrigger() {
+		if (this.board.cardPlaced == true) { //card is dropped in general
+			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.timer.seconds == 0) {
-			for (let i = 0; i <= 5; i++) {
-				if (this.board.addCard(i, this.board.currentCard) != -1) {
-					this.recentMoves.push(this.board.currentCard);
-					this.board.movesUpdate(this.recentMoves);
+		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
+			for(let i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard) != -1){
+					console.log("CARD SELECTD BUT NOT COLUMN");
+					//this.board.currentCard.loc = "B";
+					// this.recentMoves.push(this.board.currentCard);
+					// console.log(this.recentMoves);
+					// this.board.movesUpdate(this.recentMoves);
+					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
-					break;
+					this.board.columnSelected = false;
+					break; 
 				}
 			}
 			this.timer.resetTimer();
 		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.timer.seconds == 0) {
+		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
-			for (let i = 0; i < 5; i++) {
-				if (firstCard != null) {
-					if (this.board.addCard(i, firstCard) != -1) {
-						this.recentMoves.push(firstCard);
-						this.board.movesUpdate(this.recentMoves);
+			for(let i = 0; i < 5; i++){ 
+				if(firstCard != null){
+					if(this.board.addCard(i, firstCard) != -1){
+						console.log("CARD DROPPED FROM TOP DECK");
+						this.stateSaver();
+						//this.board.currentCard.loc = "B";
+						// this.recentMoves.push(firstCard);
+						// console.log(this.recentMoves);
+						// this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}
@@ -221,4 +341,13 @@ export class Game {
 	resetLevel() {
 		this.level = 1;
 	}
+
+	getState() {
+		return this.state;
+	}
+
+	setState(state) {
+		this.state = state;
+	}
+
 };

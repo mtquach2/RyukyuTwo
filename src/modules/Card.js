@@ -3,7 +3,7 @@
  */
 export class Card {
 
-	constructor(p5, suit, value, img) {
+	constructor(p5, suit, value, img, col, loc) {
 		this.p = p5
 		this.suit = suit;
 		this.value = value;
@@ -15,7 +15,7 @@ export class Card {
 	 * @param x x-axis for where we want the card
 	 * @param y y-axis for where we want the card
 	 */
-	showImage(x, y, scaleX, scaleY) {
+	 showImage(x, y, scaleX, scaleY) {
 		this.p.imageMode(this.p.CORNER);
 		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}
