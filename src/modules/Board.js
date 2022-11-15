@@ -290,19 +290,47 @@ export class Board {
      * @param score score object to update
      */
     chooseCol(py, score) {
-        if (py >= this.boardY - 65 && py < this.boardY) {
+        // if (py >= this.boardY - 65 && py < this.boardY) {
+        //     for (let col = 0; col < 5; col++) {
+        //         if (this.p5.mouseX >= this.boardX + (col + 1) * 65 && this.p5.mouseX < this.boardX + (col + 2) * 65) {
+        //             this.col = col;
+        //             break;
+        //         }
+        //     }
+        //     if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
+        //         if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
+        //             console.log("COLUMN SELECTED");
+        //             this.columnSelected = true;
+        //             if (this.timer.seconds !== 0) {
+        //                 this.addCard(this.col, this.currentCard, score);
+        //                 // this.currentCard.loc = "B";
+        //                 //this.cardDropped = true;
+        //                 //recentMoves.push(this.currentCard);
+        //                 //console.log("RECENT MOVES: ", recentMoves);
+        //                 //this.movesUpdate(recentMoves);
+        //                 this.cardPlaced = true;
+        //                 this.currentCard = null;
+        //                 this.counts[this.draggingColumn] -= 1
+        //                 this.draggingColumn = null
+        //                 this.cardSelected = false;
+        //                 this.columnSelected = false;
+        //                 // console.log("COUNTS ARRAY:", this.counts);
+        //             }
+        //         }
+        //     }
+        //     this.col = -1;
+        // }
+        this.cardSelected = true;
+        if (py >= this.boardY - 65 * this.scaleY && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
-                if (this.p.mouseX >= this.boardX + (col + 1) * 65 && this.p.mouseX < this.boardX + (col + 2) * 65) {
+                if (this.p5.mouseX >= this.boardX + (col + 1) * 65 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 65 * this.scaleX) {
                     this.col = col;
                     break;
                 }
             }
-            if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
-                if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
-                    console.log("COLUMN SELECTED");
-                    this.columnSelected = true;
-                    if (this.timer.seconds !== 0) {
-                        this.addCard(this.col, this.currentCard, score);
+            if (this.col != -1 && !this.boardCols[this.col].isFull()) {
+                if (this.timer.seconds != 0) {
+                    this.addCard(this.col, this.currentCard, score);
                         // this.currentCard.loc = "B";
                         //this.cardDropped = true;
                         //recentMoves.push(this.currentCard);
@@ -315,7 +343,6 @@ export class Board {
                         this.cardSelected = false;
                         this.columnSelected = false;
                         // console.log("COUNTS ARRAY:", this.counts);
-                    }
                 }
             }
             this.col = -1;
