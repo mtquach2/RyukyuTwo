@@ -214,32 +214,21 @@ export class Board {
         return true;
     }
 
-    // /**
-    //  * Displays cards in the top display
-    //  * @param displayMap map for split deck of cards
-    //  */
-    // initCards(displayMap) {
-    //     for (let i = 0; i < 4; i++) {
-    //         let offset = -2;
-    //         for (let l = 0; l < 3; l++) {
-    //             if ((this.counts[i] + offset) >= 0) {
-    //                 displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l], this.scaleX, this.scaleY);
-    //             }
-    //             offset++;
-    //         }
-    //     }
-    // }
-
-    /**
+   /**
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
      */
-    initCards(displayMap) {
+    displayCards(displayMap) {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
-                    displayMap.get(i)[this.counts[i] + offset].showImage(this.xPositions[i], this.yPositions[2 - l]);
+                    // show the card
+                    let c = displayMap.get(i)[this.counts[i] + offset]
+                    if (this.currentCard !== c){
+                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
+                    }
+                    
                 }
                 offset++;
             }
