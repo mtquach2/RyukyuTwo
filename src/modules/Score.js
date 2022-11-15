@@ -29,8 +29,20 @@ export class Score {
         this.scoreTableKeys = [];
         this.pointsMap = new Map();
         this.data = [];
+
+        this.jpFont;
+
+        this.paperFrameLight;
+        this.paperFrameDark;
+        this.paperFrameLong;
     }
 
+    load() {
+        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
+        this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
+        this.paperFrameDark = this.p5.loadImage("/static/UI/paperFrame2.png");
+        this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
+    }
 
     fillScoreTable() {
         this.scoreTableKeys = [...Object.keys(this.ranks)];
@@ -48,6 +60,7 @@ export class Score {
         this.scoreX = w;
         this.scoreY = h;
 
+        this.p5.textFont(this.jpFont);
         this.renderScore();
         this.renderScoreTable();
         this.renderTotalScore();
@@ -55,53 +68,50 @@ export class Score {
 
     renderScore() {
         // Box for Clear Point
-        this.p5.strokeWeight(3);
+        this.p5.strokeWeight(5);
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-        this.p5.noFill();
-        this.p5.stroke(0, 255, 0);
-        this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
 
-        this.p5.strokeWeight(1);
-        this.p5.stroke(255, 255, 255);
+        this.p5.noFill();
+        this.p5.image(this.paperFrameLight, this.scoreX / 80, this.scoreY / 50, this.scoreX / 4.5, this.scoreY / 4);
+        this.p5.stroke(204, 97, 61);
+        this.p5.rect(this.scoreX / 40, this.scoreY / 25, this.scoreX / 5, this.scoreY / 4.75);
+        this.p5.line(this.scoreX / 40, this.scoreY / 6.5, this.scoreX / 40 + this.scoreX / 5, this.scoreY / 6.5);
+
+        this.p5.strokeWeight(3);
+        this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
-        this.p5.text("CLEAR POINT: ", this.scoreX / 15, this.scoreY / 15);
+        this.p5.text("CLEAR POINT", this.scoreX / 15, this.scoreY / 15);
         this.p5.text(this.clearPoint, this.scoreX / 10, this.scoreY / 15 + this.scoreY / 20);
 
         // Box for Total
+        this.p5.fill(0, 0, 0);
         this.p5.strokeWeight(3);
-        this.p5.noFill();
-        this.p5.stroke(0, 255, 0);
-        this.p5.rect(this.scoreX / 40, this.scoreY / 10 + this.scoreY / 18, this.scoreX / 5, this.scoreY / 10);
-
-        this.p5.strokeWeight(1);
-        this.p5.stroke(255, 255, 255);
+        this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
-        this.p5.text("TOTAL:", this.scoreX / 11, this.scoreY / 10 + this.scoreY / 12);
-        this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 4.25);
+        this.p5.text("TOTAL", this.scoreX / 11, this.scoreY / 11 + this.scoreY / 12);
+        this.p5.text(this.currentScore, this.scoreX / 10, this.scoreY / 11 + this.scoreY / 12 + this.scoreY / 20);
     }
 
     renderScoreTable() {
         this.p5.textAlign(this.p5.LEFT, this.p5.BASELINE);
 
         // Outline of Score Table
-        this.p5.strokeWeight(3);
         this.p5.noFill();
-        this.p5.stroke(255, 0, 0);
-        this.p5.rect(this.scoreX / 40, this.scoreY / 25 + this.scoreY / 3, this.scoreX / 5, this.scoreY / 1.75);
+        this.p5.image(this.paperFrameDark, this.scoreX / 80, this.scoreY / 25 + this.scoreY / 4, this.scoreX / 4.5, this.scoreY * .7);
         this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
 
         // Populate text of Score Table
-        this.p5.strokeWeight(1);
-        this.p5.stroke(255, 255, 255);
+        this.p5.strokeWeight(4);
+        this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         for (let i = 0; i < this.scoreTableKeys.length; i++) {
             const rank = this.scoreTableKeys[i];
             const score = this.scoreTableValues[i];
-            this.p5.text(`${rank}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
-            this.p5.text(`\t${score}`, this.scoreX / 30 + 50 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
-            this.p5.text(`\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30 + 150 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + (i + 1) * 40 * this.scaleY);
+            this.p5.text(`${rank}`, this.scoreX / 30, this.scoreY / 25 + this.scoreY / 3 + i * 40 * this.scaleY);
+            this.p5.text(`\t${score}`, this.scoreX / 30 + 50 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + i * 40 * this.scaleY);
+            this.p5.text(`\t\tx ${this.pointsMap.get(rank) || 0}`, this.scoreX / 30 + 150 * this.scaleX, this.scoreY / 25 + this.scoreY / 3 + i * 40 * this.scaleY);
         }
     }
 
@@ -129,16 +139,16 @@ export class Score {
 
     renderTotalScore() {
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-        this.p5.strokeWeight(3);
         this.p5.noFill();
-        this.p5.stroke(0, 255, 0);
+        this.p5.noStroke();
+        this.p5.image(this.paperFrameLong, this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
         this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
 
-        this.p5.strokeWeight(1);
-        this.p5.stroke(255, 255, 255);
+        this.p5.strokeWeight(3);
+        this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
-        this.p5.text("TOTAL SCORE:", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
-        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 10, this.scoreY / 9);
+        this.p5.text("TOTAL SCORE", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
+        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 7.5, this.scoreY / 9);
     }
 
     resetScore() {
@@ -147,18 +157,18 @@ export class Score {
         this.fillScoreTable();
     }
 
-    async addLeaderboad(name) {
+    async addLeaderboard(name) {
         // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 name: name,
                 score: this.totalScore
             });
-          
+
             console.log("Document written with ID: ", docRef.id);
-          } catch (e) {
+        } catch (e) {
             console.error("Error adding document: ", e);
-          }
+        }
     }
 
     async getDataframe() {
@@ -169,15 +179,16 @@ export class Score {
         querySnapshot.forEach((doc) => {
             this.data.push(doc.data());
         });
-    } 
+    }
 
     renderLeaderboard() {
         // Renders all of the names and scores for the leaderboard on gameOver screen
-        for (let i = 0; i < this.data.length; i++) { 
+        this.p5.textSize(32 * Math.min(this.scaleX, this.scaleY));
+        for (let i = 0; i < this.data.length; i++) {
             if (i == 10) {
                 break;
             }
-            this.p5.text(this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 7 + (i + 1) * 50);
+            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 

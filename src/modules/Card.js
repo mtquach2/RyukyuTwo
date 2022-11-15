@@ -16,6 +16,7 @@ export class Card {
 	 * @param y y-axis for where we want the card
 	 */
 	showImage(x, y, scaleX, scaleY) {
+		this.p.imageMode(this.p.CORNER);
 		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}
 

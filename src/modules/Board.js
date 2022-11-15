@@ -29,6 +29,9 @@ export class Board {
             1: 3,
             0: 4
         };
+
+        this.paperFrameLight;
+        this.paperFrameLong;
     }
 
     addCard(column, card, score) {
@@ -80,37 +83,42 @@ export class Board {
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         this.p5.fill(255, 0, 0);
         this.p5.strokeWeight(1);
-        // Populates the card evaluation
+        this.p5.textSize(32);
         for (let i = 0; i < this.boardCols.length; i++) {
             let colHand = this.boardCols[i];
             let rowHand = this.boardRows[i];
-            if (rowHand.rank != -1) { // Display rank for hands (rows)
-                this.p5.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
-            }
-            if (colHand.rank != -1) { // Display rank for hands (columns)
-                this.p5.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
-            }
+
+            // Display rank for hands (rows)
+            this.selectFont(rowHand.rank);
+            this.p5.text(`${rowHand.rankTable[rowHand.rank]}`, this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
+
+            // Display rank for hands (columns)
+            this.selectFont(colHand.rank);
+            this.p5.text(`${colHand.rankTable[colHand.rank]}`, this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
+
+            // Display cards in board
             for (let j = 0; j < this.boardRows.length; j++) {
-                colHand.showCard(j, this.boardX + (i + 1) * 65 * this.scaleX, this.boardY + (j + 1) * 65 * this.scaleY, this.scaleX, this.scaleY); //displays a card throughout each col starting from the bottom left square going up 
+                colHand.showCard(j, this.boardX + (i + 1) * 65 * this.scaleX, this.boardY + (j + 1) * 65 * this.scaleY, this.scaleX, this.scaleY);
             }
         }
 
         let majorHand = this.boardDiag[0];
         let reversehand = this.boardDiag[1];
 
-        if (majorHand.rank != -1) {
-            this.p5.text(`${majorHand.rankTable[majorHand.rank]}`, this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for major diagonal
-        }
-        if (reversehand.rank != -1) {
-            this.p5.text(`${reversehand.rankTable[reversehand.rank]}`, this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Display rank for reverse diagonal
-        }
+        // Display rank for major diagonal
+        this.selectFont(majorHand.rank);
+        this.p5.text(`${majorHand.rankTable[majorHand.rank]}`, this.boardX, this.boardY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
+
+        // Display rank for reverse diagonal
+        this.selectFont(reversehand.rank);
+        this.p5.text(`${reversehand.rankTable[reversehand.rank]}`, this.boardX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY);
     }
 
     renderBoard() {
         // Draws the board outlines
         this.p5.strokeWeight(3);
         this.p5.noFill();
-        this.p5.stroke(255, 0, 0);
+        this.p5.stroke(204, 97, 61);
         for (let i = 0; i < this.boardCols.length; i++) {
             this.p5.rect(this.boardX, this.boardY + (i + 1) * 65 * this.scaleY + 10 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for rows
             this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 10 * this.scaleX, this.boardY + (this.boardRows.length + 1) * 65 * this.scaleY + 20 * this.scaleY, 40 * this.scaleX, 40 * this.scaleY); // Rank box for cols
@@ -148,24 +156,28 @@ export class Board {
      * @param h window height
      */
     renderCardsLeft(width, height) {
-        this.p5.stroke(255, 0, 0);
-        this.p5.rect(this.boardX * 2 + this.boardX / 3, this.boardY / 10 + this.boardY, width / 5, height / 2);
+        this.p5.image(this.paperFrameLight, this.boardX * 2 + this.boardX / 3, this.boardY / 20 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p5.image(this.marker, width - width / 4.5 + (i * width / 20), height / 2.5 + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
+                this.p5.image(this.marker, this.boardX * 2.05 + this.boardX / 3 + (i * width / 25), this.boardY / 10 + this.boardY + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
             }
         }
     }
 
-    /**
-     * Used to load card back image for cards left part
-     */
-    loadCardsLeft() {
+    load() {
         this.marker = this.p5.loadImage('../../static/cards/card_back.png');
+        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
+        this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
+        this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
     }
 
-    loadJPFont() {
-        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
+    selectFont(rank) {
+        if (rank == 0) {
+            this.p5.textFont("Helvetica");
+        }
+        else {
+            this.p5.textFont(this.jpFont);
+        }
     }
 
     /**
@@ -189,7 +201,7 @@ export class Board {
         } // TODO: Change px & py to be counter for arrow keys 
         // If arrow key right +65 pixels, if arrow key left -65 pixels 
         // Make a yellow rectangle the same size of one of the rectangles in the array -> Selection object
-            // If selection object is on that specific column get that current column/card
+        // If selection object is on that specific column get that current column/card
     }
 
     isFull(index) {
@@ -295,22 +307,20 @@ export class Board {
         let instrX = this.boardX * 2 + this.boardX / 3;
         let instrY = this.boardY / 10 + this.boardY + h / 2
 
+        this.p5.image(this.paperFrameLong, instrX, instrY, w / 5, h / 8);
         this.p5.strokeWeight(3);
-        this.p5.stroke(255, 0, 0);
-        this.p5.rect(instrX, instrY, w / 5, h / 8);
-        this.p5.strokeWeight(1);
         this.p5.textFont(this.jpFont, 32 * Math.min(this.scaleX, this.scaleY));
-        this.p5.stroke(255, 255, 255);
+        this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
 
         this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
 
         if (!this.cardSelected || this.currentCard == null) {
-            this.p5.text("カードを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("カードを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
         }
         else {
-            this.p5.text("ラインを", instrX + 5 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("ラインを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
         }
-        this.p5.text("選んでください。", instrX + 5 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
+        this.p5.text("選んでください。", instrX + 10 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
     }
 }
