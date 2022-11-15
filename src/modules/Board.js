@@ -1,5 +1,7 @@
 import { Hand } from './Hand';
 import { Card } from './Card';
+import { jpegVersion } from 'canvas';
+import { Score } from './Score';
 
 export class Board {
     constructor(p5, timer) {
@@ -303,6 +305,8 @@ export class Board {
         for(var i = 0; i < boardState.board.length; i++){
             for(var j = 0; j < boardState.board[i].length ; j++){
                 console.log("Looking for:", boardState.board[i][j]);
+                let card;
+                let tempScore = new Score();
                 if(boardState.board[i][j] !== ''){ //will never be not empty
                     let value = '';
                     let suit = '';
@@ -316,12 +320,17 @@ export class Board {
                     }
                     //console.log("VALUE IS:", value);
                     //console.log("SUIT IS:", suit);
-                    let card = this.findCard(deck, suit, value);
+                    tempScore.currentScore = boardState.score;
+                    card = this.findCard(deck, suit, value);
                     console.log("THIS IS THE CARD FOUND:", card);
-                    this.boardCols[i].addCard(card, boardState.score);
-                    this.boardRows[this.reverseIndices[j]].addCard(card, boardState.score);
+                    console.log("BOARDSTATE SCORE:", boardState.score);
+                    this.boardCols[i].addCard(card, tempScore);
+                    this.boardRows[this.reverseIndices[j]].addCard(card, tempScore);
                     if(i === j){
-                        this.boardDiag[0].addCard(card, boardState.score);
+                        this.boardDiag[1].addCard(card, tempScore);
+                    }
+                    if(i === this.reverseIndices[j]){
+                        this.boardDiag[0].addCard(card, tempScore);
                     }
 
                 }
