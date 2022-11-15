@@ -90,6 +90,7 @@ let animatedSelector;
 
 function resetGame(currentState) {
     score.resetScore();
+    game.cancelsLeft = 3;
 
     board = new Board(p, timer);
     board.load();
