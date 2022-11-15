@@ -8,6 +8,8 @@ export class Card {
 		this.suit = suit;
 		this.value = value;
 		this.img = img;
+		this.col = col;
+		this.loc = loc;
 	}
 
 	/**
@@ -30,5 +32,9 @@ export class Card {
 
 	getImage() {
 		return this.img;
+	}
+
+	getCol() {
+		return this.col;
 	}
 };
