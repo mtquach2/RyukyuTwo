@@ -239,6 +239,21 @@ function continueScreenStates(width, height, x, y) {
     }
 }
 
+function cardNoise() {
+    if (state == 1) {
+        let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
+        let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
+        console.log(cardSound);
+        cardSound.play();
+        cardSound.volume = 0.2;
+    }
+    else {
+        const popSound = new Audio('/static/sounds/pop.wav');
+        popSound.play();
+        popSound.volume = 0.15;
+    }
+}
+
 function selectorKeypress() {
     if (p.keyIsPressed && p.frameCount % 5 == 0) {
         if (p.keyCode == p.LEFT_ARROW) {
@@ -413,9 +428,7 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    const popSound = new Audio('/static/sounds/pop.wav');
-    popSound.play();
-    popSound.volume = 0.15;
+    cardNoise();
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
