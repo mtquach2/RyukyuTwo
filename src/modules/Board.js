@@ -1,4 +1,5 @@
 import { Hand } from './Hand';
+import { Card } from './Card';
 
 export class Board {
     constructor(p5, timer) {
@@ -23,6 +24,13 @@ export class Board {
         this.cardSelected = false;
 
         this.jpFont;
+        this.reverseIndices = {
+            4: 0,
+            3: 1,
+            2: 2,
+            1: 3,
+            0: 4
+        };
     }
 
     addCard(column, card, score) {
@@ -40,6 +48,9 @@ export class Board {
             }
 
             // TODO: Test reverse diagonal
+            if (this.reverseIndices[column] == row) {
+                this.boardDiag[1].addCard(card, score);
+            }
             
 
         }
@@ -175,11 +186,6 @@ export class Board {
         this.currentCard = null
     }
 
-    unChooseCard(){
-        this.draggingColumn = null
-        this.currentCard = null
-    }
-
     /**
      * Method used to check to see if a specific card from the top display was clicked
      * then updates the top display and displays it in 1x5 array for column choosing
@@ -195,9 +201,11 @@ export class Board {
             for (let i = 0; i < 4; i++) {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
-                    this.counts[i]--;
+                    // this.counts[i]--;
+                    this.draggingColumn = i;
                 }
             }
+            this.cardSelected = true;
         }
     }
 
@@ -214,11 +222,12 @@ export class Board {
         return true;
     }
 
-   /**
+
+    /**
      * Displays cards in the top display
      * @param displayMap map for split deck of cards
      */
-    displayCards(displayMap) {
+     displayCards(displayMap) {
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
@@ -242,8 +251,8 @@ export class Board {
      */
     displayCard(mouseWasClicked) {
         if (mouseWasClicked == true && this.currentCard != null) {
-            let bounds = this.p5.constrain(this.p5.mouseX, this.boardX + 65 * this.scaleX, this.boardX + 65 * 5 * this.scaleX);
-            this.currentCard.showImage(bounds, this.yPositions[0] + 65 * this.scaleY, this.scaleX, this.scaleY);
+            let bounds = this.p5.constrain(this.p5.mouseX, this.boardX + 65, this.boardX + 65 * 5);
+            this.currentCard.showImage(bounds, this.yPositions[0] + 65);
         }
     }
 
@@ -262,18 +271,93 @@ export class Board {
                     break;
                 }
             }
-            if (this.col != -1 && !this.boardCols[this.col].isFull()) {
-                if (this.timer.seconds != 0) {
-                    this.addCard(this.col, this.currentCard, score);
-                    recentMoves.push(this.currentCard);
-                    this.movesUpdate(recentMoves);
-                    this.cardPlaced = true;
-                    this.currentCard = null;
-                    this.cardSelected = false;
+            if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
+                if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
+                    console.log("COLUMN SELECTED");
+                    this.columnSelected = true;
+                    if (this.timer.seconds !== 0) {
+                        this.addCard(this.col, this.currentCard, score);
+                        this.cardPlaced = true;
+                        this.currentCard = null;
+                        this.counts[this.draggingColumn] -= 1
+                        this.draggingColumn = null
+                        this.cardSelected = false;
+                        this.columnSelected = false;
+                    }
                 }
             }
             this.col = -1;
         }
+    }
+
+    updateHands(boardState, deck){
+        //console.log(this.deck);
+        //console.log("ORIGINAL BOARDCOLS:", this.boardCols);
+        //empty the whole board
+        console.log("ORIGINAL BOARDROWS:", this.boardRows);
+        console.log("ORIGINAL DIAGIONALS:", this.boardDiag)
+        this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardDiag = [new Hand(), new Hand()];
+
+        for(var i = 0; i < boardState.board.length; i++){
+            for(var j = 0; j < boardState.board[i].length ; j++){
+                console.log("Looking for:", boardState.board[i][j]);
+                if(boardState.board[i][j] !== ''){ //will never be not empty
+                    let value = '';
+                    let suit = '';
+                    if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
+                       value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
+                       suit = boardState.board[i][j].charAt(2);
+                    }
+                    else{
+                       value = boardState.board[i][j].charAt(0);
+                       suit = boardState.board[i][j].charAt(1);
+                    }
+                    //console.log("VALUE IS:", value);
+                    //console.log("SUIT IS:", suit);
+                    let card = this.findCard(deck, suit, value);
+                    console.log("THIS IS THE CARD FOUND:", card);
+                    this.boardCols[i].addCard(card, boardState.score);
+                    this.boardRows[this.reverseIndices[j]].addCard(card, boardState.score);
+                    if(i === j){
+                        this.boardDiag[0].addCard(card, boardState.score);
+                    }
+
+                }
+
+            }
+        }
+
+        console.log("AFTER BOARDROWS:", this.boardRows);
+        console.log("AFTER DIAGONALS:", this.boardDiag);
+        //console.log("AFTER BOARDCOLS:", this.boardCols);
+    }
+
+    updateTopDisplay(displayState){
+        this.counts = displayState.counts;
+
+    }
+
+    findCard(deck, suit, value){
+        // console.log("LOOKING FOR VALUE:", value);
+        // console.log("LOOKING FOR SUIT:", suit);
+        //let cardFound = new Card();
+        for(var i = 0; i < deck.length; i++){
+            //console.log("VALUE FROM DECK:",deck[i]);
+            let deckValue = deck[i].getValue();
+            let deckSuit = deck[i].getSuit();
+            //console.log("DECK VALUE:", deckValue);
+            if(deckValue === value && deckSuit === suit){
+                return deck[i];
+                //console.log("DECK CARD:", deck[i]);
+    
+            }
+        }
+        console.log("SUIT AND VALUE:", value, suit);
+        return null;
+        //console.log("CARDFOUND:", cardFound);
+        //return cardFound;
     }
 
     /**

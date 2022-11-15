@@ -105,16 +105,6 @@ export class Game {
 		if(this.gameStateSaver.length > 4){
 			this.gameStateSaver.shift();
 		}
-	
-		// if(this.boardStates.length > 3){
-		// 	this.boardStates.shift();
-		// }
-		// if(this.scoreStates.length > 3){
-		// 	this.scoreStates.shift();
-		// }
-		// if(this.mapStates.length > 3){
-		// 	this.mapStates.shift();
-		// }
 	}
 
 	intToKanji(number) {
