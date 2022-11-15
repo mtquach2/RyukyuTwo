@@ -417,7 +417,6 @@ GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
-    gameOverState(p.windowWidth, p.windowHeight, x, y);
 }
 
 GM.keyPressed = function () {
