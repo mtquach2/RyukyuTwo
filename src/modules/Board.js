@@ -264,7 +264,7 @@ export class Board {
      * @param recentMoves data structure that stores the last 3 recent moves
      * @param score score object to update
      */
-    chooseCol(py, recentMoves, score) {
+    chooseCol(py, score) {
         this.cardSelected = true;
         if (py >= this.boardY - 65 && py < this.boardY) {
             for (let col = 0; col < 5; col++) {
@@ -274,8 +274,7 @@ export class Board {
                 }
             }
             if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
-                if(this.currentCard !== null){ //to make sure that player isn't just clicking on the column
-                    console.log("COLUMN SELECTED");
+                if(this.currentCard !== null){ 
                     this.columnSelected = true;
                     if (this.timer.seconds !== 0) {
                         this.addCard(this.col, this.currentCard, score);
@@ -293,9 +292,6 @@ export class Board {
     }
 
     updateHands(boardState, deck){
-        //console.log(this.deck);
-        //console.log("ORIGINAL BOARDCOLS:", this.boardCols);
-        //empty the whole board
         console.log("ORIGINAL BOARDROWS:", this.boardRows);
         console.log("ORIGINAL DIAGIONALS:", this.boardDiag)
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -307,7 +303,7 @@ export class Board {
                 console.log("Looking for:", boardState.board[i][j]);
                 let card;
                 let tempScore = new Score();
-                if(boardState.board[i][j] !== ''){ //will never be not empty
+                if(boardState.board[i][j] !== ''){ 
                     let value = '';
                     let suit = '';
                     if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
@@ -318,8 +314,6 @@ export class Board {
                        value = boardState.board[i][j].charAt(0);
                        suit = boardState.board[i][j].charAt(1);
                     }
-                    //console.log("VALUE IS:", value);
-                    //console.log("SUIT IS:", suit);
                     tempScore.currentScore = boardState.score;
                     card = this.findCard(deck, suit, value);
                     console.log("THIS IS THE CARD FOUND:", card);
@@ -349,24 +343,15 @@ export class Board {
     }
 
     findCard(deck, suit, value){
-        // console.log("LOOKING FOR VALUE:", value);
-        // console.log("LOOKING FOR SUIT:", suit);
-        //let cardFound = new Card();
         for(var i = 0; i < deck.length; i++){
-            //console.log("VALUE FROM DECK:",deck[i]);
             let deckValue = deck[i].getValue();
             let deckSuit = deck[i].getSuit();
-            //console.log("DECK VALUE:", deckValue);
             if(deckValue === value && deckSuit === suit){
                 return deck[i];
-                //console.log("DECK CARD:", deck[i]);
     
             }
         }
-        console.log("SUIT AND VALUE:", value, suit);
         return null;
-        //console.log("CARDFOUND:", cardFound);
-        //return cardFound;
     }
 
     /**
@@ -385,16 +370,6 @@ export class Board {
                     return firstCard;
                 }
             }
-        }
-    }
-
-    /**
-     * Keeps track of the latest three moves. Removes the first move whenever a new move is added
-     * @param recentMoves data structure that stores last 3 moves
-     */
-    movesUpdate(recentMoves) {
-        if (recentMoves.length > 3) {
-            recentMoves.shift(); //removes first item from array
         }
     }
 

@@ -91,6 +91,7 @@ let animatedSelector;
 function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
+    game.gameStateSaver = [];
 
     board = new Board(p, timer);
     board.load();
@@ -417,7 +418,7 @@ GM.mouseClicked = function (x, y) {
     popSound.play();
     popSound.volume = 0.15;
     game.updateTopDisplay(x, y);
-    board.chooseCol(y, game.recentMoves, score);
+    board.chooseCol(y, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
 }
 
@@ -428,32 +429,19 @@ GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
         stop.currentTime = 0;
     }
 
-    //console.log("keyCode:", keyCode);
-    // maybe this should be ESCAPE?
     if(keyCode === ESCAPE){ 
         console.log("ESCAPE PRESSED");
-        // if we are dragging a card
         if(board.currentCard !== null){
-            // change the visibility flag for the card
-            // and set the board.currentCard = null
             board.unChooseCard()
-
-            // let lastMove = game.recentMoves.slice(-1); 
-            // console.log("LAST MOVE:", lastMove);
-            // //game.displayMap[lastMove.col] = lastMove;
-            // board.counts[lastMove.col]++;
-            // console.log(game.displayMap);
         }
         timer.resetTimer();
 
     }
 
-    if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
+    if(keyCode === BACKSPACE){ 
         console.log("BACKSPACE PRESSED");
         if(game.cancelsLeft > 0){
-            //console.log("BOARD:", game.gameStateSaver);
             let temp = game.gameStateSaver.splice(-2)[0];
-            //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
             score.currentScore = temp.score;

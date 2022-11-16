@@ -16,7 +16,6 @@ export class Game {
 		this.displayMap = new Map();
 
 		this.cancelsLeft = 3;
-		this.recentMoves = [];
 		this.gameStateSaver = [];
 
 		this.paperFrameLong;
@@ -168,7 +167,7 @@ export class Game {
 	 * @param px mouseX value
 	 */
 	updateTopDisplay(px, py) {
-		this.currentCard = this.board.clicked(px, py, this.displayMap, this.recentMoves);
+		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
 	}
 
@@ -273,10 +272,6 @@ export class Game {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
 					console.log("CARD SELECTD BUT NOT COLUMN");
-					//this.board.currentCard.loc = "B";
-					// this.recentMoves.push(this.board.currentCard);
-					// console.log(this.recentMoves);
-					// this.board.movesUpdate(this.recentMoves);
 					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
@@ -293,10 +288,6 @@ export class Game {
 					if(this.board.addCard(i, firstCard) != -1){
 						console.log("CARD DROPPED FROM TOP DECK");
 						this.stateSaver();
-						//this.board.currentCard.loc = "B";
-						// this.recentMoves.push(firstCard);
-						// console.log(this.recentMoves);
-						// this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}
