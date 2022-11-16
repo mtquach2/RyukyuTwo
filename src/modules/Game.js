@@ -17,6 +17,7 @@ export class Game {
 
 		this.cancelsLeft = 3;
 		this.gameStateSaver = [];
+		this.stateSaver();
 
 		this.paperFrameLong;
 	}
@@ -82,15 +83,10 @@ export class Game {
 			})
 		})
 
-		//console.log("COUNTS BEFORE:", this.board.counts);
-
 		let cardDisplay = [];
 		for(var i = 0; i < 4; i++){
 			cardDisplay.push(this.board.counts[i]);
 		}
-
-		//console.log("COUNTS AFTER:", cardDisplay);
-
 
 		const gameState = {
 			score : this.score.currentScore,
@@ -99,7 +95,6 @@ export class Game {
 		}
 
 		this.gameStateSaver.push(gameState);
-		//this.score.currentScore = gameState.score;
 
 		if(this.gameStateSaver.length > 4){
 			this.gameStateSaver.shift();
@@ -271,7 +266,6 @@ export class Game {
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
-					console.log("CARD SELECTD BUT NOT COLUMN");
 					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
@@ -286,7 +280,6 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
-						console.log("CARD DROPPED FROM TOP DECK");
 						this.stateSaver();
 						this.board.currentCard = null;
 						break;
