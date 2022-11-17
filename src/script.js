@@ -20,7 +20,7 @@ const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { },
-    keyPressed: (keyCode, BACKSPACE, ESCAPE) => { }
+    keyPressed: (keyCode) => { }
 }
 
 const p = new p5(p => {
@@ -56,7 +56,7 @@ const p = new p5(p => {
     }
 
     p.keyPressed = function keyPressed() {
-        GM.keyPressed(p.keyCode, p.BACKSPACE, p.ESCAPE);
+        GM.keyPressed(p.keyCode);
     }
 });
 
@@ -91,6 +91,7 @@ let animatedSelector;
 function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
+    game.gameStateSaver = [];
 
     board = new Board(p, timer);
     board.load();
@@ -378,7 +379,6 @@ function win() {
 
 GM.setup = function () {
     game.splitCards();
-    game.assignColumn();
     omikuji.loadJPFont();
 }
 
@@ -431,26 +431,27 @@ GM.draw = function (width, height) {
 GM.mouseClicked = function (x, y) {
     cardNoise();
     game.updateTopDisplay(x, y);
-    board.chooseCol(y, game.recentMoves, score);
+    board.chooseCol(y, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
 }
 
-GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
+GM.keyPressed = function (keyCode) {
     if (p.keyCode == 32) {
         // Stops playing omikuji sound if space bar was pressed (see Omikuji.js)
         omikujiSound.pause();
         stop.currentTime = 0;
     }
 
-    if(keyCode === ESCAPE){ 
-        if(board.currentCard !== null){
-            board.unChooseCard()
+    if(keyCode === 27){ 
+        if(game.cancelsLeft > 0 && board.currentCard !== null){
+            board.unChooseCard();
+            timer.resetTimer();
+            game.cancelsLeft--;
         }
-        timer.resetTimer();
     }
 
-    if(keyCode === BACKSPACE){ 
-        if(game.cancelsLeft > 0){
+    if(keyCode === 8){ 
+        if(game.cancelsLeft > 0 && board.currentCard === null){
             let temp = game.gameStateSaver.splice(-2)[0];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
@@ -459,5 +460,7 @@ GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
             timer.resetTimer();
             game.cancelsLeft--;
         }
+
+
     }
 }

@@ -13,8 +13,8 @@ export class Game {
 		this.displayMap = new Map(); // Map that splits deck into four equal parts after shuffle
 
 		this.cancelsLeft = 3;
-		this.recentMoves = [];
 		this.gameStateSaver = [];
+		this.stateSaver();
 
 		this.paperFrameLong;
 	}
@@ -72,6 +72,9 @@ export class Game {
 		return 1;
 	}
 
+	/**
+	 * Saves the state of the board, score and counts after a card is dropped
+	 */
 	stateSaver(){
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
@@ -169,25 +172,7 @@ export class Game {
 			x += 13;
 		}
 	}
-
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-
-	}
-
+  
 	reShuffle() {
 		// Shuffles deck for reset 
 		for (let i = 0; i < 4; i++) {
@@ -219,6 +204,7 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
+						this.stateSaver();
 						this.board.currentCard = null;
 						break;
 					}
@@ -228,6 +214,13 @@ export class Game {
 		}
 	}
 
+	/**
+	 * Draws the cancel display 
+	 * @param w the width of the display
+   	 * @param h the height of the display
+   	 * @param scaleX the x value for scaling
+   	 * @param scaleY the y value for scaling
+	 */
 	cancelDisplay(w, h, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);

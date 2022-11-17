@@ -171,6 +171,9 @@ export class Board {
         }
     }
 
+    /**
+     * Deselect a card after clicking on it 
+     */
     unChooseCard(){
         // Resets variables
         this.draggingColumn = null
@@ -261,6 +264,11 @@ export class Board {
         }
     }
 
+    /**
+     * Redraws the board after cancel(backspace) is pressed
+     * @param boardState The previous state of board to reenact 
+     * @param deck the deck of all Card objects
+     */
     updateHands(boardState, deck){
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -270,7 +278,7 @@ export class Board {
             for(var j = 0; j < boardState.board[i].length ; j++){
                 let card;
                 let tempScore = new Score();
-                if(boardState.board[i][j] !== ''){ //will never be not empty
+                if(boardState.board[i][j] !== ''){ 
                     let value = '';
                     let suit = '';
                     if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
@@ -298,17 +306,28 @@ export class Board {
         }
     }
 
+    /**
+     * Updates the topDisplay and the cards left section after Cancel(backspace) is pressed
+     * @param displayState the stateSaver
+     */
     updateTopDisplay(displayState){
         this.counts = displayState.counts;
 
     }
 
+    /**
+     * Finds the corresponding Card object given the value and suit
+     * @param deck The deck with all the Card objects
+     * @param suit The suit of the card to find
+     * @param value The value of the card to find
+     * @returns the Card if match is found, null if no match is found
+     */
     findCard(deck, suit, value){
         for(var i = 0; i < deck.length; i++){
             let deckValue = deck[i].getValue();
             let deckSuit = deck[i].getSuit();
             if(deckValue === value && deckSuit === suit){
-                return deck[i];    
+                return deck[i];
             }
         }
         return null;
