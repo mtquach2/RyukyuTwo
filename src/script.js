@@ -142,10 +142,10 @@ function menu(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(24);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("START", width / 2, height * .8 + 5);
+    p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
 function menuState() {
