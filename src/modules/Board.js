@@ -140,11 +140,11 @@ export class Board {
         this.p5.strokeWeight(3);
         this.p5.noFill();
         this.p5.stroke(0, 0, 255);
-        for (let i = 0; i < 4; i++) {
-            for (let y = 0; y < 3; y++) {
-                this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[y], 65 * this.scaleX, 65 * this.scaleY); //top display
-            }
-        }
+        // for (let i = 0; i < 4; i++) {
+        //     for (let y = 0; y < 3; y++) {
+        //         this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[y], 65 * this.scaleX, 65 * this.scaleY); //top display
+        //     }
+        // }
         for (let i = 0; i < 5; i++) {
             this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); //1x5 array
         }
@@ -234,8 +234,7 @@ export class Board {
             }
 
             // Highlights box/column where card was selected
-            this.p5.stroke(255, 255, 0);
-            this.p5.rect(this.boardX + (this.draggingColumn + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[0], 65 * this.scaleX, 65 * this.scaleY);
+            this.p5.rect(this.xPositions[this.draggingColumn], this.yPositions[0], 65, 65);
         }
     }
 
