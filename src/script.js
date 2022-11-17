@@ -190,8 +190,10 @@ function gameOver(width, height, scaleX, scaleY) {
     p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
     p.text("ENTER FOR MENU", width / 2, height * .8 + 5);
+}
 
-    if (p.keyIsPressed && p.keyCode == 13) {
+function gameOverState(x, y, width, height) {
+    if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
         // If Enter pressed, return to menu
         p.keyCode = 0;
         resetGame(7);
@@ -436,6 +438,7 @@ GM.mouseClicked = function (x, y) {
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
+    gameOverState(x, y, p.windowWidth, p.windowHeight);
 }
 
 GM.keyPressed = function (keyCode) {
