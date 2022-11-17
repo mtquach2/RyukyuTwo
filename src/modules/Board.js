@@ -211,7 +211,7 @@ export class Board {
         return true;
     }
 
-     displayCards(displayMap) {
+    displayCards(displayMap) {
         // Displays 12 cards for preview in top display
         for (let i = 0; i < 4; i++) {
             let offset = -2;
@@ -229,11 +229,16 @@ export class Board {
     }
 
     displayCard(mouseWasClicked) {
-        // Displays card selected into 1x5 array
+        // Displays card selected in middle of 1x5 array
+        var red = this.p5.random(255);
+        var green = this.p5.random(red);
+        var blue = this.p5.random(blue);
         if (mouseWasClicked == true && this.currentCard != null) {
-            let bounds = this.p5.constrain(this.p5.mouseX, this.boardX + 65, this.boardX + 65 * 5); // Keeps card bounded in 1x5 array
-            this.currentCard.showImage(bounds, this.yPositions[0] + 65);
+            this.currentCard.showImage(this.boardX + 65 * 3, this.yPositions[0] + 70 * this.scaleY);
+            this.p5.stroke(red, green, blue);
+            this.p5.rect(this.boardX + (this.draggingColumn + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[0], 65 * this.scaleX, 65 * this.scaleY);
         }
+        // TODO: Highlight column that was selected here 
     }
 
     chooseCol(py, score) {
@@ -271,7 +276,6 @@ export class Board {
 
         for(var i = 0; i < boardState.board.length; i++){
             for(var j = 0; j < boardState.board[i].length ; j++){
-                console.log("Looking for:", boardState.board[i][j]);
                 let card;
                 let tempScore = new Score();
                 if(boardState.board[i][j] !== ''){ //will never be not empty
