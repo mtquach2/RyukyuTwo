@@ -149,8 +149,10 @@ function menu(width, height, scaleX, scaleY) {
     p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
-function menuState() {
-    if (p.keyIsPressed && p.keyCode == 13) {
+function menuButton() {
+    var width = p.windowWidth;
+    var height = p.windowHeight;
+    if ((p.keyIsPressed && p.keyCode == 13) || (p.mouseIsPressed == true && ((width / 2 - 100) < p.mouseX && p.mouseX < (width / 2 + 200) && p.mouseY > (height * .8 - 5) && p.mouseY < (height * .8 + 50)))) {
         // If Enter pressed, start game
         okinawaAmbient.pause();
 
@@ -164,6 +166,7 @@ function menuState() {
         state = 1;
     }
 }
+
 
 function gameOver(width, height, scaleX, scaleY) {
     gameSound.pause();
@@ -389,7 +392,7 @@ GM.draw = function (width, height) {
     // State is 0, main menu
     if (state == 0) {
         menu(width, height, scaleX, scaleY);
-        menuState();
+        menuButton();
     }
 
     // State is 1, play game
