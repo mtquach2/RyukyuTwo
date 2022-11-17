@@ -3,7 +3,7 @@
  */
 export class Card {
 
-	constructor(p5, suit, value, img, col, loc) {
+	constructor(p5, suit, value, img) {
 		this.p = p5
 		this.suit = suit;
 		this.value = value;

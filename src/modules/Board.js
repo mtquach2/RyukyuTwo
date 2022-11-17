@@ -211,7 +211,7 @@ export class Board {
         return true;
     }
 
-    displayCards(displayMap) {
+    renderCardsTopDisplay(displayMap) {
         // Displays 12 cards for preview in top display
         for (let i = 0; i < 4; i++) {
             let offset = -2;
