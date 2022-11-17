@@ -261,7 +261,6 @@ export class Board {
     /**
      * Displays selected card into the clicked column 
      * @param py mouse's y-axis 
-     * @param recentMoves data structure that stores the last 3 recent moves
      * @param score score object to update
      */
     chooseCol(py, score) {
@@ -291,16 +290,18 @@ export class Board {
         }
     }
 
+    /**
+     * 
+     * @param boardState 
+     * @param deck 
+     */
     updateHands(boardState, deck){
-        console.log("ORIGINAL BOARDROWS:", this.boardRows);
-        console.log("ORIGINAL DIAGIONALS:", this.boardDiag)
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
 
         for(var i = 0; i < boardState.board.length; i++){
             for(var j = 0; j < boardState.board[i].length ; j++){
-                console.log("Looking for:", boardState.board[i][j]);
                 let card;
                 let tempScore = new Score();
                 if(boardState.board[i][j] !== ''){ 
@@ -316,8 +317,6 @@ export class Board {
                     }
                     tempScore.currentScore = boardState.score;
                     card = this.findCard(deck, suit, value);
-                    console.log("THIS IS THE CARD FOUND:", card);
-                    console.log("BOARDSTATE SCORE:", boardState.score);
                     this.boardCols[i].addCard(card, tempScore);
                     this.boardRows[this.reverseIndices[j]].addCard(card, tempScore);
                     if(i === j){
@@ -331,17 +330,24 @@ export class Board {
 
             }
         }
-
-        console.log("AFTER BOARDROWS:", this.boardRows);
-        console.log("AFTER DIAGONALS:", this.boardDiag);
-        //console.log("AFTER BOARDCOLS:", this.boardCols);
     }
 
+    /**
+     * Updates the topDisplay and the cards left section after Cancel(backspace) is pressed
+     * @param displayState the stateSaver
+     */
     updateTopDisplay(displayState){
         this.counts = displayState.counts;
 
     }
 
+    /**
+     * Finds the corresponding Card object given the value and suit
+     * @param deck The deck with all the Card objects
+     * @param suit The suit of the card to find
+     * @param value The value of the card to find
+     * @returns the Card if match is found, null if no match is found
+     */
     findCard(deck, suit, value){
         for(var i = 0; i < deck.length; i++){
             let deckValue = deck[i].getValue();

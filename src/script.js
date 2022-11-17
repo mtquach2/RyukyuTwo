@@ -20,7 +20,7 @@ const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { },
-    keyPressed: (keyCode, BACKSPACE, ESCAPE) => { }
+    keyPressed: (keyCode) => { }
 }
 
 const p = new p5(p => {
@@ -56,7 +56,7 @@ const p = new p5(p => {
     }
 
     p.keyPressed = function keyPressed() {
-        GM.keyPressed(p.keyCode, p.BACKSPACE, p.ESCAPE);
+        GM.keyPressed(p.keyCode);
     }
 });
 
@@ -422,31 +422,32 @@ GM.mouseClicked = function (x, y) {
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
 }
 
-GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
+GM.keyPressed = function (keyCode) {
     if (p.keyCode == 32) {
         console.log("Space bar was pressed");
         omikujiSound.pause();
         stop.currentTime = 0;
     }
 
-    if(keyCode === ESCAPE){ 
+    if(keyCode === 27){ 
         console.log("ESCAPE PRESSED");
-        if(board.currentCard !== null){
-            board.unChooseCard()
+        if(game.cancelsLeft > 0){
+            if(board.currentCard !== null){
+                board.unChooseCard()
+            }
+            timer.resetTimer();
+            game.cancelsLeft--;
         }
-        timer.resetTimer();
-
     }
 
-    if(keyCode === BACKSPACE){ 
+    if(keyCode === 8){ 
         console.log("BACKSPACE PRESSED");
-        if(game.cancelsLeft > 0){
+        if(game.cancelsLeft > 0 && board.currentCard === null){
             let temp = game.gameStateSaver.splice(-2)[0];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
             score.currentScore = temp.score;
             game.stateSaver();
-            console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
             timer.resetTimer();
             game.cancelsLeft--;
         }
