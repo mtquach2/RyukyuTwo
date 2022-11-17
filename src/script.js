@@ -143,10 +143,10 @@ function menu(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(24);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("START", width / 2, height * .8 + 5);
+    p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
 function menuState() {
@@ -237,6 +237,22 @@ function continueScreenStates(width, height, x, y) {
 
             state = 3;
         }
+    }
+}
+
+function cardNoise() {
+    // Randomly chooses a card sound to play when mouse/card is selected
+    if (state == 1) {
+        let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
+        let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
+        cardSound.play();
+        cardSound.volume = 0.2;
+    }
+    else {
+        // Plays pop sound when not in play screen
+        const popSound = new Audio('/static/sounds/pop.wav');
+        popSound.play();
+        popSound.volume = 0.15;
     }
 }
 
@@ -413,9 +429,7 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    const popSound = new Audio('/static/sounds/pop.wav');
-    popSound.play();
-    popSound.volume = 0.15;
+    cardNoise();
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
@@ -423,7 +437,7 @@ GM.mouseClicked = function (x, y) {
 
 GM.keyPressed = function (keyCode) {
     if (p.keyCode == 32) {
-        console.log("Space bar was pressed");
+        // Stops playing omikuji sound if space bar was pressed (see Omikuji.js)
         omikujiSound.pause();
         stop.currentTime = 0;
     }

@@ -1,7 +1,4 @@
 import { Card } from './Card';
-/**
- * Initializer class. Everything will get initialized/set up here before being put into main.ts
- */
 export class Game {
 	constructor(p5, board, score, timer) {
 		this.p5 = p5
@@ -12,8 +9,8 @@ export class Game {
 		this.state = 0;
 
 		this.deck = [];
-		this.mouseWasClicked = false;
-		this.displayMap = new Map();
+		this.mouseWasClicked = false; // Checks to see if we already selected a card in topDisplay
+		this.displayMap = new Map(); // Map that splits deck into four equal parts after shuffle
 
 		this.cancelsLeft = 3;
 		this.gameStateSaver = [];
@@ -21,10 +18,9 @@ export class Game {
 
 		this.paperFrameLong;
 	}
-	/**
-	 * Method to preload images and initializes Card objects for an entire deck of cards
-	 */
+	
 	load() {
+		// Loads all static UI
 		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
 		const values = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
 
@@ -46,8 +42,8 @@ export class Game {
 		this.score.render(width, height, scaleX, scaleY);
 
 		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.displayCards(this.displayMap, width, height);
-		this.board.displayCard(this.mouseWasClicked, width, height);
+		this.board.renderCardsTopDisplay(this.displayMap);
+		this.board.displayCard(this.mouseWasClicked);
 		this.board.renderInstructions(width, height);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
@@ -145,6 +141,7 @@ export class Game {
 	}
 
 	renderLevel(w, h, scaleX, scaleY) {
+		// Displays level in Kanji
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
 		this.p5.stroke(204, 97, 61);
@@ -160,42 +157,32 @@ export class Game {
 		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
-	/**
-	 * Sends displayMap to clicked() in Board.js 
-	 * @param px mouseX value
-	 */
 	updateTopDisplay(px, py) {
+		// Sets current card to whatever was clicked/selected from Board.js
 		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
 	}
 
-	/**
-	 * Splits a full deck of cards into 4 even parts
-	 */
 	splitCards() {
+		// Shuffles and splits the deck into four equal parts
 		this.p5.shuffle(this.deck, true);
 		let x = 0;
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
 		}
-		console.log(this.displayMap);
 	}
-
-	/**
-	 * Shuffles the deck for a reset
-	*/
+  
 	reShuffle() {
+		// Shuffles deck for reset 
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
 		}
 	}
 
-	/**
-	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
-	 */
 	 timerTrigger() {
-		if (this.board.cardPlaced == true) { 
+		// Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
+		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
@@ -235,6 +222,7 @@ export class Game {
    	 * @param scaleY the y value for scaling
 	 */
 	cancelDisplay(w, h, scaleX, scaleY) {
+		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
 		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
 
@@ -248,11 +236,8 @@ export class Game {
 		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
 	}
 
-	/**
-	 * Gets the ranking of the poker hand from Hand.js
-	 * @param rank poker hand ranking
-	 */
 	getRank(rank) {
+		// Gets ranking of poker hand 
 		this.score.updateScore(rank);
 	}
 
@@ -261,11 +246,11 @@ export class Game {
 	}
 
 	getState() {
+		// States for undo/cancel
 		return this.state;
 	}
 
 	setState(state) {
 		this.state = state;
 	}
-
 };
