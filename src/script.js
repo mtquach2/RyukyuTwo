@@ -239,6 +239,23 @@ function continueScreenStates(width, height, x, y) {
     }
 }
 
+function cardNoise() {
+    // Randomly chooses a card sound to play when mouse/card is selected
+    if (state == 1) {
+        let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
+        let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
+        console.log(cardSound);
+        cardSound.play();
+        cardSound.volume = 0.2;
+    }
+    else {
+        // Plays pop sound when not in play screen
+        const popSound = new Audio('/static/sounds/pop.wav');
+        popSound.play();
+        popSound.volume = 0.15;
+    }
+}
+
 function selectorKeypress() {
     if (p.keyIsPressed && p.frameCount % 5 == 0) {
         if (p.keyCode == p.LEFT_ARROW) {
@@ -413,9 +430,7 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    const popSound = new Audio('/static/sounds/pop.wav');
-    popSound.play();
-    popSound.volume = 0.15;
+    cardNoise();
     game.updateTopDisplay(x, y);
     board.chooseCol(y, game.recentMoves, score);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
@@ -423,46 +438,27 @@ GM.mouseClicked = function (x, y) {
 
 GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
     if (p.keyCode == 32) {
-        console.log("Space bar was pressed");
+        // Stops playing omikuji sound if space bar was pressed (see Omikuji.js)
         omikujiSound.pause();
         stop.currentTime = 0;
     }
 
-    //console.log("keyCode:", keyCode);
-    // maybe this should be ESCAPE?
     if(keyCode === ESCAPE){ 
-        console.log("ESCAPE PRESSED");
-        // if we are dragging a card
         if(board.currentCard !== null){
-            // change the visibility flag for the card
-            // and set the board.currentCard = null
             board.unChooseCard()
-
-            // let lastMove = game.recentMoves.slice(-1); 
-            // console.log("LAST MOVE:", lastMove);
-            // //game.displayMap[lastMove.col] = lastMove;
-            // board.counts[lastMove.col]++;
-            // console.log(game.displayMap);
         }
         timer.resetTimer();
-
     }
 
-    if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
-        console.log("BACKSPACE PRESSED");
+    if(keyCode === BACKSPACE){ 
         if(game.cancelsLeft > 0){
-            //console.log("BOARD:", game.gameStateSaver);
             let temp = game.gameStateSaver.splice(-2)[0];
-            //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
             score.currentScore = temp.score;
             game.stateSaver();
-            console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
             timer.resetTimer();
             game.cancelsLeft--;
         }
-
-
     }
 }
