@@ -214,13 +214,6 @@ export class Game {
 		}
 	}
 
-	/**
-	 * Draws the cancel display 
-	 * @param w the width of the display
-   	 * @param h the height of the display
-   	 * @param scaleX the x value for scaling
-   	 * @param scaleY the y value for scaling
-	 */
 	cancelDisplay(w, h, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
