@@ -430,10 +430,8 @@ GM.keyPressed = function (keyCode) {
 
     if(keyCode === 27){ 
         console.log("ESCAPE PRESSED");
-        if(game.cancelsLeft > 0){
-            if(board.currentCard !== null){
-                board.unChooseCard()
-            }
+        if(game.cancelsLeft > 0 && board.currentCard !== null){
+            board.unChooseCard();
             timer.resetTimer();
             game.cancelsLeft--;
         }

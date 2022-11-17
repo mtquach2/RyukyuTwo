@@ -59,6 +59,6 @@ export class Timer {
    * Resets the timer
    */
   resetTimer() {
-    this.cardPlaced = true;
+    this.seconds = 60;
   }
 }
