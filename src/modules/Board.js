@@ -183,6 +183,9 @@ export class Board {
         }
     }
 
+    /**
+     * Deselect a card after clicking on it 
+     */
     unChooseCard(){
         this.draggingColumn = null
         this.currentCard = null
@@ -291,9 +294,9 @@ export class Board {
     }
 
     /**
-     * 
-     * @param boardState 
-     * @param deck 
+     * Redraws the board after cancel(backspace) is pressed
+     * @param boardState The previous state of board to reenact 
+     * @param deck the deck of all Card objects
      */
     updateHands(boardState, deck){
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];

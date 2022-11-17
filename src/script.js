@@ -363,7 +363,6 @@ function win() {
 
 GM.setup = function () {
     game.splitCards();
-    game.assignColumn();
     omikuji.loadJPFont();
 }
 

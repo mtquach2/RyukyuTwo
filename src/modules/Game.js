@@ -76,6 +76,9 @@ export class Game {
 		return 1;
 	}
 
+	/**
+	 * Saves the state of the board, score and counts after a card is dropped
+	 */
 	stateSaver(){
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
@@ -180,72 +183,6 @@ export class Game {
 	}
 
 	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	 assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
-	 * Shuffles the deck for a reset
-	*/
-	reShuffle() {
-		for (let i = 0; i < 4; i++) {
-			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
-		}
-	}
-
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	 assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
 	 * Shuffles the deck for a reset
 	*/
 	reShuffle() {
@@ -258,7 +195,7 @@ export class Game {
 	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 	 */
 	 timerTrigger() {
-		if (this.board.cardPlaced == true) { //card is dropped in general
+		if (this.board.cardPlaced == true) { 
 			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
@@ -290,6 +227,13 @@ export class Game {
 		}
 	}
 
+	/**
+	 * Draws the cancel display 
+	 * @param w the width of the display
+   	 * @param h the height of the display
+   	 * @param scaleX the x value for scaling
+   	 * @param scaleY the y value for scaling
+	 */
 	cancelDisplay(w, h, scaleX, scaleY) {
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
 		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
