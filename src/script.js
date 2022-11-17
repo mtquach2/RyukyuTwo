@@ -429,7 +429,6 @@ GM.keyPressed = function (keyCode) {
     }
 
     if(keyCode === 27){ 
-        console.log("ESCAPE PRESSED");
         if(game.cancelsLeft > 0 && board.currentCard !== null){
             board.unChooseCard();
             timer.resetTimer();
@@ -438,7 +437,6 @@ GM.keyPressed = function (keyCode) {
     }
 
     if(keyCode === 8){ 
-        console.log("BACKSPACE PRESSED");
         if(game.cancelsLeft > 0 && board.currentCard === null){
             let temp = game.gameStateSaver.splice(-2)[0];
             board.updateHands(temp, game.deck);
