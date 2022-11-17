@@ -244,7 +244,6 @@ function cardNoise() {
     if (state == 1) {
         let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
         let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
-        console.log(cardSound);
         cardSound.play();
         cardSound.volume = 0.2;
     }

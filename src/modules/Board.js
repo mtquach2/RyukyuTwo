@@ -218,10 +218,7 @@ export class Board {
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
                     let c = displayMap.get(i)[this.counts[i] + offset] //displays cards from end of deck to beginning
-                    if (this.currentCard !== c){
-                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
-                    }
-                    
+                    c.showImage(this.xPositions[i], this.yPositions[2 - l]);
                 }
                 offset++;
             }
@@ -229,16 +226,17 @@ export class Board {
     }
 
     displayCard(mouseWasClicked) {
-        // Displays card selected in middle of 1x5 array
-        var red = this.p5.random(255);
-        var green = this.p5.random(red);
-        var blue = this.p5.random(blue);
         if (mouseWasClicked == true && this.currentCard != null) {
-            this.currentCard.showImage(this.boardX + 65 * 3, this.yPositions[0] + 70 * this.scaleY);
-            this.p5.stroke(red, green, blue);
+            // Displays numbers for columns to choose from
+            this.p5.stroke(255, 0, 0);
+            for (let col = 0; col < 5; col++) {
+                this.p5.text(col + 1, this.boardX + (col + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY);
+            }
+
+            // Highlights box/column where card was selected
+            this.p5.stroke(255, 255, 0);
             this.p5.rect(this.boardX + (this.draggingColumn + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[0], 65 * this.scaleX, 65 * this.scaleY);
         }
-        // TODO: Highlight column that was selected here 
     }
 
     chooseCol(py, score) {
