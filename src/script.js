@@ -183,10 +183,10 @@ function gameOver(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(16);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("MENU", width / 2, height * .8 + 5);
+    p.text("ENTER FOR MENU", width / 2, height * .8 + 5);
 
     if (p.keyIsPressed && p.keyCode == 13) {
         // If Enter pressed, return to menu
@@ -460,7 +460,5 @@ GM.keyPressed = function (keyCode) {
             timer.resetTimer();
             game.cancelsLeft--;
         }
-
-
     }
 }
