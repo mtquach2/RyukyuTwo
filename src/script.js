@@ -142,10 +142,10 @@ function menu(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(24);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("START", width / 2, height * .8 + 5);
+    p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
 function menuState() {
@@ -244,7 +244,6 @@ function cardNoise() {
     if (state == 1) {
         let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
         let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
-        console.log(cardSound);
         cardSound.play();
         cardSound.volume = 0.2;
     }

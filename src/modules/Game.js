@@ -42,8 +42,8 @@ export class Game {
 		this.score.render(width, height, scaleX, scaleY);
 
 		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.displayCards(this.displayMap, width, height);
-		this.board.displayCard(this.mouseWasClicked, width, height);
+		this.board.renderCardsTopDisplay(this.displayMap);
+		this.board.displayCard(this.mouseWasClicked);
 		this.board.renderInstructions(width, height);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
@@ -156,7 +156,7 @@ export class Game {
 
 	updateTopDisplay(px, py) {
 		// Sets current card to whatever was clicked/selected from Board.js
-		this.currentCard = this.board.clicked(px, py, this.displayMap, this.recentMoves);
+		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
 	}
 
@@ -185,7 +185,6 @@ export class Game {
 				}
 			}
 		}
-		console.log(this.displayMap);
 
 	}
 

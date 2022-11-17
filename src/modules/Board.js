@@ -140,11 +140,6 @@ export class Board {
         this.p5.strokeWeight(3);
         this.p5.noFill();
         this.p5.stroke(0, 0, 255);
-        for (let i = 0; i < 4; i++) {
-            for (let y = 0; y < 3; y++) {
-                this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX + 65 * this.scaleX / 2, this.yPositions[y], 65 * this.scaleX, 65 * this.scaleY); //top display
-            }
-        }
         for (let i = 0; i < 5; i++) {
             this.p5.rect(this.boardX + (i + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY); //1x5 array
         }
@@ -211,17 +206,14 @@ export class Board {
         return true;
     }
 
-     displayCards(displayMap) {
+    renderCardsTopDisplay(displayMap) {
         // Displays 12 cards for preview in top display
         for (let i = 0; i < 4; i++) {
             let offset = -2;
             for (let l = 0; l < 3; l++) {
                 if ((this.counts[i] + offset) >= 0) {
                     let c = displayMap.get(i)[this.counts[i] + offset] //displays cards from end of deck to beginning
-                    if (this.currentCard !== c){
-                        c.showImage(this.xPositions[i], this.yPositions[2 - l]);
-                    }
-                    
+                    c.showImage(this.xPositions[i], this.yPositions[2 - l]);
                 }
                 offset++;
             }
@@ -229,10 +221,15 @@ export class Board {
     }
 
     displayCard(mouseWasClicked) {
-        // Displays card selected into 1x5 array
         if (mouseWasClicked == true && this.currentCard != null) {
-            let bounds = this.p5.constrain(this.p5.mouseX, this.boardX + 65, this.boardX + 65 * 5); // Keeps card bounded in 1x5 array
-            this.currentCard.showImage(bounds, this.yPositions[0] + 65);
+            // Displays numbers for columns to choose from
+            this.p5.stroke(255, 0, 0);
+            for (let col = 0; col < 5; col++) {
+                this.p5.text(col + 1, this.boardX + (col + 1) * 65 * this.scaleX, this.yPositions[0] + 65 * this.scaleY, 65 * this.scaleX, 65 * this.scaleY);
+            }
+
+            // Highlights box/column where card was selected
+            this.p5.rect(this.xPositions[this.draggingColumn], this.yPositions[0], 65, 65);
         }
     }
 
@@ -271,7 +268,6 @@ export class Board {
 
         for(var i = 0; i < boardState.board.length; i++){
             for(var j = 0; j < boardState.board[i].length ; j++){
-                console.log("Looking for:", boardState.board[i][j]);
                 let card;
                 let tempScore = new Score();
                 if(boardState.board[i][j] !== ''){ //will never be not empty
