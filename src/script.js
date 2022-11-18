@@ -71,7 +71,6 @@ const omikuji = new Omikuji(p, score);
 const omikujiSound = new Audio('/static/sounds/spinner.mp3');
 const gameSound = new Audio('/static/sounds/japanese_music.mp3');
 const menuSound = new Audio('/static/sounds/gong.mp3');
-const winSound = new Audio('/static/sounds/win.mp3');
 const gameOverSound = new Audio('/static/sounds/gameover.mp3');
 const okinawaAmbient = new Audio('/static/sounds/Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music).mp3');
 
@@ -81,6 +80,7 @@ let mainMenuButtonUnselected;
 let okinawaWindow;
 
 let jpFont;
+let frameDelay = 600; 
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -149,29 +149,29 @@ function menu(width, height, scaleX, scaleY) {
     p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
-function menuButton() {
-    var width = p.windowWidth;
-    var height = p.windowHeight;
-    if ((p.keyIsPressed && p.keyCode == 13) || (p.mouseIsPressed == true && ((width / 2 - 100) < p.mouseX && p.mouseX < (width / 2 + 200) && p.mouseY > (height * .8 - 5) && p.mouseY < (height * .8 + 50)))) {
-        // If Enter pressed, start game
-        okinawaAmbient.pause();
-
-        menuSound.volume = 0.3;
-        menuSound.play();
-
-        gameSound.volume = 0.1;
-        gameSound.loop = true;
-        gameSound.play();
-        p.textSize(20);
-        state = 1;
+function menuState(x, y, width, height) {
+    if (state == 0) {
+        if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
+            // If Enter pressed, start game
+            okinawaAmbient.pause();
+    
+            menuSound.volume = 0.3;
+            menuSound.play();
+    
+            gameSound.volume = 0.1;
+            gameSound.loop = true;
+            gameSound.play();
+            p.textSize(20);
+            state = 1;
+        }
     }
 }
-
 
 function gameOver(width, height, scaleX, scaleY) {
     gameSound.pause();
     gameSound.currentTime = 0;
 
+    gameOverSound.play();
     p.stroke(0, 0, 0);
     p.fill(255, 255, 255);
 
@@ -193,10 +193,12 @@ function gameOver(width, height, scaleX, scaleY) {
 }
 
 function gameOverState(x, y, width, height) {
-    if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
-        // If Enter pressed, return to menu
-        p.keyCode = 0;
-        resetGame(7);
+    if (state == 7) {
+        if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
+            // If Enter pressed, return to menu
+            p.keyCode = 0;
+            resetGame(7);
+        }
     }
 }
 
@@ -243,6 +245,26 @@ function continueScreenStates(width, height, x, y) {
             state = 3;
         }
     }
+}
+
+function roundScreen() {
+    let width = p.windowWidth;
+    let height = p.windowHeight;
+    let scaleX = width / 1440;
+    let scaleY = height / 790;
+    p.imageMode(p.CORNER);
+    p.background(mainMenuBackground);
+
+    p.fill(204, 97, 61);
+    p.textFont(jpFont, 72 * Math.min(scaleX, scaleY));
+    p.text("  Round\t\t" + game.getLevel() + "  ······  C·L·E·A·R", width / 10, height / 5);
+    p.text("Extend Bonus\t\t\t\t\t\t" +  score.getExtend(), width / 10, height / 3 + height / 30);
+    p.text("Cancel Bonus\t\t\t\t" + "X 800 = " + game.getCancels() * 800, width / 10, height / 2 + height / 30);
+    p.text("Total Bonus\t\t\t\t\t\t " + (Omikuji.getBonus() || 0), width / 10, height / 2 + height / 5);
+    p.text("[Score]\t" + score.getTotalScore() + "····", width / 3, height / 2 + height / 2.75);
+
+    p.textFont("Helvetica");
+    p.text("🐉".repeat(game.getCancels()), width / 3 + width / 15, height / 2 + height / 30);
 }
 
 function cardNoise() {
@@ -373,14 +395,6 @@ function leaderboardEntry(width, height, scaleX, scaleY) {
     selectorKeypress();
 }
 
-function win() {
-    // Function for winning game 
-    winSound.play();
-    game.level++;
-    score.updateTotalScore();
-    score.setClearPoint(game.level, 0);
-    resetGame(5);
-}
 
 GM.setup = function () {
     game.splitCards();
@@ -394,7 +408,6 @@ GM.draw = function (width, height) {
     // State is 0, main menu
     if (state == 0) {
         menu(width, height, scaleX, scaleY);
-        menuButton();
     }
 
     // State is 1, play game
@@ -419,7 +432,11 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
-        win();
+        frameDelay--;
+        roundScreen()
+        if (frameDelay <= 0) {
+            resetGame(5);
+        }
     }
 
     // State is 6, omikuji bonus is added and the game should reset
@@ -437,6 +454,7 @@ GM.mouseClicked = function (x, y) {
     cardNoise();
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
+    menuState(x, y, p.windowWidth, p.windowHeight);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
     gameOverState(x, y, p.windowWidth, p.windowHeight);
 }

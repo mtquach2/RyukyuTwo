@@ -59,10 +59,16 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
+				const winSound = new Audio('/static/sounds/win.mp3');
+				winSound.play();
+				this.level++;
+				this.score.updateTotalScore(this.cancelsLeft);
+				this.score.setExtend();
+				this.score.setClearPoint(this.level, 0);
 				return 5;
 			}
 			else {
-				let sound = new Audio('/static/sounds/continue.mp3');
+				const sound = new Audio('/static/sounds/continue.mp3');
 				sound.volume = 0.5;
 				sound.play();
 				return 2;
@@ -245,5 +251,13 @@ export class Game {
 
 	setState(state) {
 		this.state = state;
+	}
+
+	getLevel() {
+		return this.level;
+	}
+
+	getCancels() {
+		return this.cancelsLeft;
 	}
 };
