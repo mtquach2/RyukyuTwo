@@ -162,7 +162,7 @@ function menuState(x, y, width, height) {
             gameSound.loop = true;
             gameSound.play();
             p.textSize(20);
-            state = 1;
+            state = 8;
         }
     }
 }
@@ -247,11 +247,7 @@ function continueScreenStates(width, height, x, y) {
     }
 }
 
-function roundScreen() {
-    let width = p.windowWidth;
-    let height = p.windowHeight;
-    let scaleX = width / 1440;
-    let scaleY = height / 790;
+function roundScreen(width, height, scaleX, scaleY) {
     p.imageMode(p.CORNER);
     p.background(mainMenuBackground);
 
@@ -265,6 +261,61 @@ function roundScreen() {
 
     p.textFont("Helvetica");
     p.text("🐉".repeat(game.getCancels()), width / 3 + width / 15, height / 2 + height / 30);
+}
+
+function instructionsScreen(width, height, scaleX, scaleY) {
+    p.imageMode(p.CORNER);
+    p.background(mainMenuBackground);
+    p.textAlign(p.CORNER);
+
+    p.fill(204, 97, 61);
+    p.textFont(jpFont, 64 * Math.min(scaleX, scaleY));
+    p.text("How to Play", width / 3 + width / 20, height / 5.5);
+    p.text("Controls", width / 3 + width / 13, height / 2.25);
+    p.text("Poker Key", width / 3 + width / 16, height / 1.35);
+
+    p.fill(70, 70, 70);
+    p.textFont(jpFont, 24 * Math.min(scaleX, scaleY));
+    p.text("Select a card from the bottom row of the 12 cards displayed at the top using the mouse. ", width / 6, height / 4.25);
+    p.text("Selected column will be traced in red.", width / 2.9, height / 3.65);
+    p.text("Once card has been selected, choose a column numbered 1-5 using the mouse.", width / 5, height / 3.15);
+    p.text("Get best poker hands to obtain clearpoint!", width / 3, height / 2.75);
+    
+    p.text("Left Mouse Click -> Select", width / 2.6, height / 2);
+    p.text("Enter -> Button Press / Select Letter", width / 2.95, height / 1.85);
+    p.text("ESC -> Undo Card Select", width / 2.55, height / 1.73);
+    p.text("Backspace -> Undo Previous Move", width / 2.75, height / 1.63);
+    p.text("Spacebar -> Select Omikuji (Fortune) Box", width / 3, height / 1.53);
+
+    p.text("5K -> 5 of a Kind\t\tRF -> Royal Flush\t\tSF -> Straight Flush\t\t4K -> 4 of a Kind\t\tFH -> Full House", width / 12, height / 1.26);
+    p.text("ST -> Straight\t\tFL -> Flush\t\t3K -> 3 of a Kind\t\t2P -> 2 Pair\t\t1P -> Pair\t\tH -> Nothing", width / 8.75, height / 1.18);
+
+    p.imageMode(p.CENTER);
+    p.image(mainMenuButtonSelected, width / 2, height * .92);
+
+    p.stroke(255);
+    p.fill(255);
+    p.textSize(16);
+    p.strokeWeight(1);
+    p.text("ENTER FOR GAME", width / 2.14, height * .92 + 5);
+}
+
+function instructionsState(x, y, width, height) {
+    if (state == 8) {
+        if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .92 - 5) && y < (height * .92 + 50))) {
+            // If Enter pressed, start game
+            okinawaAmbient.pause();
+    
+            menuSound.volume = 0.3;
+            menuSound.play();
+    
+            gameSound.volume = 0.1;
+            gameSound.loop = true;
+            gameSound.play();
+            p.textSize(20);
+            state = 1;
+        }
+    }
 }
 
 function cardNoise() {
@@ -433,7 +484,7 @@ GM.draw = function (width, height) {
     // State is 5, won
     if (state == 5) {
         frameDelay--;
-        roundScreen()
+        roundScreen(width, height, scaleX, scaleY);
         if (frameDelay <= 0) {
             frameDelay = 500;
             resetGame(5);
@@ -449,12 +500,17 @@ GM.draw = function (width, height) {
     if (state == 7) {
         gameOver(width, height, scaleX, scaleY);
     }
+
+    if (state == 8) {
+        instructionsScreen(width, height, scaleX, scaleY);
+    }
 }
 
 GM.mouseClicked = function (x, y) {
     cardNoise();
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
+    instructionsState(x, y, p.windowWidth, p.windowHeight);
     menuState(x, y, p.windowWidth, p.windowHeight);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
     gameOverState(x, y, p.windowWidth, p.windowHeight);
