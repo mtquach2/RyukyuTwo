@@ -1,5 +1,6 @@
 import { db } from '/src/FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { Omikuji } from './Omikuji';
 
 export class Score {
     constructor(p5) {
@@ -7,6 +8,7 @@ export class Score {
         this.currentScore = 0;
         this.totalScore = 0;
         this.clearPoint = 5000;
+        this.extendScore = 0;
         this.ranks = {
             '5K': 3000, // five of a kind
             'RSF': 2800, // royal straight flush
@@ -122,9 +124,9 @@ export class Score {
         this.currentScore += this.ranks[rank];
     }
 
-    updateTotalScore() {
-        // Sets the totalScore to the currentScore if round has been won
-        this.totalScore += this.currentScore;
+    updateTotalScore(cancelBonus) {
+        // Calculates the totalScore if round has been won
+        this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + (Omikuji.getBonus() || 0);
     }
 
     getScore() {
@@ -192,5 +194,21 @@ export class Score {
 
     resetTotalScore() {
         this.totalScore = 0;
+    }
+
+    setExtend() {
+        this.extendScore = this.currentScore - this.clearPoint;
+    }
+
+    getTotalScore() {
+        return this.totalScore;
+    }
+    
+    getExtend() {
+        return this.extendScore;
+    }
+
+    resetData() {
+        this.data = [];
     }
 }
