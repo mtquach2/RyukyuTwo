@@ -92,7 +92,7 @@ function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
     game.gameStateSaver = [];
-
+    score.resetData();
     board = new Board(p, timer);
     board.load();
     game.board = board;
@@ -171,7 +171,6 @@ function gameOver(width, height, scaleX, scaleY) {
     gameSound.pause();
     gameSound.currentTime = 0;
 
-    gameOverSound.play();
     p.stroke(0, 0, 0);
     p.fill(255, 255, 255);
 
@@ -194,6 +193,7 @@ function gameOver(width, height, scaleX, scaleY) {
 
 function gameOverState(x, y, width, height) {
     if (state == 7) {
+        gameOverSound.play();
         if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
             // If Enter pressed, return to menu
             p.keyCode = 0;

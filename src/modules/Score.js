@@ -207,4 +207,8 @@ export class Score {
     getExtend() {
         return this.extendScore;
     }
+
+    resetData() {
+        this.data = [];
+    }
 }
