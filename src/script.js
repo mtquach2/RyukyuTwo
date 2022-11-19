@@ -4,6 +4,7 @@ import { Timer } from '../src/modules/Timer';
 import { Score } from '../src/modules/Score';
 import { Game } from '../src/modules/Game';
 import { Omikuji } from '../src/modules/Omikuji';
+import { LeaderboardInput } from './modules/LeaderboardInput';
 
 export function getWindow() {
     let w = window,
@@ -31,10 +32,10 @@ const p = new p5(p => {
         mainMenuButtonUnselected = p.loadImage("/static/UI/Buttons/ButtonBlankUnselected.png");
         okinawaWindow = p.loadImage("/static/UI/okinawaWindowAnimation.gif");
         jpFont = p.loadFont("/static/BestTen-DOT.otf");
-        animatedSelector = p.loadImage("/static/UI/selection2.gif");
         game.load();
         score.load();
         timer.load();
+        leaderboardInput.load();
     };
 
     p.setup = function setup() {
@@ -60,9 +61,15 @@ const p = new p5(p => {
     }
 });
 
+let mainMenuBackground;
+let mainMenuButtonSelected;
+let mainMenuButtonUnselected;
+let okinawaWindow;
+
 let score = new Score(p);
 let timer = new Timer(p);
 let board = new Board(p, timer);
+let leaderboardInput = new LeaderboardInput(p, score);
 let state = 0;
 
 const game = new Game(p, board, score, timer);
@@ -75,21 +82,11 @@ const winSound = new Audio('/static/sounds/win.mp3');
 const gameOverSound = new Audio('/static/sounds/gameover.mp3');
 const okinawaAmbient = new Audio('/static/sounds/Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music).mp3');
 
-let mainMenuBackground;
-let mainMenuButtonSelected;
-let mainMenuButtonUnselected;
-let okinawaWindow;
-
 let jpFont;
-
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-let name = "";
-let letterSelector = 0;
-let animatedSelector;
 
 function resetGame(currentState) {
     score.resetScore();
+    game.cancelsLeft = 3;
 
     board = new Board(p, timer);
     board.load();
@@ -238,118 +235,6 @@ function continueScreenStates(width, height, x, y) {
     }
 }
 
-function selectorKeypress() {
-    if (p.keyIsPressed && p.frameCount % 5 == 0) {
-        if (p.keyCode == p.LEFT_ARROW) {
-            if (letterSelector == 0 || letterSelector == 13) {
-                letterSelector += 12;
-            }
-            else {
-                letterSelector -= 1;
-            }
-        }
-        else if (p.keyCode == p.UP_ARROW) {
-            if (letterSelector < 13) {
-                letterSelector += 13;
-            }
-            else {
-                letterSelector -= 13;
-            }
-        }
-        else if (p.keyCode == p.RIGHT_ARROW) {
-            if (letterSelector == 12) {
-                letterSelector -= 12;
-            }
-            else if (letterSelector == 27) {
-                letterSelector -= 1;
-            }
-            else {
-                letterSelector += 1;
-            }
-        }
-        else if (p.keyCode == p.DOWN_ARROW) {
-            if (letterSelector >= 13) {
-                letterSelector -= 13;
-            }
-            else {
-                letterSelector += 13;
-            }
-        }
-
-        if (p.keyCode == p.ENTER) {
-            // Add Letter 
-            if (letterSelector < 26 && name.length < 3) {
-                name += letters[letterSelector];
-            }
-            // Enter Name
-            else if (letterSelector == 26) {
-                if (name != "") {
-                    score.addLeaderboard(name);
-                    score.getDataframe();
-                    name = "";
-                }
-                p.keyCode = 0;
-                state = 7;
-            }
-            // Delete Letter
-            else if (letterSelector == 27) {
-                name = name.slice(0, -1);
-            }
-        }
-    }
-}
-
-function leaderboardEntry(width, height, scaleX, scaleY) {
-    p.background(mainMenuBackground);
-    p.textAlign(p.CENTER, p.CENTER);
-    p.textFont(jpFont, 32 * Math.min(scaleX, scaleY));
-
-    p.strokeWeight(3);
-    p.stroke(204, 97, 61);
-
-    // Character Display
-    for (let i = 0; i < 3; i++) {
-        p.rect(width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
-        p.text(name[i], width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
-    }
-
-    p.strokeWeight(3);
-    p.stroke(0, 0, 0);
-    p.fill(255, 255, 255);
-
-    // First half of alphabet
-    for (let i = 0; i < letters.length / 2; i++) {
-        p.text(letters[i], width / 3 + i * 40 * scaleX + 3, height / 2, 40 * scaleX, 40 * scaleY);
-        if (i == letterSelector) {
-            p.image(animatedSelector, width / 3 + i * 40 * scaleX, height / 2, 40 * scaleX, 40 * scaleY);
-        }
-    }
-
-    // Second half of alphabet
-    for (let i = letters.length / 2; i < letters.length; i++) {
-        p.text(letters[i], width / 3 + (i - letters.length / 2) * 40 * scaleX + 3, height / 2 + 60 * scaleY, 40 * scaleX, 40 * scaleY);
-        if (i == letterSelector) {
-            p.image(animatedSelector, width / 3 + (i - letters.length / 2) * 40 * scaleX, height / 2 + 60 * scaleY, 40 * scaleX, 40 * scaleY);
-        }
-    }
-
-    p.textFont("Helvetica");
-
-    // Enter Button
-    p.text("↩️", width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
-    if (letterSelector == 26) {
-        p.image(animatedSelector, width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
-    }
-
-    // Delete Button
-    p.text("❌", width / 3 + 8 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
-    if (letterSelector == 27) {
-        p.image(animatedSelector, width / 3 + 8 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
-    }
-
-    selectorKeypress();
-}
-
 function win() {
     // Function for winning game 
     winSound.play();
@@ -392,7 +277,7 @@ GM.draw = function (width, height) {
 
     // State is 4, game over
     if (state == 4) {
-        leaderboardEntry(width, height, scaleX, scaleY);
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
     }
 
     // State is 5, won
