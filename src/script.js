@@ -153,7 +153,7 @@ GM.draw = function (width, height) {
         state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
     }
 
-    // State is 4, game over
+    // State is 4, leaderboard entry
     if (state == 4) {
         state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
     }
@@ -177,6 +177,7 @@ GM.draw = function (width, height) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
     }
 
+    // State is 8, display instructions and controls
     if (state == 8) {
         state = instructions.instructionsScreen(width, height, scaleX, scaleY);
     }
