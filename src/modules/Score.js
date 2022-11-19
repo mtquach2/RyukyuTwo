@@ -1,5 +1,6 @@
 import { db } from '/src/FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { Omikuji } from './Omikuji';
 
 export class Score {
     constructor(p5) {
@@ -7,18 +8,19 @@ export class Score {
         this.currentScore = 0;
         this.totalScore = 0;
         this.clearPoint = 5000;
+        this.extendScore = 0;
         this.ranks = {
-            '5K': 3000,
-            'RSF': 2800,
-            'SF': 2400,
-            '4K': 2000,
-            'FH': 1800,
-            'ST': 1400,
-            'FL': 1000,
-            '3K': 800,
-            '2P': 600,
-            '1P': 200,
-            'H': 0,
+            '5K': 3000, // five of a kind
+            'RSF': 2800, // royal straight flush
+            'SF': 2400, // straight flush
+            '4K': 2000, // four of a kind
+            'FH': 1800, // full house
+            'ST': 1400, // straight
+            'FL': 1000, // flush
+            '3K': 800, // three of a kind
+            '2P': 600, // two pair
+            '1P': 200, // pair
+            'H': 0, // nothing
         }
 
         this.scaleX = 1;
@@ -27,7 +29,7 @@ export class Score {
         this.scoreY = 0;
 
         this.scoreTableKeys = [];
-        this.pointsMap = new Map();
+        this.pointsMap = new Map(); // map for displaying what hand has been played
         this.data = [];
 
         this.jpFont;
@@ -38,6 +40,7 @@ export class Score {
     }
 
     load() {
+        // loads UI needed
         this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
         this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
         this.paperFrameDark = this.p5.loadImage("/static/UI/paperFrame2.png");
@@ -115,18 +118,15 @@ export class Score {
         }
     }
 
-    /**
-     * Updates the currentScore depending on what hand was played/completed
-     * Also, updates the number of poker hands have been played/completed
-     * @param rank rank of poker hand
-     */
     updateScore(rank) {
+        // Updates current score and number of poker hands played
         this.pointsMap.set(rank, (this.pointsMap.get(rank) + 1) || 1);
         this.currentScore += this.ranks[rank];
     }
 
-    updateTotalScore() {
-        this.totalScore += this.currentScore;
+    updateTotalScore(cancelBonus) {
+        // Calculates the totalScore if round has been won
+        this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + (Omikuji.getBonus() || 0);
     }
 
     getScore() {
@@ -194,5 +194,21 @@ export class Score {
 
     resetTotalScore() {
         this.totalScore = 0;
+    }
+
+    setExtend() {
+        this.extendScore = this.currentScore - this.clearPoint;
+    }
+
+    getTotalScore() {
+        return this.totalScore;
+    }
+    
+    getExtend() {
+        return this.extendScore;
+    }
+
+    resetData() {
+        this.data = [];
     }
 }

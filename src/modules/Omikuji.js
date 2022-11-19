@@ -110,7 +110,7 @@ export class Omikuji {
                 this.score.setClearPoint(level, blessingScore);
                 this.selectedOmikuji = 0;
                 this.selected = false;
-                this.frameDelay = 500;
+                this.frameDelay = 300;
 
                 // Transition state
                 return 6;
@@ -128,4 +128,7 @@ export class Omikuji {
         return 3;
     }
 
+    static getBonus() {
+        return this.blessingScore;
+    }
 }

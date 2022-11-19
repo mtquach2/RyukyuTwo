@@ -1,7 +1,4 @@
 import { Card } from './Card';
-/**
- * Initializer class. Everything will get initialized/set up here before being put into main.ts
- */
 export class Game {
 	constructor(p5, board, score, timer) {
 		this.p5 = p5
@@ -12,19 +9,18 @@ export class Game {
 		this.state = 0;
 
 		this.deck = [];
-		this.mouseWasClicked = false;
-		this.displayMap = new Map();
+		this.mouseWasClicked = false; // Checks to see if we already selected a card in topDisplay
+		this.displayMap = new Map(); // Map that splits deck into four equal parts after shuffle
 
 		this.cancelsLeft = 3;
-		this.recentMoves = [];
 		this.gameStateSaver = [];
+		this.stateSaver();
 
 		this.paperFrameLong;
 	}
-	/**
-	 * Method to preload images and initializes Card objects for an entire deck of cards
-	 */
+	
 	load() {
+		// Loads all static UI
 		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
 		const values = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
 
@@ -46,8 +42,8 @@ export class Game {
 		this.score.render(width, height, scaleX, scaleY);
 
 		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.displayCards(this.displayMap, width, height);
-		this.board.displayCard(this.mouseWasClicked, width, height);
+		this.board.renderCardsTopDisplay(this.displayMap);
+		this.board.displayCard(this.mouseWasClicked);
 		this.board.renderInstructions(width, height);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
@@ -63,10 +59,16 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
+				const winSound = new Audio('/static/sounds/win.mp3');
+				winSound.play();
+				this.level++;
+				this.score.updateTotalScore(this.cancelsLeft);
+				this.score.setExtend();
+				this.score.setClearPoint(this.level, 0);
 				return 5;
 			}
 			else {
-				let sound = new Audio('/static/sounds/continue.mp3');
+				const sound = new Audio('/static/sounds/continue.mp3');
 				sound.volume = 0.5;
 				sound.play();
 				return 2;
@@ -76,6 +78,9 @@ export class Game {
 		return 1;
 	}
 
+	/**
+	 * Saves the state of the board, score and counts after a card is dropped
+	 */
 	stateSaver(){
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
@@ -83,15 +88,10 @@ export class Game {
 			})
 		})
 
-		//console.log("COUNTS BEFORE:", this.board.counts);
-
 		let cardDisplay = [];
 		for(var i = 0; i < 4; i++){
 			cardDisplay.push(this.board.counts[i]);
 		}
-
-		//console.log("COUNTS AFTER:", cardDisplay);
-
 
 		const gameState = {
 			score : this.score.currentScore,
@@ -100,7 +100,6 @@ export class Game {
 		}
 
 		this.gameStateSaver.push(gameState);
-		//this.score.currentScore = gameState.score;
 
 		if(this.gameStateSaver.length > 4){
 			this.gameStateSaver.shift();
@@ -148,6 +147,7 @@ export class Game {
 	}
 
 	renderLevel(w, h, scaleX, scaleY) {
+		// Displays level in Kanji
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
 		this.p5.stroke(204, 97, 61);
@@ -163,107 +163,31 @@ export class Game {
 		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
-	/**
-	 * Sends displayMap to clicked() in Board.js 
-	 * @param px mouseX value
-	 */
 	updateTopDisplay(px, py) {
-		this.currentCard = this.board.clicked(px, py, this.displayMap, this.recentMoves);
+		// Sets current card to whatever was clicked/selected from Board.js
+		this.currentCard = this.board.clicked(px, py, this.displayMap);
 		this.mouseWasClicked = true;
 	}
 
-	/**
-	 * Splits a full deck of cards into 4 even parts
-	 */
 	splitCards() {
+		// Shuffles and splits the deck into four equal parts
 		this.p5.shuffle(this.deck, true);
 		let x = 0;
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.deck.slice(x, x + 13));
 			x += 13;
 		}
-		console.log(this.displayMap);
 	}
-
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	 assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
-	 * Shuffles the deck for a reset
-	*/
+  
 	reShuffle() {
+		// Shuffles deck for reset 
 		for (let i = 0; i < 4; i++) {
 			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
 		}
 	}
 
-	/**
-	 * Assign the column numbers to each card after it is splitted 
-	 */
-	 assignColumn() {
-		//don't need
-		for(let i = 0; i < 4; i++){
-			for(let x = 0; x < 13; x++){
-				if(this.displayMap.get(i).length != 0){
-					let colDeck = this.displayMap.get(i);
-					if(!(colDeck == null)){
-						colDeck[x].col = i; //to match the number with counts[]
-					}
-				}
-			}
-		}
-		console.log(this.displayMap);
-
-	}
-
-	/**
-	 * Shuffles the deck for a reset
-	*/
-	reShuffle() {
-		for (let i = 0; i < 4; i++) {
-			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
-		}
-	}
-
-	/**
-	 * Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
-	 */
 	 timerTrigger() {
+		// Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
@@ -272,11 +196,6 @@ export class Game {
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard) != -1){
-					console.log("CARD SELECTD BUT NOT COLUMN");
-					//this.board.currentCard.loc = "B";
-					// this.recentMoves.push(this.board.currentCard);
-					// console.log(this.recentMoves);
-					// this.board.movesUpdate(this.recentMoves);
 					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
@@ -291,12 +210,7 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard) != -1){
-						console.log("CARD DROPPED FROM TOP DECK");
 						this.stateSaver();
-						//this.board.currentCard.loc = "B";
-						// this.recentMoves.push(firstCard);
-						// console.log(this.recentMoves);
-						// this.board.movesUpdate(this.recentMoves);
 						this.board.currentCard = null;
 						break;
 					}
@@ -307,6 +221,7 @@ export class Game {
 	}
 
 	cancelDisplay(w, h, scaleX, scaleY) {
+		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
 		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
 
@@ -320,11 +235,8 @@ export class Game {
 		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
 	}
 
-	/**
-	 * Gets the ranking of the poker hand from Hand.js
-	 * @param rank poker hand ranking
-	 */
 	getRank(rank) {
+		// Gets ranking of poker hand 
 		this.score.updateScore(rank);
 	}
 
@@ -333,6 +245,7 @@ export class Game {
 	}
 
 	getState() {
+		// States for undo/cancel
 		return this.state;
 	}
 
@@ -340,4 +253,11 @@ export class Game {
 		this.state = state;
 	}
 
+	getLevel() {
+		return this.level;
+	}
+
+	getCancels() {
+		return this.cancelsLeft;
+	}
 };

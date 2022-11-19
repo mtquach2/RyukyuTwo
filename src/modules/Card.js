@@ -3,19 +3,15 @@
  */
 export class Card {
 
-	constructor(p5, suit, value, img, col, loc) {
+	constructor(p5, suit, value, img) {
 		this.p = p5
 		this.suit = suit;
 		this.value = value;
 		this.img = img;
 	}
 
-	/**
-	 * Displays the image associated with the given card 
-	 * @param x x-axis for where we want the card
-	 * @param y y-axis for where we want the card
-	 */
-	 showImage(x, y, scaleX, scaleY) {
+	showImage(x, y, scaleX, scaleY) {
+		// Displays image asscoiated with given card
 		this.p.imageMode(this.p.CORNER);
 		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
 	}

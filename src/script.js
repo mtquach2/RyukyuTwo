@@ -21,7 +21,7 @@ const GM = {
     setup: () => { },
     draw: () => { },
     mouseClicked: (x, y) => { },
-    keyPressed: (keyCode, BACKSPACE, ESCAPE) => { }
+    keyPressed: (keyCode) => { }
 }
 
 const p = new p5(p => {
@@ -32,6 +32,7 @@ const p = new p5(p => {
         mainMenuButtonUnselected = p.loadImage("/static/UI/Buttons/ButtonBlankUnselected.png");
         okinawaWindow = p.loadImage("/static/UI/okinawaWindowAnimation.gif");
         jpFont = p.loadFont("/static/BestTen-DOT.otf");
+        
         game.load();
         score.load();
         timer.load();
@@ -57,7 +58,7 @@ const p = new p5(p => {
     }
 
     p.keyPressed = function keyPressed() {
-        GM.keyPressed(p.keyCode, p.BACKSPACE, p.ESCAPE);
+        GM.keyPressed(p.keyCode);
     }
 });
 
@@ -78,16 +79,17 @@ const omikuji = new Omikuji(p, score);
 const omikujiSound = new Audio('/static/sounds/spinner.mp3');
 const gameSound = new Audio('/static/sounds/japanese_music.mp3');
 const menuSound = new Audio('/static/sounds/gong.mp3');
-const winSound = new Audio('/static/sounds/win.mp3');
 const gameOverSound = new Audio('/static/sounds/gameover.mp3');
 const okinawaAmbient = new Audio('/static/sounds/Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music).mp3');
 
 let jpFont;
+let frameDelay = 500; 
 
 function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
-
+    game.gameStateSaver = [];
+    score.resetData();
     board = new Board(p, timer);
     board.load();
     game.board = board;
@@ -138,25 +140,27 @@ function menu(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(24);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("START", width / 2, height * .8 + 5);
+    p.text("PRESS ENTER", width / 2, height * .8 + 5);
 }
 
-function menuState() {
-    if (p.keyIsPressed && p.keyCode == 13) {
-        // If Enter pressed, start game
-        okinawaAmbient.pause();
-
-        menuSound.volume = 0.3;
-        menuSound.play();
-
-        gameSound.volume = 0.1;
-        gameSound.loop = true;
-        gameSound.play();
-        p.textSize(20);
-        state = 1;
+function menuState(x, y, width, height) {
+    if (state == 0) {
+        if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
+            // If Enter pressed, start game
+            okinawaAmbient.pause();
+    
+            menuSound.volume = 0.3;
+            menuSound.play();
+    
+            gameSound.volume = 0.1;
+            gameSound.loop = true;
+            gameSound.play();
+            p.textSize(20);
+            state = 1;
+        }
     }
 }
 
@@ -178,15 +182,20 @@ function gameOver(width, height, scaleX, scaleY) {
 
     p.stroke(255, 255, 255);
     p.fill(255, 255, 255);
-    p.textSize(32);
-    p.strokeWeight(2);
+    p.textSize(16);
+    p.strokeWeight(1);
     p.textAlign(p.CENTER, p.BASELINE);
-    p.text("MENU", width / 2, height * .8 + 5);
+    p.text("ENTER FOR MENU", width / 2, height * .8 + 5);
+}
 
-    if (p.keyIsPressed && p.keyCode == 13) {
-        // If Enter pressed, return to menu
-        p.keyCode = 0;
-        resetGame(7);
+function gameOverState(x, y, width, height) {
+    if (state == 7) {
+        gameOverSound.play();
+        if ((p.keyIsPressed && p.keyCode == 13) || ((width / 2 - 100) < x && x < (width / 2 + 200) && y > (height * .8 - 5) && y < (height * .8 + 50))) {
+            // If Enter pressed, return to menu
+            p.keyCode = 0;
+            resetGame(7);
+        }
     }
 }
 
@@ -235,18 +244,44 @@ function continueScreenStates(width, height, x, y) {
     }
 }
 
-function win() {
-    // Function for winning game 
-    winSound.play();
-    game.level++;
-    score.updateTotalScore();
-    score.setClearPoint(game.level, 0);
-    resetGame(5);
+function roundScreen() {
+    let width = p.windowWidth;
+    let height = p.windowHeight;
+    let scaleX = width / 1440;
+    let scaleY = height / 790;
+    p.imageMode(p.CORNER);
+    p.background(mainMenuBackground);
+
+    p.fill(204, 97, 61);
+    p.textFont(jpFont, 72 * Math.min(scaleX, scaleY));
+    p.text("  Round\t\t" + game.getLevel() + "  ······  C·L·E·A·R", width / 10, height / 5);
+    p.text("Extend Bonus\t\t\t\t\t\t" +  score.getExtend(), width / 10, height / 3 + height / 30);
+    p.text("Cancel Bonus\t\t\t\t" + "X 800 = " + game.getCancels() * 800, width / 10, height / 2 + height / 30);
+    p.text("Total Bonus\t\t\t\t\t\t " + (Omikuji.getBonus() || 0), width / 10, height / 2 + height / 5);
+    p.text("[Score]\t" + score.getTotalScore() + "····", width / 3, height / 2 + height / 2.75);
+
+    p.textFont("Helvetica");
+    p.text("🐉".repeat(game.getCancels()), width / 3 + width / 15, height / 2 + height / 30);
+}
+
+function cardNoise() {
+    // Randomly chooses a card sound to play when mouse/card is selected
+    if (state == 1) {
+        let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
+        let cardSound = new Audio('/static/sounds/cardSounds/cardSound' + `${i}` + '.mp3');
+        cardSound.play();
+        cardSound.volume = 0.2;
+    }
+    else {
+        // Plays pop sound when not in play screen
+        const popSound = new Audio('/static/sounds/pop.wav');
+        popSound.play();
+        popSound.volume = 0.15;
+    }
 }
 
 GM.setup = function () {
     game.splitCards();
-    game.assignColumn();
     omikuji.loadJPFont();
 }
 
@@ -257,7 +292,6 @@ GM.draw = function (width, height) {
     // State is 0, main menu
     if (state == 0) {
         menu(width, height, scaleX, scaleY);
-        menuState();
     }
 
     // State is 1, play game
@@ -282,7 +316,12 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
-        win();
+        frameDelay--;
+        roundScreen()
+        if (frameDelay <= 0) {
+            frameDelay = 500;
+            resetGame(5);
+        }
     }
 
     // State is 6, omikuji bonus is added and the game should reset
@@ -297,56 +336,38 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    const popSound = new Audio('/static/sounds/pop.wav');
-    popSound.play();
-    popSound.volume = 0.15;
+    cardNoise();
     game.updateTopDisplay(x, y);
-    board.chooseCol(y, game.recentMoves, score);
+    board.chooseCol(y, score);
+    menuState(x, y, p.windowWidth, p.windowHeight);
     continueScreenStates(p.windowWidth, p.windowHeight, x, y);
+    gameOverState(x, y, p.windowWidth, p.windowHeight);
 }
 
-GM.keyPressed = function (keyCode, BACKSPACE, ESCAPE) {
+GM.keyPressed = function (keyCode) {
     if (p.keyCode == 32) {
-        console.log("Space bar was pressed");
+        // Stops playing omikuji sound if space bar was pressed (see Omikuji.js)
         omikujiSound.pause();
         stop.currentTime = 0;
     }
 
-    //console.log("keyCode:", keyCode);
-    // maybe this should be ESCAPE?
-    if(keyCode === ESCAPE){ 
-        console.log("ESCAPE PRESSED");
-        // if we are dragging a card
-        if(board.currentCard !== null){
-            // change the visibility flag for the card
-            // and set the board.currentCard = null
-            board.unChooseCard()
-
-            // let lastMove = game.recentMoves.slice(-1); 
-            // console.log("LAST MOVE:", lastMove);
-            // //game.displayMap[lastMove.col] = lastMove;
-            // board.counts[lastMove.col]++;
-            // console.log(game.displayMap);
+    if(keyCode === 27){ 
+        if(game.cancelsLeft > 0 && board.currentCard !== null){
+            board.unChooseCard();
+            timer.resetTimer();
+            game.cancelsLeft--;
         }
-        timer.resetTimer();
-
     }
 
-    if(keyCode === BACKSPACE){ //keyCode for BACKSPACE is 8
-        console.log("BACKSPACE PRESSED");
-        if(game.cancelsLeft > 0){
-            //console.log("BOARD:", game.gameStateSaver);
+    if(keyCode === 8){ 
+        if(game.cancelsLeft > 0 && board.currentCard === null){
             let temp = game.gameStateSaver.splice(-2)[0];
-            //let temp = game.gameStateSaver[game.gameStateSaver.length - 2];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
             score.currentScore = temp.score;
             game.stateSaver();
-            console.log("STATE SAVER AFTER CANCEL", game.gameStateSaver);
             timer.resetTimer();
             game.cancelsLeft--;
         }
-
-
     }
 }
