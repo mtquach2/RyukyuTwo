@@ -1,14 +1,12 @@
 import { Hand } from './Hand';
-import { Card } from './Card';
-import { jpegVersion } from 'canvas';
 import { Score } from './Score';
 
 export class Board {
-    constructor(p5, timer) {
-        this.p5 = p5
+    constructor(p, timer) {
+        this.p5 = p;
         this.counts = [12, 12, 12, 12];
         this.currentCard = null;
-        this.draggingColumn = null
+        this.draggingColumn = null;
         this.col = 0;
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
@@ -33,6 +31,26 @@ export class Board {
             1: 3,
             0: 4
         };
+    }
+
+    load() {
+        this.jpFont = this.p5.loadFont("/static/fonts/jackeyfont.ttf");
+        this.marker = this.p5.loadImage('../../static/cards/card_back.png');
+        this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
+        this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
+    }
+
+    resetBoard() {
+        this.counts = [12, 12, 12, 12];
+        this.currentCard = null;
+        this.draggingColumn = null;
+        this.col = 0;
+        this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
+        this.boardDiag = [new Hand(), new Hand()];
+        this.marker;
+        this.cardPlaced = false;
+        this.cardSelected = false;
     }
 
     addCard(column, card, score) {
@@ -152,13 +170,6 @@ export class Board {
                 this.p5.image(this.marker, this.boardX * 2.05 + this.boardX / 3 + (i * width / 25), this.boardY / 10 + this.boardY + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
             }
         }
-    }
-
-    load() {
-        this.marker = this.p5.loadImage('../../static/cards/card_back.png');
-        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
-        this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
-        this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
     }
 
     selectFont(rank) {

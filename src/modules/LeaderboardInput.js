@@ -1,5 +1,5 @@
 export class LeaderboardInput {
-    constructor(p, score, bg) {
+    constructor(p, score) {
         this.p5 = p;
         this.score = score;
         
@@ -15,7 +15,7 @@ export class LeaderboardInput {
     load() {
         this.mainMenuBackground = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.animatedSelector = this.p5.loadImage("/static/UI/selection2.gif");
-        this.jpFont = this.p5.loadFont("/static/BestTen-DOT.otf");
+        this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
     }
 
     selectorKeypress() {

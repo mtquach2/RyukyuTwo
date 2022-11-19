@@ -3,11 +3,11 @@ import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore"
 import { Omikuji } from './Omikuji';
 
 export class Score {
-    constructor(p5) {
-        this.p5 = p5
+    constructor(p) {
+        this.p5 = p;
         this.currentScore = 0;
         this.totalScore = 0;
-        this.clearPoint = 5000;
+        this.clearPoint = 0;
         this.extendScore = 0;
         this.ranks = {
             '5K': 3000, // five of a kind
@@ -41,7 +41,7 @@ export class Score {
 
     load() {
         // loads UI needed
-        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
+        this.jpFont = this.p5.loadFont("/static/fonts/jackeyfont.ttf");
         this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
         this.paperFrameDark = this.p5.loadImage("/static/UI/paperFrame2.png");
         this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
