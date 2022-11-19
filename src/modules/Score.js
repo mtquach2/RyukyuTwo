@@ -125,7 +125,7 @@ export class Score {
     }
 
     updateTotalScore(cancelBonus) {
-        // Sets the totalScore to the currentScore if round has been won
+        // Calculates the totalScore if round has been won
         this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + (Omikuji.getBonus() || 0);
     }
 

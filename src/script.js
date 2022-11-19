@@ -80,7 +80,7 @@ let mainMenuButtonUnselected;
 let okinawaWindow;
 
 let jpFont;
-let frameDelay = 600; 
+let frameDelay = 500; 
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -435,6 +435,7 @@ GM.draw = function (width, height) {
         frameDelay--;
         roundScreen()
         if (frameDelay <= 0) {
+            frameDelay = 500;
             resetGame(5);
         }
     }
