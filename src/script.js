@@ -203,6 +203,7 @@ GM.mouseClicked = function (x, y) {
             break;
         case 8:
             state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
     }
 }
 
