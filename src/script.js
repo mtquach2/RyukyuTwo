@@ -9,6 +9,7 @@ import { Menu } from './modules/Menu';
 import { GameOver } from './modules/GameOver';
 import { Continue } from './modules/Continue';
 import { Round } from './modules/Round';
+import { Instructions } from './modules/Instructions';
 
 export function getWindow() {
     let w = window,
@@ -41,6 +42,7 @@ const p = new p5(p => {
         omikuji.load();
         leaderboardInput.load();
         gameOver.load();
+        instructions.load();
     };
 
     p.setup = function setup() {
@@ -79,6 +81,7 @@ const continueScreen = new Continue(p);
 const omikuji = new Omikuji(p, score);
 const leaderboardInput = new LeaderboardInput(p, score);
 const gameOver = new GameOver(p, score, gameSound);
+const instructions = new Instructions(p);
 
 let state = 0;
 let scaleX;
@@ -173,6 +176,10 @@ GM.draw = function (width, height) {
     if (state == 7) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
     }
+
+    if (state == 8) {
+        state = instructions.instructionsScreen(width, height, scaleX, scaleY);
+    }
 }
 
 GM.mouseClicked = function (x, y) {
@@ -193,6 +200,8 @@ GM.mouseClicked = function (x, y) {
                 resetGame(7);
             }
             break;
+        case 8:
+            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
     }
 }
 

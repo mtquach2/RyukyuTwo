@@ -7,13 +7,13 @@ export class GameOver {
         this.gameSound = music;
         this.gameOverSound;
         this.jpFont;
-        this.mainMenuButtonSelected;
+        this.buttonSelected;
     }
 
     load() {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
         this.gameOverSound = new Audio('/static/sounds/gameover.mp3');
-        this.mainMenuButtonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
+        this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
     }
     
     gameOver(width, height, scaleX, scaleY) {
@@ -30,7 +30,7 @@ export class GameOver {
 
         // Main Menu
         this.p5.imageMode(this.p5.CENTER);
-        this.p5.image(this.mainMenuButtonSelected, width / 2, height * .8);
+        this.p5.image(this.buttonSelected, width / 2, height * .8);
 
         this.p5.stroke(255, 255, 255);
         this.p5.fill(255, 255, 255);

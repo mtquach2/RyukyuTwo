@@ -44,23 +44,23 @@ export class Menu {
         // Image Source https://www.tsunagujapan.com/50-things-to-do-in-okinawa/
         this.p5.stroke(150, 75, 0);
         this.p5.noFill();
-        this.p5.image(this.okinawaWindow, width / 3, height / 4, width / 3, height / 2);
-        this.p5.rect(width / 3, height / 4, width / 3, height / 2);
+        this.p5.image(this.okinawaWindow, width / 3 - 5 * scaleX, height / 4, width / 3, height / 2);
+        this.p5.rect(width / 3 - 5 * scaleX, height / 4, width / 3, height / 2);
     
         this.p5.strokeWeight(3);
         this.p5.stroke(87, 50, 14);
-        this.p5.rect(width / 3, height / 4, width / 3, height / 2);
+        this.p5.rect(width / 3 - 5 * scaleX, height / 4, width / 3, height / 2);
     
         // Start Button Image
         this.p5.imageMode(this.p5.CENTER);
-        this.p5.image(this.mainMenuButtonSelected, width / 2, height * .8);
+        this.p5.image(this.mainMenuButtonSelected, width / 2, height * .8, this.mainMenuButtonSelected.width * scaleX, this.mainMenuButtonSelected.height * scaleY);
     
         this.p5.stroke(255, 255, 255);
         this.p5.fill(255, 255, 255);
-        this.p5.textSize(24);
+        this.p5.textSize(24 * Math.min(scaleX, scaleY));
         this.p5.strokeWeight(1);
         this.p5.textAlign(this.p5.CENTER, this.p5.BASELINE);
-        this.p5.text("PRESS ENTER", width / 2, height * .8 + 5);
+        this.p5.text("PRESS ENTER", width / 2, height * .8 + 5 * scaleY);
 
         return 0;
     }
@@ -80,7 +80,7 @@ export class Menu {
             
             console.log("Menu Click Transition");
             // Transition from menu to game 0 --> 1
-            return 1;
+            return 8;
         }
         
         return 0;
