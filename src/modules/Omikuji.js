@@ -5,8 +5,8 @@ export class Omikuji {
         this.selectedOmikuji = 0;
         this.selected = false;
         this.frameDelay = 300;
+        this.blessingScore;
 
-        this.jpFont;
         this.omikujiValues = Array.from({ length: 16 }, () => Math.round((Math.random() * 2000) / 500) * 500);
         this.omikujiTable = {
             0: "凶",
@@ -22,10 +22,14 @@ export class Omikuji {
             "吉": "Blessing,\n+1500 bonus points",
             "大吉": "Great Blessing,\n+2000 bonus points",
         };
+    
+        this.jpFont;
+        this.omikujiSound;
     }
 
-    loadJPFont() {
-        this.jpFont = this.p5.loadFont("../../static/BestTen-DOT.otf");
+    load() {
+        this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
+        this.omikujiSound = new Audio('/static/sounds/spinner.mp3');
     }
 
     renderTitle(width, height, scaleX, scaleY) {
@@ -73,6 +77,12 @@ export class Omikuji {
     }
 
     omikuji(level, width, height, scaleX, scaleY) {
+        if (this.omikujiSound.paused && !this.selected) {
+            this.omikujiSound.volume = 0.2;
+            this.omikujiSound.loop = true;
+            this.omikujiSound.play();
+        }
+
         this.p5.textFont(this.jpFont);
         this.renderTitle(width, height, scaleX, scaleY);
         this.renderBoxes(width, height, scaleX, scaleY);
@@ -80,6 +90,7 @@ export class Omikuji {
         // Spacebar pressed, box was selected
         if (this.p5.keyIsPressed && this.p5.keyCode == 32 && this.selectedOmikuji < 16) {
             this.selected = true;
+            this.omikujiSound.pause();
         }
 
         // Spacebar pressed, start a 5 second timer so player can see blessing, change state by returning the new state;
@@ -87,6 +98,7 @@ export class Omikuji {
             this.frameDelay--;
             const blessingScore = this.omikujiValues[this.selectedOmikuji];
             const blessingText = this.omikujiTable[blessingScore];
+            this.blessingScore = blessingScore;
 
             this.p5.strokeWeight(8);
             this.p5.stroke(0, 0, 0);
