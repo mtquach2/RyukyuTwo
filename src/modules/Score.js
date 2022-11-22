@@ -7,7 +7,7 @@ export class Score {
         this.p5 = p;
         this.currentScore = 0;
         this.totalScore = 0;
-        this.clearPoint = 0;
+        this.clearPoint = 5000;
         this.extendScore = 0;
         this.ranks = {
             '5K': 3000, // five of a kind
