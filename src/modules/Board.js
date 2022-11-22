@@ -355,6 +355,18 @@ export class Board {
         }
     }
 
+    boardIsEmpty(){
+        for(let i = 0; i < this.boardCols.length; i++){
+            if(this.boardCols[i].hand.length !== 0){
+                return false;
+            }
+            if(this.boardRows[i].hand.length !== 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
     renderInstructions(w, h) {
         // Displays Japanese instructions
         let instrX = this.boardX * 2 + this.boardX / 3;

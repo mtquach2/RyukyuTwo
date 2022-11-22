@@ -449,13 +449,15 @@ GM.keyPressed = function (keyCode) {
             game.cancelsLeft--;
         }
         else if(game.cancelsLeft > 0 && board.currentCard === null){
-            let temp = game.gameStateSaver.splice(-2)[0];
-            board.updateHands(temp, game.deck);
-            board.updateTopDisplay(temp, game.displayMap);
-            score.currentScore = temp.score;
-            game.stateSaver();
-            timer.resetTimer();
-            game.cancelsLeft--;
+            if(board.boardIsEmpty() === false){
+                let temp = game.gameStateSaver.splice(-2)[0];
+                board.updateHands(temp, game.deck);
+                board.updateTopDisplay(temp, game.displayMap);
+                score.currentScore = temp.score;
+                game.stateSaver();
+                timer.resetTimer();
+                game.cancelsLeft--;
+            }
         }
     }
 }
