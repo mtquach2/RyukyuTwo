@@ -16,7 +16,7 @@ export class Menu {
     load() {
         this.mainMenuBackground = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.mainMenuButtonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
-        this.okinawaWindow = this.p5.loadImage("/static/UI/okinawaWindowAnimation.gif");
+        this.okinawaWindow = this.p5.loadImage("/static/UI/okinawa_ishigaki_island.gif");
 
         this.okinawaAmbient = new Audio('/static/sounds/Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music).mp3');
         this.menuSound = new Audio('/static/sounds/gong.mp3');
@@ -40,8 +40,8 @@ export class Menu {
         this.p5.text("琉", width / 4, height / 2);
         this.p5.text("球", width * .75, height / 2);
     
-        // Gif of Okinawa through window
-        // Image Source https://www.tsunagujapan.com/50-things-to-do-in-okinawa/
+        // Gif of Okinawa's Ishigaki Island through window
+        // Image Source https://www.flickr.com/photos/125983633@N03/28510273280/in/album-72157671855774675/
         this.p5.stroke(150, 75, 0);
         this.p5.noFill();
         this.p5.image(this.okinawaWindow, width / 3 - 5 * scaleX, height / 4, width / 3, height / 2);
