@@ -442,16 +442,13 @@ GM.keyPressed = function (keyCode) {
         stop.currentTime = 0;
     }
 
-    if(keyCode === 27){ 
+    if(keyCode === 8){ 
         if(game.cancelsLeft > 0 && board.currentCard !== null){
             board.unChooseCard();
             timer.resetTimer();
             game.cancelsLeft--;
         }
-    }
-
-    if(keyCode === 8){ 
-        if(game.cancelsLeft > 0 && board.currentCard === null){
+        else if(game.cancelsLeft > 0 && board.currentCard === null){
             let temp = game.gameStateSaver.splice(-2)[0];
             board.updateHands(temp, game.deck);
             board.updateTopDisplay(temp, game.displayMap);
