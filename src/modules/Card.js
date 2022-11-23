@@ -13,7 +13,7 @@ export class Card {
 	showImage(x, y, scaleX, scaleY) {
 		// Displays image asscoiated with given card
 		this.p.imageMode(this.p.CORNER);
-		this.p.image(this.img, x, y, 64 * scaleX, 64 * scaleY);
+		this.p.image(this.img, x, y, 80 * scaleX, 80 * scaleY);
 	}
 
 	getSuit() {
