@@ -33,6 +33,7 @@ export class SoundManager {
 
     pauseMenuTheme() {
         this.menuTheme.pause();
+        this.menuTheme.currentTime = 0;
     }
 
     playGong() {
@@ -91,7 +92,7 @@ export class SoundManager {
 
     playOmikujiSpinner(omikujiIsSelected) {
         if (this.omikujiSpinner.paused && !omikujiIsSelected) {
-            this.omikujiSpinner.volume = 0.1;
+            this.omikujiSpinner.volume = 0.05;
             this.omikujiSpinner.loop = true;
             this.omikujiSpinner.play();
         }
