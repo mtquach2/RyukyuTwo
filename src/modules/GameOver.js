@@ -1,25 +1,19 @@
 export class GameOver {
-    constructor(p, score, music) {
+    constructor(p, score, soundManager) {
         this.p5 = p;
-
         this.score = score;
+        this.soundManager = soundManager;
 
-        this.gameSound = music;
-        this.gameOverSound;
         this.jpFont;
         this.buttonSelected;
     }
 
     load() {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
-        this.gameOverSound = new Audio('/static/sounds/gameover.mp3');
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
     }
     
     gameOver(width, height, scaleX, scaleY) {
-        this.gameSound.pause();
-        this.gameSound.currentTime = 0;
-
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
 
@@ -43,7 +37,7 @@ export class GameOver {
     }
 
     gameOverState(x, y, width, height, scaleX, scaleY) {
-        this.gameOverSound.play();
+        this.soundManager.playGameOver();
         if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 100 * scaleX) < x && x < (width / 2 + 200 * scaleX) && y > (height * .8 - 5 * scaleY) && y < (height * .8 + 50 * scaleY))) {
             this.p5.keyCode = 0;
 

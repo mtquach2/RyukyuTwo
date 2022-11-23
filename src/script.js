@@ -10,6 +10,7 @@ import { GameOver } from './modules/GameOver';
 import { Continue } from './modules/Continue';
 import { Round } from './modules/Round';
 import { Instructions } from './modules/Instructions';
+import { SoundManager } from './modules/SoundManager';
 
 export function getWindow() {
     let w = window,
@@ -33,6 +34,7 @@ const p = new p5(p => {
     const windowSize = getWindow();
 
     p.preload = function preload() {
+        soundManager.load();
         score.load();
         timer.load();
         menu.load();
@@ -68,20 +70,19 @@ const p = new p5(p => {
     }
 });
 
-const gameSound = new Audio('/static/sounds/japanese_music.mp3');
-
+const soundManager = new SoundManager();
 const score = new Score(p);
 const timer = new Timer(p);
 const board = new Board(p, timer);
 
-const menu = new Menu(p, gameSound);
-const game = new Game(p, board, score, timer);
+const menu = new Menu(p, soundManager);
+const game = new Game(p, board, score, timer, soundManager);
 const round = new Round(p, score, game);
-const continueScreen = new Continue(p);
-const omikuji = new Omikuji(p, score);
+const continueScreen = new Continue(p, soundManager);
+const omikuji = new Omikuji(p, score, soundManager);
 const leaderboardInput = new LeaderboardInput(p, score);
-const gameOver = new GameOver(p, score, gameSound);
-const instructions = new Instructions(p);
+const gameOver = new GameOver(p, score, soundManager, soundManager);
+const instructions = new Instructions(p, soundManager);
 
 let state = 0;
 let scaleX;
@@ -107,22 +108,6 @@ function resetGame(currentState) {
     }
 
     game.reShuffle();
-}
-
-function cardNoise() {
-    // Randomly chooses a card sound to play when mouse/card is selected
-    if (state == 1) {
-        let i =  Math.floor(Math.random() * 5) // random int between 1 and 5 (exclusive)
-        let cardSound = new Audio(`/static/sounds/cardSounds/cardSound${i}.mp3`);
-        cardSound.play();
-        cardSound.volume = 0.2;
-    }
-    else {
-        // Plays pop sound when not in play screen
-        const popSound = new Audio('/static/sounds/pop.wav');
-        popSound.play();
-        popSound.volume = 0.15;
-    }
 }
 
 GM.setup = function () {
@@ -184,7 +169,7 @@ GM.draw = function (width, height) {
 }
 
 GM.mouseClicked = function (x, y) {
-    cardNoise();
+    soundManager.playCardNoise(state);
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
 

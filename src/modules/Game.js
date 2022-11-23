@@ -1,10 +1,12 @@
 import { Card } from './Card';
 export class Game {
-	constructor(p5, board, score, timer) {
+	constructor(p5, board, score, timer, soundManager) {
 		this.p5 = p5
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.soundManager = soundManager;
+		
 		this.level = 1;
 		this.state = 0;
 
@@ -36,6 +38,8 @@ export class Game {
 	}
 
 	play(width, height, scaleX, scaleY) {
+		this.soundManager.playGameTheme();
+
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);
 
@@ -56,8 +60,7 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				const winSound = new Audio('/static/sounds/win.mp3');
-				winSound.play();
+				this.soundManager.playWin();
 				this.level++;
 				this.score.updateTotalScore(this.cancelsLeft);
 				this.score.setExtend();
@@ -65,9 +68,7 @@ export class Game {
 				return 5;
 			}
 			else {
-				const sound = new Audio('/static/sounds/continue.mp3');
-				sound.volume = 0.5;
-				sound.play();
+				this.soundManager.playContinue();
 				return 2;
 			}
 		}

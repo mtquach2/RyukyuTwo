@@ -1,6 +1,7 @@
 export class Continue {
-    constructor(p) {
+    constructor(p, soundManager) {
         this.p5 = p;
+        this.soundManager = soundManager;
         this.bg;
         this.buttonSelected;
     }
@@ -43,10 +44,12 @@ export class Continue {
         // Function for P5 mouseClicked and cont()
         if ((width / 3 - width / 25 + 55 * scaleX) < x && x < (width / 3 - width / 25 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If YES button is clicked, omikuji
+            this.soundManager.resetGameTheme();
             return 3;
         }
         if ((width / 2 + width / 10 + 40 * scaleX) < x && x < (width / 2 + width / 10 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If NO button is clicked, prompt to get name for leaderboard
+            this.soundManager.resetGameTheme();
             return 4;
         }
 

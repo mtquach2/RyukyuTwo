@@ -1,6 +1,8 @@
 export class Instructions {
-    constructor(p) {
+    constructor(p, soundManager) {
         this.p5 = p;
+        this.soundManager = soundManager;
+
         this.bg;
         this.buttonSelected;
         this.jpFont;
@@ -24,7 +26,7 @@ export class Instructions {
         this.p5.text("Poker Key", width / 3 + width / 16, height / 1.35);
     
         this.p5.fill(70, 70, 70);
-        this.p5.textFont(this.jpFont, 24 * Math.min(scaleX, scaleY));
+        this.p5.textFont(this.jpFont, 22 * Math.min(scaleX, scaleY));
         this.p5.text("Select a card from the bottom row of the 12 cards displayed at the top using the mouse. ", width / 6, height / 4.25);
         this.p5.text("Selected column will be traced in red.", width / 2.9, height / 3.65);
         this.p5.text("Once card has been selected, choose a column numbered 1-5 using the mouse.", width / 5, height / 3.15);
@@ -53,6 +55,7 @@ export class Instructions {
     
     instructionsState(x, y, width, height, scaleX, scaleY) {
         if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 100 * scaleX) < x && x < (width / 2 + 200 * scaleX) && y > (height * .92 - 5 * scaleY) && y < (height * .92 + 50 * scaleY))) {
+            this.soundManager.pauseMenuTheme();
             // If Enter pressed, start game    
             return 1;
         }
