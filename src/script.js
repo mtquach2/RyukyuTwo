@@ -70,7 +70,7 @@ const p = new p5(p => {
     }
 });
 
-const soundManager = new SoundManager();
+const soundManager = new SoundManager(p);
 const score = new Score(p);
 const timer = new Timer(p);
 const board = new Board(p, timer);
@@ -166,6 +166,8 @@ GM.draw = function (width, height) {
     if (state == 8) {
         state = instructions.instructionsScreen(width, height, scaleX, scaleY);
     }
+
+    soundManager.render(width, height);
 }
 
 GM.mouseClicked = function (x, y) {
@@ -190,6 +192,8 @@ GM.mouseClicked = function (x, y) {
             state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
     }
+
+    soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
 }
 
 GM.keyPressed = function (keyCode) {

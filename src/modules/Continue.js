@@ -4,11 +4,13 @@ export class Continue {
         this.soundManager = soundManager;
         this.bg;
         this.buttonSelected;
+        this.jpFont;
     }
 
     load() {
         this.bg = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
+        this.jpFont = this.p5.loadFont("/static/fonts/jackeyfont.ttf");
     }
 
     continueScreen(width, height, scaleX, scaleY) {
@@ -20,7 +22,7 @@ export class Continue {
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-        this.p5.textSize(64 * Math.min(scaleX, scaleY));
+        this.p5.textFont(this.jpFont, 64 * Math.min(scaleX, scaleY));
         this.p5.text("CONTINUE?", width / 2, height / 3);
     
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);

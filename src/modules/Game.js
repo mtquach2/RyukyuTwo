@@ -221,16 +221,16 @@ export class Game {
 	cancelDisplay(w, h, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
+		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 5, w / 5, h / 15);
 
 		this.p5.strokeWeight(3);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
-		this.p5.text("CANCELS", w - w / 6, h / 5.25);
+		this.p5.text("CANCELS", w - w / 6, h / 4.25);
 
 		this.p5.textFont("Helvetica");
-		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
+		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
 	}
 
 	getRank(rank) {

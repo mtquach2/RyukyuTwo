@@ -21,13 +21,13 @@ export class Timer {
      */
     drawTimer(w, h, scaleX, scaleY) {
         this.p5.textFont(this.jpFont);
-        this.p5.image(this.paperFrameLong, w - w / 4.5, h / 5 + h / 30, w / 5, h / 15);
+        this.p5.image(this.paperFrameLong, w - w / 4.5, h / 4 + h / 30, w / 5, h / 15);
 
         this.p5.strokeWeight(3);
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         this.p5.textSize(20 * Math.min(scaleX, scaleY));
-        this.p5.text("TIMER", w - w / 6, h / 5 + h / 15);
+        this.p5.text("TIMER", w - w / 6, h / 4 + h / 15);
     }
 
     /**
@@ -39,7 +39,7 @@ export class Timer {
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
         this.p5.textSize(20 * Math.min(scaleX, scaleY));
-        this.p5.text(this.seconds, w - w / 15, h / 5 + h / 15);
+        this.p5.text(this.seconds, w - w / 15, h / 4 + h / 15);
         if (this.cardPlaced == true || this.seconds == 0) {
             this.seconds = 60;
             this.cardPlaced = false;

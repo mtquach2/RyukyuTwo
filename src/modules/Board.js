@@ -168,10 +168,10 @@ export class Board {
 
     renderCardsLeft(width, height) {
         // Displays remaining cards in each of the columns 
-        this.p5.image(this.paperFrameLight, this.boardX * 2 + this.boardX / 3, this.boardY / 20 + this.boardY, width / 5, height / 2);
+        this.p5.image(this.paperFrameLight, this.boardX * 2 + this.boardX / 3, this.boardY / 4 + this.boardY, width / 5, height / 2);
         for (let i = 0; i < 4; i++) {
             for (let x = 0; x < this.counts[i] + 1; x++) {
-                this.p5.image(this.marker, this.boardX * 2.05 + this.boardX / 3 + (i * width / 25), this.boardY / 10 + this.boardY + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
+                this.p5.image(this.marker, this.boardX * 2.05 + this.boardX / 3 + (i * width / 25), this.boardY / 3 + this.boardY + (x * height / 30), 50 * this.scaleX, 50 * this.scaleY);
             }
         }
     }
@@ -372,7 +372,7 @@ export class Board {
     renderInstructions(w, h) {
         // Displays Japanese instructions
         let instrX = this.boardX * 2 + this.boardX / 3;
-        let instrY = this.boardY / 10 + this.boardY + h / 2
+        let instrY = this.boardY / 10 + this.boardY + h / 1.8
 
         this.p5.image(this.paperFrameLong, instrX, instrY, w / 5, h / 8);
         this.p5.strokeWeight(3);

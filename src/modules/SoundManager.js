@@ -1,5 +1,7 @@
 export class SoundManager {
-    constructor() {
+    constructor(p) {
+        this.p5 = p;
+
         this.menuTheme;
         this.gongSound;
         this.cardSounds = [];
@@ -9,6 +11,18 @@ export class SoundManager {
         this.gameOverSound;
         this.omikujiTheme;
         this.omikujiSpinner;
+
+        this.isSoundMuted = false;
+        this.isMusicMuted = false;
+    }
+
+    render(width, height) {
+        // Placeholder text emojis for reference to use an image
+        const soundMuted = this.isSoundMuted ? "🔇" : "🔊";
+        const musicMuted = this.isMusicMuted ? "🎼" : "🎵";
+        this.p5.textFont("Helvetica", 32);
+        this.p5.text(`${soundMuted}`, width * .925, height / 21);
+        this.p5.text(`${musicMuted}`, width * .95, height / 21);
     }
 
     load() {
@@ -26,9 +40,36 @@ export class SoundManager {
         }
     }
 
+    muteSound() {
+        this.gongSound.pause();
+        this.winSound.pause();
+        this.continueSound.pause();
+        this.gameOverSound.pause();
+        this.omikujiSpinner.pause();
+    }
+
+    muteMusic() {
+        this.menuTheme.pause();
+        this.gameTheme.pause();
+        this.omikujiTheme.pause();
+    }
+
+    selectMute(x, y, width, height, scaleX, scaleY) {
+        if (width * .925 - 16 * scaleX < x && x < width * .925 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
+            this.isSoundMuted = !this.isSoundMuted;
+            this.muteSound();
+        }
+        if (width * .95 - 16 * scaleX < x && x < width * .95 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
+            this.isMusicMuted = !this.isMusicMuted;
+            this.muteMusic();
+        }
+    }
+
     playMenuTheme() {
-        this.menuTheme.volume = 0.2;
-        this.menuTheme.play();
+        if (!this.isMusicMuted) {
+            this.menuTheme.volume = 0.2;
+            this.menuTheme.play();
+        }
     }
 
     pauseMenuTheme() {
@@ -37,30 +78,36 @@ export class SoundManager {
     }
 
     playGong() {
-        this.gongSound.volume = 0.3;
-        this.gongSound.play();
+        if (!this.isSoundMuted) {
+            this.gongSound.volume = 0.3;
+            this.gongSound.play();
+        }
     }
 
     playCardNoise(state) {
-        // Randomly chooses a card sound to play when mouse/card is selected
-        if (state == 1) {
-            const cardSoundIndex =  Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
-            const cardSound = this.cardSounds[cardSoundIndex];
-            cardSound.play();
-            cardSound.volume = 0.2;
-        }
-        else {
-            // Plays pop sound when not in play screen
-            const popSound = new Audio('/static/sounds/pop.wav');
-            popSound.play();
-            popSound.volume = 0.15;
+        if (!this.isSoundMuted) {
+            // Randomly chooses a card sound to play when mouse/card is selected
+            if (state == 1) {
+                const cardSoundIndex =  Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
+                const cardSound = this.cardSounds[cardSoundIndex];
+                cardSound.play();
+                cardSound.volume = 0.2;
+            }
+            else {
+                // Plays pop sound when not in play screen
+                const popSound = new Audio('/static/sounds/pop.wav');
+                popSound.play();
+                popSound.volume = 0.15;
+            }
         }
     }
 
     playGameTheme() {
-        this.gameTheme.volume = 0.1;
-        this.gameTheme.loop = true;
-        this.gameTheme.play();
+        if (!this.isMusicMuted) {
+            this.gameTheme.volume = 0.1;
+            this.gameTheme.loop = true;
+            this.gameTheme.play();
+        }
     }
 
     resetGameTheme() {
@@ -69,21 +116,29 @@ export class SoundManager {
     }
 
     playWin() {
-        this.winSound.play();
+        if (!this.isSoundMuted) {
+            this.winSound.play();
+        }
     }
 
     playContinue() {
-        this.continueSound.volume = 0.5;
-        this.continueSound.play();
+        if (!this.isSoundMuted) {
+            this.continueSound.volume = 0.5;
+            this.continueSound.play();
+        }
     }
 
     playGameOver() {
-        this.gameOverSound.play();
+        if (!this.isSoundMuted) {
+            this.gameOverSound.play();
+        }
     }
 
     playOmikujiTheme() {
-        this.omikujiTheme.volume = 0.2;
-        this.omikujiTheme.play();
+        if (!this.isMusicMuted) {
+            this.omikujiTheme.volume = 0.2;
+            this.omikujiTheme.play();
+        }
     }
 
     pauseOmikujiTheme() {
@@ -91,7 +146,7 @@ export class SoundManager {
     }
 
     playOmikujiSpinner(omikujiIsSelected) {
-        if (this.omikujiSpinner.paused && !omikujiIsSelected) {
+        if (!this.isSoundMuted && this.omikujiSpinner.paused && !omikujiIsSelected) {
             this.omikujiSpinner.volume = 0.05;
             this.omikujiSpinner.loop = true;
             this.omikujiSpinner.play();
