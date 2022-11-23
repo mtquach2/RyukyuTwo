@@ -41,10 +41,7 @@ export class Game {
 
 		this.score.render(width, height, scaleX, scaleY);
 
-		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.renderCardsTopDisplay(this.displayMap);
-		this.board.displayCard(this.mouseWasClicked);
-		this.board.renderInstructions(width, height);
+		this.board.render(this.displayMap, this.mouseWasClicked, width, height, scaleX, scaleY);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
 
