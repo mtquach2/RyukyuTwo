@@ -10,6 +10,8 @@ export class LeaderboardInput {
         this.mainMenuBackground;
         this.animatedSelector;
         this.jpFont;
+
+        this.lettersAccepted = 11;
     }
 
     load() {
@@ -19,7 +21,7 @@ export class LeaderboardInput {
     }
 
     selectorKeypress() {
-        if (this.p5.keyIsPressed && this.p5.frameCount % 5 == 0) {
+        if (this.p5.keyIsPressed && this.p5.frameCount % 3 == 0) {
             if (this.p5.keyCode == this.p5.LEFT_ARROW) {
                 if (this.letterSelector == 0 || this.letterSelector == 13) {
                     // Loops the row at the start
@@ -74,7 +76,7 @@ export class LeaderboardInput {
     
             if (this.p5.keyCode == this.p5.ENTER) {
                 // Add Letter 
-                if (this.letterSelector < 26 && this.name.length < 3) {
+                if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
                     this.name += this.letters[this.letterSelector];
                 }
                 // Enter Name
@@ -111,9 +113,9 @@ export class LeaderboardInput {
         this.p5.stroke(204, 97, 61);
     
         // Character Display
-        for (let i = 0; i < 3; i++) {
-            this.p5.rect(width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
-            this.p5.text(this.name[i], width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
+        for (let i = 0; i < this.lettersAccepted; i++) {
+            this.p5.rect(width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
+            this.p5.text(this.name[i], width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
         }
     
         this.p5.strokeWeight(3);
