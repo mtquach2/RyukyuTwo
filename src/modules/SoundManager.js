@@ -12,17 +12,14 @@ export class SoundManager {
         this.omikujiTheme;
         this.omikujiSpinner;
 
-        this.isSoundMuted = false;
-        this.isMusicMuted = false;
+        this.isSoundMuted = true;
     }
 
     render(width, height) {
         // Placeholder text emojis for reference to use an image
         const soundMuted = this.isSoundMuted ? "🔇" : "🔊";
-        const musicMuted = this.isMusicMuted ? "🎼" : "🎵";
-        this.p5.textFont("Helvetica", 32);
+        this.p5.textFont("Helvetica", 48);
         this.p5.text(`${soundMuted}`, width * .925, height / 21);
-        this.p5.text(`${musicMuted}`, width * .95, height / 21);
     }
 
     load() {
@@ -46,9 +43,7 @@ export class SoundManager {
         this.continueSound.pause();
         this.gameOverSound.pause();
         this.omikujiSpinner.pause();
-    }
 
-    muteMusic() {
         this.menuTheme.pause();
         this.gameTheme.pause();
         this.omikujiTheme.pause();
@@ -59,14 +54,10 @@ export class SoundManager {
             this.isSoundMuted = !this.isSoundMuted;
             this.muteSound();
         }
-        if (width * .95 - 16 * scaleX < x && x < width * .95 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
-            this.isMusicMuted = !this.isMusicMuted;
-            this.muteMusic();
-        }
     }
 
     playMenuTheme() {
-        if (!this.isMusicMuted) {
+        if (!this.isSoundMuted) {
             this.menuTheme.volume = 0.2;
             this.menuTheme.play();
         }
@@ -79,7 +70,7 @@ export class SoundManager {
 
     playGong() {
         if (!this.isSoundMuted) {
-            this.gongSound.volume = 0.3;
+            this.gongSound.volume = 0.10;
             this.gongSound.play();
         }
     }
@@ -91,19 +82,19 @@ export class SoundManager {
                 const cardSoundIndex =  Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
                 const cardSound = this.cardSounds[cardSoundIndex];
                 cardSound.play();
-                cardSound.volume = 0.2;
+                cardSound.volume = 0.10;
             }
             else {
                 // Plays pop sound when not in play screen
                 const popSound = new Audio('/static/sounds/pop.wav');
                 popSound.play();
-                popSound.volume = 0.15;
+                popSound.volume = 0.10;
             }
         }
     }
 
     playGameTheme() {
-        if (!this.isMusicMuted) {
+        if (!this.isSoundMuted) {
             this.gameTheme.volume = 0.1;
             this.gameTheme.loop = true;
             this.gameTheme.play();
@@ -123,7 +114,7 @@ export class SoundManager {
 
     playContinue() {
         if (!this.isSoundMuted) {
-            this.continueSound.volume = 0.5;
+            this.continueSound.volume = 0.3;
             this.continueSound.play();
         }
     }
@@ -135,8 +126,8 @@ export class SoundManager {
     }
 
     playOmikujiTheme() {
-        if (!this.isMusicMuted) {
-            this.omikujiTheme.volume = 0.2;
+        if (!this.isSoundMuted) {
+            this.omikujiTheme.volume = 0.1;
             this.omikujiTheme.play();
         }
     }
