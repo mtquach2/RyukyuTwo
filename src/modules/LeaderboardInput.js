@@ -21,7 +21,7 @@ export class LeaderboardInput {
     }
 
     selectorKeypress() {
-        if (this.p5.keyIsPressed && this.p5.frameCount % 3 == 0) {
+        if (this.p5.keyIsPressed && this.p5.frameCount % 5 == 0) {
             if (this.p5.keyCode == this.p5.LEFT_ARROW) {
                 if (this.letterSelector == 0 || this.letterSelector == 13) {
                     // Loops the row at the start
@@ -141,7 +141,7 @@ export class LeaderboardInput {
         this.p5.textFont("Helvetica");
     
         // Enter Button
-        this.p5.text("↩️", width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
+        this.p5.text("✅", width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
         if (this.letterSelector == 26) {
             this.p5.image(this.animatedSelector, width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
         }
