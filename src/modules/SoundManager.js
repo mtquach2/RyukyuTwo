@@ -19,7 +19,7 @@ export class SoundManager {
         // Placeholder text emojis for reference to use an image
         const soundMuted = this.isSoundMuted ? "🔇" : "🔊";
         this.p5.textFont("Helvetica", 48);
-        this.p5.text(`${soundMuted}`, width * .925, height / 21);
+        this.p5.text(`${soundMuted}`, width * .925, height / 15);
     }
 
     load() {

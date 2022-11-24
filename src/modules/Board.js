@@ -162,7 +162,7 @@ export class Board {
         this.p5.noFill();
         this.p5.stroke(0, 0, 255);
         for (let i = 0; i < 5; i++) {
-            this.p5.rect(this.boardX + (i + 1) * 80 * this.scaleX, this.yPositions[0] + 80 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY); //1x5 array
+            this.p5.rect(this.boardX + (i + 1) * 80 * this.scaleX, this.yPositions[0] + 95 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY); //1x5 array
         }
     }
 
@@ -242,7 +242,7 @@ export class Board {
             // Displays numbers for columns to choose from
             this.p5.stroke(255, 0, 0);
             for (let col = 0; col < 5; col++) {
-                this.p5.text(col + 1, this.boardX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 80 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY);
+                this.p5.text(col + 1, this.boardX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 95 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY);
             }
 
             // Highlights box/column where card was selected
@@ -253,7 +253,7 @@ export class Board {
     chooseCol(py, score) {
         // Displays card in selected column in board
         this.cardSelected = true;
-        if (py >= this.boardY - 80 && py < this.boardY + 15) {
+        if (py >= this.boardY - 55 && py < this.boardY + 25) {
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 80 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 80 * this.scaleX) {
                     this.col = col;
