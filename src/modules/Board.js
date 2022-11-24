@@ -241,6 +241,7 @@ export class Board {
         if (mouseWasClicked == true && this.currentCard != null) {
             // Displays numbers for columns to choose from
             this.p5.stroke(255, 0, 0);
+            this.p5.textFont("Helvetica");
             for (let col = 0; col < 5; col++) {
                 this.p5.text(col + 1, this.boardX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 95 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY);
             }

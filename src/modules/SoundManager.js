@@ -13,13 +13,16 @@ export class SoundManager {
         this.omikujiSpinner;
 
         this.isSoundMuted = true;
+        this.isMusicMuted = true;
     }
 
     render(width, height) {
         // Placeholder text emojis for reference to use an image
         const soundMuted = this.isSoundMuted ? "🔇" : "🔊";
-        this.p5.textFont("Helvetica", 48);
-        this.p5.text(`${soundMuted}`, width * .925, height / 15);
+        const musicMuted = this.isMusicMuted ? "🎼" : "🎵";
+        this.p5.textFont("Helvetica", 32);
+        this.p5.text(`${soundMuted}`, width * .95, height / 20.75);
+        this.p5.text(`${musicMuted}`, width * .91, height / 20.75);
     }
 
     load() {
@@ -43,7 +46,9 @@ export class SoundManager {
         this.continueSound.pause();
         this.gameOverSound.pause();
         this.omikujiSpinner.pause();
+    }
 
+    muteMusic() {
         this.menuTheme.pause();
         this.gameTheme.pause();
         this.omikujiTheme.pause();
@@ -54,10 +59,14 @@ export class SoundManager {
             this.isSoundMuted = !this.isSoundMuted;
             this.muteSound();
         }
+        if (width * .95 - 16 * scaleX < x && x < width * .95 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
+            this.isMusicMuted = !this.isMusicMuted;
+            this.muteMusic();
+        }
     }
 
     playMenuTheme() {
-        if (!this.isSoundMuted) {
+        if (!this.isMusicMuted) {
             this.menuTheme.volume = 0.2;
             this.menuTheme.play();
         }
@@ -94,7 +103,7 @@ export class SoundManager {
     }
 
     playGameTheme() {
-        if (!this.isSoundMuted) {
+        if (!this.isMusicMuted) {
             this.gameTheme.volume = 0.1;
             this.gameTheme.loop = true;
             this.gameTheme.play();
@@ -126,7 +135,7 @@ export class SoundManager {
     }
 
     playOmikujiTheme() {
-        if (!this.isSoundMuted) {
+        if (!this.isMusicMuted) {
             this.omikujiTheme.volume = 0.1;
             this.omikujiTheme.play();
         }
