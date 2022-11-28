@@ -32,6 +32,11 @@ export class Game {
 			}
 		}
 
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_black.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_black.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_red.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_red.png')));
+
 		this.board.load();
 		this.score.fillScoreTable();
 		this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
