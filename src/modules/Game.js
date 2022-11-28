@@ -1,10 +1,12 @@
 import { Card } from './Card';
 export class Game {
-	constructor(p5, board, score, timer) {
+	constructor(p5, board, score, timer, soundManager) {
 		this.p5 = p5
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.soundManager = soundManager;
+		
 		this.level = 1;
 		this.state = 0;
 
@@ -36,15 +38,14 @@ export class Game {
 	}
 
 	play(width, height, scaleX, scaleY) {
+		this.soundManager.playGameTheme();
+
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);
 
 		this.score.render(width, height, scaleX, scaleY);
 
-		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.renderCardsTopDisplay(this.displayMap);
-		this.board.displayCard(this.mouseWasClicked);
-		this.board.renderInstructions(width, height);
+		this.board.render(this.displayMap, this.mouseWasClicked, width, height, scaleX, scaleY);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
 
@@ -59,12 +60,15 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
+				this.soundManager.playWin();
+				this.level++;
+				this.score.updateTotalScore(this.cancelsLeft);
+				this.score.setExtend();
+				this.score.setClearPoint(this.level, 0);
 				return 5;
 			}
 			else {
-				let sound = new Audio('/static/sounds/continue.mp3');
-				sound.volume = 0.5;
-				sound.play();
+				this.soundManager.playContinue();
 				return 2;
 			}
 		}
@@ -145,16 +149,16 @@ export class Game {
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
 		this.p5.stroke(204, 97, 61);
-		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
+		this.p5.rect(w / 3, h / 11, 70 * scaleX, 80 * scaleY);
 
 		this.p5.strokeWeight(1);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
 		this.p5.textSize(40 * Math.min(scaleX, scaleY));
-		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 11, 80 * scaleX, 80 * scaleY);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`面`, w / 3, h / 11 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
 	updateTopDisplay(px, py) {
@@ -217,16 +221,16 @@ export class Game {
 	cancelDisplay(w, h, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
+		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 5, w / 5, h / 15);
 
 		this.p5.strokeWeight(3);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
-		this.p5.text("CANCELS", w - w / 6, h / 5.25);
+		this.p5.text("CANCELS", w - w / 6, h / 4.25);
 
 		this.p5.textFont("Helvetica");
-		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
+		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
 	}
 
 	getRank(rank) {
@@ -245,5 +249,13 @@ export class Game {
 
 	setState(state) {
 		this.state = state;
+	}
+
+	getLevel() {
+		return this.level;
+	}
+
+	getCancels() {
+		return this.cancelsLeft;
 	}
 };

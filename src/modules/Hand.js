@@ -52,7 +52,7 @@ export class Hand {
         const suits = this.hand.map(card => card.getSuit()).sort();
 
         // Flushes are 5 of the same suit, and straights are 5 sequential cards
-        const royal = 'A' <= faces[4] && faces[4] <= 'D';
+        const royal = 'A' <= faces[4] && faces[4] <= 'E';
         const flush = suits[0] == suits[4];
         const straight = this.isStraight(faces);
 

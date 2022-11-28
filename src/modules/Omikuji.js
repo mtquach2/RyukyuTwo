@@ -1,12 +1,14 @@
 export class Omikuji {
-    constructor(p, score) {
+    constructor(p, score, soundManager) {
         this.p5 = p;
         this.score = score;
+        this.soundManager = soundManager;
+        
         this.selectedOmikuji = 0;
         this.selected = false;
         this.frameDelay = 300;
+        this.blessingScore;
 
-        this.jpFont;
         this.omikujiValues = Array.from({ length: 16 }, () => Math.round((Math.random() * 2000) / 500) * 500);
         this.omikujiTable = {
             0: "凶",
@@ -22,10 +24,12 @@ export class Omikuji {
             "吉": "Blessing,\n+1500 bonus points",
             "大吉": "Great Blessing,\n+2000 bonus points",
         };
+    
+        this.jpFont;
     }
 
-    loadJPFont() {
-        this.jpFont = this.p5.loadFont("../../static/BestTen-DOT.otf");
+    load() {
+        this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
     }
 
     renderTitle(width, height, scaleX, scaleY) {
@@ -73,6 +77,9 @@ export class Omikuji {
     }
 
     omikuji(level, width, height, scaleX, scaleY) {
+        this.soundManager.playOmikujiTheme();
+        this.soundManager.playOmikujiSpinner(this.selected);
+
         this.p5.textFont(this.jpFont);
         this.renderTitle(width, height, scaleX, scaleY);
         this.renderBoxes(width, height, scaleX, scaleY);
@@ -80,6 +87,7 @@ export class Omikuji {
         // Spacebar pressed, box was selected
         if (this.p5.keyIsPressed && this.p5.keyCode == 32 && this.selectedOmikuji < 16) {
             this.selected = true;
+            this.soundManager.pauseOmikujiSpinner();
         }
 
         // Spacebar pressed, start a 5 second timer so player can see blessing, change state by returning the new state;
@@ -87,6 +95,7 @@ export class Omikuji {
             this.frameDelay--;
             const blessingScore = this.omikujiValues[this.selectedOmikuji];
             const blessingText = this.omikujiTable[blessingScore];
+            this.blessingScore = blessingScore;
 
             this.p5.strokeWeight(8);
             this.p5.stroke(0, 0, 0);
@@ -107,10 +116,11 @@ export class Omikuji {
             this.p5.text(`${blessingText} - ${this.omikujiTranslation[blessingText]}`, width / 4, height / 3 + 90 * scaleY + 200 * scaleY);
 
             if (this.frameDelay <= 0) {
+                this.soundManager.pauseOmikujiTheme();
                 this.score.setClearPoint(level, blessingScore);
                 this.selectedOmikuji = 0;
                 this.selected = false;
-                this.frameDelay = 500;
+                this.frameDelay = 300;
 
                 // Transition state
                 return 6;
@@ -128,4 +138,7 @@ export class Omikuji {
         return 3;
     }
 
+    static getBonus() {
+        return this.blessingScore;
+    }
 }

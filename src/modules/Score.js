@@ -1,12 +1,14 @@
 import { db } from '/src/FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { Omikuji } from './Omikuji';
 
 export class Score {
-    constructor(p5) {
-        this.p5 = p5
+    constructor(p) {
+        this.p5 = p;
         this.currentScore = 0;
         this.totalScore = 0;
         this.clearPoint = 5000;
+        this.extendScore = 0;
         this.ranks = {
             '5K': 3000, // five of a kind
             'RSF': 2800, // royal straight flush
@@ -39,7 +41,7 @@ export class Score {
 
     load() {
         // loads UI needed
-        this.jpFont = this.p5.loadFont("../../static/jackeyfont.ttf");
+        this.jpFont = this.p5.loadFont("/static/fonts/jackeyfont.ttf");
         this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
         this.paperFrameDark = this.p5.loadImage("/static/UI/paperFrame2.png");
         this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
@@ -122,9 +124,9 @@ export class Score {
         this.currentScore += this.ranks[rank];
     }
 
-    updateTotalScore() {
-        // Sets the totalScore to the currentScore if round has been won
-        this.totalScore += this.currentScore;
+    updateTotalScore(cancelBonus) {
+        // Calculates the totalScore if round has been won
+        this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + (Omikuji.getBonus() || 0);
     }
 
     getScore() {
@@ -139,14 +141,13 @@ export class Score {
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.noFill();
         this.p5.noStroke();
-        this.p5.image(this.paperFrameLong, this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
-        this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
+        this.p5.image(this.paperFrameLong, this.scoreX - this.scoreX / 4.5, this.scoreY / 12, this.scoreX / 5, this.scoreY / 10);
 
         this.p5.strokeWeight(3);
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
-        this.p5.text("TOTAL SCORE", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
-        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 7.5, this.scoreY / 9);
+        this.p5.text("TOTAL SCORE", this.scoreX - this.scoreX / 5.5, this.scoreY / 9)
+        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 7.5, this.scoreY / 6.5);
     }
 
     resetScore() {
@@ -186,11 +187,27 @@ export class Score {
             if (i == 10) {
                 break;
             }
-            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 2, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 
     resetTotalScore() {
         this.totalScore = 0;
+    }
+
+    setExtend() {
+        this.extendScore = this.currentScore - this.clearPoint;
+    }
+
+    getTotalScore() {
+        return this.totalScore;
+    }
+    
+    getExtend() {
+        return this.extendScore;
+    }
+
+    resetData() {
+        this.data = [];
     }
 }
