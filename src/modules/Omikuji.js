@@ -123,7 +123,7 @@ export class Omikuji {
                 this.frameDelay = 300;
 
                 // Transition state
-                this.p5.shuffle(this.omikujiValues);
+                this.p5.shuffle(this.omikujiValues, true);
                 return 6;
             }
         }
