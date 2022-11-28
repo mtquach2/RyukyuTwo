@@ -150,8 +150,6 @@ export class LeaderboardInput {
             }
         }
     
-        this.p5.textFont("Helvetica");
-    
         // Enter Button
         this.p5.image(this.selectButton, width / 3 + 4 * 20 * scaleX, height / 2 + 75 * scaleY, 150 * scaleX, 150 * scaleY);
         if (this.letterSelector == 26) {
