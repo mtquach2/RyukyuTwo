@@ -34,8 +34,8 @@ export class Hand {
         const royal = 'A' <= faces[4 - wilds] && faces[4 - wilds] <= 'E';
         const flush = suits[0] == suits[4 - wilds];
         const straightGap = this.straightGap(faces);
-        const straight = this.isStraight(faces) || straightGap == wilds;
-
+        const straight = this.isStraight(faces) || straightGap <= wilds;
+        
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
         const faceCounts = faces.reduce(this.count, {});
         const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
@@ -119,7 +119,10 @@ export class Hand {
     straightGap(faces) {
         let gap = 0;
         for (let i = 0; i < faces.length - 1; i++) {
-            if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i + 1]) {
+            if (String.fromCharCode((faces[i].charCodeAt(0))) == faces[i + 1]) {
+                gap += 1;
+            }
+            else if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i + 1]) {
                 gap += faces[i + 1].charCodeAt(0) - faces[i].charCodeAt(0) - 1;
             }
         }
