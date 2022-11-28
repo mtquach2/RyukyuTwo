@@ -37,8 +37,8 @@ export class Instructions {
         this.p5.text("Backspace -> Undo Previous Move / Undo Card Select", width / 3.25, height / 1.68);
         this.p5.text("Spacebar -> Select Omikuji (Fortune) Box", width / 2.8, height / 1.56);
     
-        this.p5.text("5K -> 5 of a Kind\t\tRF -> Royal Flush\t\tSF -> Straight Flush\t\t4K -> 4 of a Kind\t\tFH -> Full House", width / 7.5, height / 1.25);
-        this.p5.text("ST -> Straight\t\tFL -> Flush\t\t3K -> 3 of a Kind\t\t2P -> 2 Pair\t\t1P -> Pair\t\tH -> Nothing", width / 6.75, height / 1.18);
+        this.p5.text("5K -> 5 of a Kind\t\tRF -> Royal Flush\t\tSF -> Straight Flush\t\t4K -> 4 of a Kind\t\tFH -> Full House", width / 9, height / 1.25);
+        this.p5.text("ST -> Straight\t\tFL -> Flush\t\t3K -> 3 of a Kind\t\t2P -> 2 Pair\t\t1P -> Pair\t\tH -> Nothing", width / 8, height / 1.18);
     
         this.p5.imageMode(this.p5.CENTER);
         this.p5.image(this.buttonSelected, width / 2, height * .92, this.buttonSelected.width * scaleX, this.buttonSelected.height * scaleY);

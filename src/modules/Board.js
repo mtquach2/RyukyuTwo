@@ -247,7 +247,7 @@ export class Board {
             }
 
             // Highlights box/column where card was selected
-            this.p5.rect(this.xPositions[this.draggingColumn] + 12.75, this.yPositions[0], 80, 100);
+            this.p5.rect(this.xPositions[this.draggingColumn] + 12.75 * this.scaleX, this.yPositions[0], 55 * this.scaleX, 80 * this.scaleY);
         }
     }
 
