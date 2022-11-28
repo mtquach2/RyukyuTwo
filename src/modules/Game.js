@@ -1,10 +1,12 @@
 import { Card } from './Card';
 export class Game {
-	constructor(p5, board, score, timer) {
+	constructor(p5, board, score, timer, soundManager) {
 		this.p5 = p5
 		this.board = board;
 		this.score = score;
 		this.timer = timer;
+		this.soundManager = soundManager;
+		
 		this.level = 1;
 		this.state = 0;
 
@@ -36,15 +38,14 @@ export class Game {
 	}
 
 	play(width, height, scaleX, scaleY) {
+		this.soundManager.playGameTheme();
+
 		// Render game elements
 		this.renderLevel(width, height, scaleX, scaleY);
 
 		this.score.render(width, height, scaleX, scaleY);
 
-		this.board.render(this.displayMap, width, height, scaleX, scaleY);
-		this.board.renderCardsTopDisplay(this.displayMap);
-		this.board.displayCard(this.mouseWasClicked);
-		this.board.renderInstructions(width, height);
+		this.board.render(this.displayMap, this.mouseWasClicked, width, height, scaleX, scaleY);
 
 		this.cancelDisplay(width, height, scaleX, scaleY);
 
@@ -59,8 +60,7 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				const winSound = new Audio('/static/sounds/win.mp3');
-				winSound.play();
+				this.soundManager.playWin();
 				this.level++;
 				this.score.updateTotalScore(this.cancelsLeft);
 				this.score.setExtend();
@@ -68,9 +68,7 @@ export class Game {
 				return 5;
 			}
 			else {
-				const sound = new Audio('/static/sounds/continue.mp3');
-				sound.volume = 0.5;
-				sound.play();
+				this.soundManager.playContinue();
 				return 2;
 			}
 		}
@@ -223,16 +221,16 @@ export class Game {
 	cancelDisplay(w, h, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 6.5, w / 5, h / 15);
+		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 5, w / 5, h / 15);
 
 		this.p5.strokeWeight(3);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
-		this.p5.text("CANCELS", w - w / 6, h / 5.25);
+		this.p5.text("CANCELS", w - w / 6, h / 4.25);
 
 		this.p5.textFont("Helvetica");
-		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 5.25);
+		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
 	}
 
 	getRank(rank) {

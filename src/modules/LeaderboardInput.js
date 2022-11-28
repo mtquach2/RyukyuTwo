@@ -10,11 +10,15 @@ export class LeaderboardInput {
         this.mainMenuBackground;
         this.animatedSelector;
         this.jpFont;
+
+        this.lettersAccepted = 11;
     }
 
     load() {
         this.mainMenuBackground = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.animatedSelector = this.p5.loadImage("/static/UI/selection2.gif");
+        this.selectButton = this.p5.loadImage("/static/UI/Buttons/Checkmark.png");
+        this.deleteButton = this.p5.loadImage("/static/UI/Buttons/Xmark.png");
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
     }
 
@@ -74,7 +78,7 @@ export class LeaderboardInput {
     
             if (this.p5.keyCode == this.p5.ENTER) {
                 // Add Letter 
-                if (this.letterSelector < 26 && this.name.length < 3) {
+                if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
                     this.name += this.letters[this.letterSelector];
                 }
                 // Enter Name
@@ -111,9 +115,9 @@ export class LeaderboardInput {
         this.p5.stroke(204, 97, 61);
     
         // Character Display
-        for (let i = 0; i < 3; i++) {
-            this.p5.rect(width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
-            this.p5.text(this.name[i], width / 2 - 65 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
+        for (let i = 0; i < this.lettersAccepted; i++) {
+            this.p5.rect(width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
+            this.p5.text(this.name[i], width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
         }
     
         this.p5.strokeWeight(3);
@@ -139,15 +143,15 @@ export class LeaderboardInput {
         this.p5.textFont("Helvetica");
     
         // Enter Button
-        this.p5.text("↩️", width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
+        this.p5.image(this.selectButton, width / 3 + 4 * 20 * scaleX, height / 2 + 75 * scaleY, 150 * scaleX, 150 * scaleY);
         if (this.letterSelector == 26) {
-            this.p5.image(this.animatedSelector, width / 3 + 4 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
+            this.p5.image(this.animatedSelector, width / 3 + 4 * 29 * scaleX, height / 2 + 115 * scaleY, 75 * scaleX, 75 * scaleY);
         }
     
         // Delete Button
-        this.p5.text("❌", width / 3 + 8 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
+        this.p5.image(this.deleteButton, width / 3 + 8 * 35 * scaleX, height / 2 + 75 * scaleY, 150 * scaleX, 150 * scaleY);
         if (this.letterSelector == 27) {
-            this.p5.image(this.animatedSelector, width / 3 + 8 * 40 * scaleX, height / 2 + 120 * scaleY, 40 * scaleX, 40 * scaleY);
+            this.p5.image(this.animatedSelector, width / 3 + 8 * 39.5 * scaleX, height / 2 + 115 * scaleY, 75 * scaleX, 75 * scaleY);
         }
     
         return this.selectorKeypress();

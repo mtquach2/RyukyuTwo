@@ -141,14 +141,13 @@ export class Score {
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.noFill();
         this.p5.noStroke();
-        this.p5.image(this.paperFrameLong, this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
-        this.p5.rect(this.scoreX - this.scoreX / 4.5, this.scoreY / 25, this.scoreX / 5, this.scoreY / 10);
+        this.p5.image(this.paperFrameLong, this.scoreX - this.scoreX / 4.5, this.scoreY / 12, this.scoreX / 5, this.scoreY / 10);
 
         this.p5.strokeWeight(3);
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
-        this.p5.text("TOTAL SCORE", this.scoreX - this.scoreX / 5.5, this.scoreY / 15)
-        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 7.5, this.scoreY / 9);
+        this.p5.text("TOTAL SCORE", this.scoreX - this.scoreX / 5.5, this.scoreY / 9)
+        this.p5.text(this.totalScore, this.scoreX - this.scoreX / 7.5, this.scoreY / 6.5);
     }
 
     resetScore() {
@@ -188,7 +187,7 @@ export class Score {
             if (i == 10) {
                 break;
             }
-            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 2, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 
