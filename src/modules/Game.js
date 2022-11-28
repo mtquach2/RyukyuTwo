@@ -185,15 +185,21 @@ export class Game {
 	}
 
 	 timerTrigger() {
+		//console.log("CARD PLACED:",this.board.cardPlaced);
+		// console.log("CARD SELECTED:",this.board.cardSelected);
+		// console.log("COLUMN SELECTED:", this.board.columnSelected);
 		// Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 		if (this.board.cardPlaced == true) { //card is dropped in general
+			console.log("CARD DROPPED MANUALLY");
 			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
+			console.log("IN FIRST ELSE IF");
 			for(let i = 0; i <= 5; i++){
-				if(this.board.addCard(i, this.board.currentCard) != -1){
+				if(this.board.addCard(i, this.board.currentCard, this.score) != -1){
+					console.log("CARD SELECTED BUT NOT DROPPED");
 					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
@@ -204,10 +210,12 @@ export class Game {
 			this.timer.resetTimer();
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
+			console.log("IN SECOND ELSE IF");
 			let firstCard = this.board.getFirstCard(this.displayMap);
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
-					if(this.board.addCard(i, firstCard) != -1){
+					if(this.board.addCard(i, firstCard, this.score) != -1){
+						console.log("NO CARD SELECTED");
 						this.stateSaver();
 						this.board.currentCard = null;
 						break;

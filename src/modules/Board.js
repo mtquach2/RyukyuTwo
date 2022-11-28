@@ -22,6 +22,7 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+        this.columnSelected = false;
 
         this.jpFont;
         this.arrow;
@@ -204,11 +205,12 @@ export class Board {
             }
             for (let i = 0; i < 4; i++) {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
+                    console.log("IN CLICKED");
+                    this.cardSelected = true;
                     this.currentCard = displayMap.get(i)[this.counts[i]];
                     this.draggingColumn = i;
                 }
             }
-            this.cardSelected = true;
         }
     }
 
@@ -255,7 +257,7 @@ export class Board {
 
     chooseCol(py, score) {
         // Displays card in selected column in board
-        this.cardSelected = true;
+        //this.cardSelected = true;
         if (py >= this.boardY - 68 && py < this.boardY + 33) {
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 80 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 80 * this.scaleX) {

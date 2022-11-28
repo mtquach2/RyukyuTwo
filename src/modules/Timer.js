@@ -1,7 +1,7 @@
 export class Timer {
     constructor(p) {
         this.p5 = p;
-        this.seconds = 60;
+        this.seconds = 5;
         this.cardPlaced = false;
         this.jpFont;
         this.paperFrameLong;
@@ -41,7 +41,7 @@ export class Timer {
         this.p5.textSize(20 * Math.min(scaleX, scaleY));
         this.p5.text(this.seconds, w - w / 15, h / 4 + h / 15);
         if (this.cardPlaced == true || this.seconds == 0) {
-            this.seconds = 60;
+            this.seconds = 5;
             this.cardPlaced = false;
         }
     }
@@ -51,12 +51,15 @@ export class Timer {
      */
     countDown() {
         this.seconds--;
+        if(this.seconds === 0){
+          console.log("TIME RAN OUT");
+        }
     }
 
     /**
      * Resets the timer
      */
     resetTimer() {
-        this.seconds = 60;
+        this.cardPlaced = true;
     }
 }
