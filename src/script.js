@@ -161,7 +161,7 @@ GM.draw = function (width, height) {
     if (state == 7) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
 
-        if (state == -1 ) {
+        if (state == -1) {
             resetGame(7);
         }
     }
@@ -201,7 +201,7 @@ GM.mouseClicked = function (x, y) {
 }
 
 GM.keyPressed = function (keyCode) {
-    if (p.keyCode == 32) {
+    if (keyCode == 32) {
         stop.currentTime = 0;
     }
 
