@@ -160,6 +160,10 @@ GM.draw = function (width, height) {
     // State is 7, game over and leaderboarrd
     if (state == 7) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
+
+        if (state == -1 ) {
+            resetGame(7);
+        }
     }
 
     // State is 8, display instructions and controls
