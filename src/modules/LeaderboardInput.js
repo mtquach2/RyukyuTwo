@@ -1,7 +1,10 @@
+import { SoundManager } from "./SoundManager";
+
 export class LeaderboardInput {
-    constructor(p, score) {
+    constructor(p, score, soundManager) {
         this.p5 = p;
         this.score = score;
+        this.soundManager = soundManager;
         
         this.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.name = "";
@@ -25,6 +28,7 @@ export class LeaderboardInput {
     selectorKeypress() {
         if (this.p5.keyIsPressed && this.p5.frameCount % 5 == 0) {
             if (this.p5.keyCode == this.p5.LEFT_ARROW) {
+                this.soundManager.playLeaderboardClick();
                 if (this.letterSelector == 0 || this.letterSelector == 13) {
                     // Loops the row at the start
                     this.letterSelector += 12;
@@ -35,6 +39,7 @@ export class LeaderboardInput {
                 }
             }
             else if (this.p5.keyCode == this.p5.UP_ARROW) {
+                this.soundManager.playLeaderboardClick();
                 if (this.letterSelector < 13) {
                     // Goes down one row to the next character
                     this.letterSelector += 13;
@@ -53,6 +58,7 @@ export class LeaderboardInput {
                 }
             }
             else if (this.p5.keyCode == this.p5.RIGHT_ARROW) {
+                this.soundManager.playLeaderboardClick();
                 if (this.letterSelector == 12 || this.letterSelector == 25) {
                     // Loops the row at the end
                     this.letterSelector -= 12;
@@ -66,6 +72,7 @@ export class LeaderboardInput {
                 }
             }
             else if (this.p5.keyCode == this.p5.DOWN_ARROW) {
+                this.soundManager.playLeaderboardClick();
                 if (this.letterSelector < 13) {
                     // Goes down one row to the next character
                     this.letterSelector += 13;
@@ -79,10 +86,12 @@ export class LeaderboardInput {
             if (this.p5.keyCode == this.p5.ENTER) {
                 // Add Letter 
                 if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
+                    this.soundManager.playLeaderboardEnter();
                     this.name += this.letters[this.letterSelector];
                 }
                 // Enter Name
                 else if (this.letterSelector == 26) {
+                    this.soundManager.playLeaderboardConfirm();
                     if (this.name != "") {
                         this.score.addLeaderboard(this.name);
                         this.score.getDataframe();
@@ -97,6 +106,7 @@ export class LeaderboardInput {
                 }
                 // Delete Letter
                 else if (this.letterSelector == 27) {
+                    this.soundManager.playLeaderboardCancel();
                     this.name = this.name.slice(0, -1);
                 }
             }

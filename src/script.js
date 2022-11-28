@@ -80,7 +80,7 @@ const game = new Game(p, board, score, timer, soundManager);
 const round = new Round(p, score, game);
 const continueScreen = new Continue(p, soundManager);
 const omikuji = new Omikuji(p, score, soundManager);
-const leaderboardInput = new LeaderboardInput(p, score);
+const leaderboardInput = new LeaderboardInput(p, score, soundManager);
 const gameOver = new GameOver(p, score, soundManager, soundManager);
 const instructions = new Instructions(p, soundManager);
 

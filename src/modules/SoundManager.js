@@ -165,4 +165,36 @@ export class SoundManager {
     pauseOmikujiSpinner() {
         this.omikujiSpinner.pause();
     }
+
+    playLeaderboardClick() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Click.wav');
+            sound.volume = 0.3;
+            sound.play();
+        }
+    }
+
+    playLeaderboardEnter() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Enter.wav');
+            sound.volume = 0.3;
+            sound.play();
+        }
+    }
+
+    playLeaderboardConfirm() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Confirm.wav');
+            sound.volume = 0.5;
+            sound.play();
+        }
+    }
+
+    playLeaderboardCancel() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Cancel.wav');
+            sound.volume = 0.5;
+            sound.play();
+        }
+    }
 }
