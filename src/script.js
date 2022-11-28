@@ -201,7 +201,7 @@ GM.mouseClicked = function (x, y) {
 }
 
 GM.keyPressed = function (keyCode) {
-    if (p.keyCode == 32) {
+    if (keyCode == 32) {
         stop.currentTime = 0;
     }
 

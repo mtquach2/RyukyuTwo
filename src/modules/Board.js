@@ -24,6 +24,7 @@ export class Board {
         this.cardSelected = false;
 
         this.jpFont;
+        this.arrow;
         this.reverseIndices = {
             4: 0,
             3: 1,
@@ -38,6 +39,7 @@ export class Board {
         this.marker = this.p5.loadImage('../../static/cards/card_back.png');
         this.paperFrameLight = this.p5.loadImage("/static/UI/paperFrame1.png");
         this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
+        this.arrow = this.p5.loadImage("/static/UI/arrow.png");
     }
 
     resetBoard() {
@@ -243,7 +245,7 @@ export class Board {
             this.p5.stroke(255, 0, 0);
             this.p5.textFont("Helvetica");
             for (let col = 0; col < 5; col++) {
-                this.p5.text(col + 1, this.boardX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 95 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY);
+                this.p5.image(this.arrow, this.boardX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 95 * this.scaleY, 80 * this.scaleX, 80 * this.scaleY);
             }
 
             // Highlights box/column where card was selected
