@@ -1,4 +1,4 @@
-import { db } from '/src/FB';
+import { db } from '../src/FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Omikuji } from './Omikuji';
 
@@ -202,7 +202,7 @@ export class Score {
     getTotalScore() {
         return this.totalScore;
     }
-    
+
     getExtend() {
         return this.extendScore;
     }

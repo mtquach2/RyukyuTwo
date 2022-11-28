@@ -1,11 +1,9 @@
-import { SoundManager } from "./SoundManager";
-
 export class LeaderboardInput {
     constructor(p, score, soundManager) {
         this.p5 = p;
         this.score = score;
         this.soundManager = soundManager;
-        
+
         this.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.name = "";
         this.letterSelector = 0;
@@ -82,7 +80,7 @@ export class LeaderboardInput {
                     this.letterSelector = 26;
                 }
             }
-    
+
             if (this.p5.keyCode == this.p5.ENTER) {
                 // Add Letter 
                 if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
@@ -115,25 +113,25 @@ export class LeaderboardInput {
         // Continue with the leaderboard text entry state
         return 4;
     }
-    
+
     leaderboardEntry(width, height, scaleX, scaleY) {
         this.p5.background(this.mainMenuBackground);
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         this.p5.textFont(this.jpFont, 32 * Math.min(scaleX, scaleY));
-    
+
         this.p5.strokeWeight(3);
         this.p5.stroke(204, 97, 61);
-    
+
         // Character Display
         for (let i = 0; i < this.lettersAccepted; i++) {
             this.p5.rect(width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4, 40 * scaleX, 1);
             this.p5.text(this.name[i], width / 2 - 240 * scaleX + i * 45 * scaleX, height / 4 - 45 * scaleY, 40 * scaleX, 40 * scaleY);
         }
-    
+
         this.p5.strokeWeight(3);
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
-    
+
         // First half of alphabet
         for (let i = 0; i < this.letters.length / 2; i++) {
             this.p5.text(this.letters[i], width / 3 + i * 40 * scaleX + 3, height / 2, 40 * scaleX, 40 * scaleY);
@@ -141,7 +139,7 @@ export class LeaderboardInput {
                 this.p5.image(this.animatedSelector, width / 3 + i * 40 * scaleX, height / 2, 40 * scaleX, 40 * scaleY);
             }
         }
-    
+
         // Second half of alphabet
         for (let i = this.letters.length / 2; i < this.letters.length; i++) {
             this.p5.text(this.letters[i], width / 3 + (i - this.letters.length / 2) * 40 * scaleX + 3, height / 2 + 60 * scaleY, 40 * scaleX, 40 * scaleY);
@@ -149,20 +147,20 @@ export class LeaderboardInput {
                 this.p5.image(this.animatedSelector, width / 3 + (i - this.letters.length / 2) * 40 * scaleX, height / 2 + 60 * scaleY, 40 * scaleX, 40 * scaleY);
             }
         }
-    
+
         // Enter Button
         this.p5.image(this.selectButton, width / 3 + 4 * 20 * scaleX, height / 2 + 75 * scaleY, 150 * scaleX, 150 * scaleY);
         if (this.letterSelector == 26) {
             this.p5.image(this.animatedSelector, width / 3 + 4 * 29 * scaleX, height / 2 + 115 * scaleY, 75 * scaleX, 75 * scaleY);
         }
-    
+
         // Delete Button
         this.p5.image(this.deleteButton, width / 3 + 8 * 35 * scaleX, height / 2 + 75 * scaleY, 150 * scaleX, 150 * scaleY);
         if (this.letterSelector == 27) {
             this.p5.image(this.animatedSelector, width / 3 + 8 * 39.5 * scaleX, height / 2 + 115 * scaleY, 75 * scaleX, 75 * scaleY);
         }
-    
+
         return this.selectorKeypress();
     }
-    
+
 }

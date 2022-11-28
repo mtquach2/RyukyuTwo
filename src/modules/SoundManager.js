@@ -96,7 +96,7 @@ export class SoundManager {
         if (!this.isSoundMuted) {
             // Randomly chooses a card sound to play when mouse/card is selected
             if (state == 1) {
-                const cardSoundIndex =  Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
+                const cardSoundIndex = Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
                 const cardSound = this.cardSounds[cardSoundIndex];
                 cardSound.play();
                 cardSound.volume = 0.10;

@@ -12,7 +12,7 @@ export class GameOver {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
     }
-    
+
     gameOver(width, height, scaleX, scaleY) {
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);

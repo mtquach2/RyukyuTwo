@@ -35,7 +35,7 @@ export class Hand {
         const flush = suits[0] == suits[4 - wilds];
         const straightGap = this.straightGap(faces);
         const straight = this.isStraight(faces) || straightGap <= wilds;
-        
+
         // Count up each of the times a value appears, creates object of {# Duplicates : Count}
         const faceCounts = faces.reduce(this.count, {});
         const faceDuplicates = Object.values(faceCounts).reduce(this.count, {});
