@@ -119,6 +119,7 @@ export class Hand {
     straightGap(faces) {
         let gap = 0;
         for (let i = 0; i < faces.length - 1; i++) {
+            // Adds to gap if faces are the same to avoid undercounting
             if (String.fromCharCode((faces[i].charCodeAt(0))) == faces[i + 1]) {
                 gap += 1;
             }
