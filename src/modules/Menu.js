@@ -54,11 +54,7 @@ export class Menu {
         this.p5.strokeWeight(1);
         this.p5.textAlign(this.p5.CENTER, this.p5.BASELINE);
         this.p5.text("PRESS ENTER", width / 2, height * .8 + 5 * scaleY);
-
-        return 0;
-    }
-    
-    menuState(x, y, width, height, scaleX, scaleY) {
+        
         if ((this.p5.keyIsPressed && this.p5.keyCode == 13)) {
             this.p5.keyCode = 0;
             this.soundManager.playGong();
@@ -68,8 +64,11 @@ export class Menu {
             return 8;
         }
 
-        if (this.p5.mouseIsPressed == true && (width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .8 - 30 * scaleY) && y < (height * .8 + 30 * scaleY)) {
-            this.p5.mouseIsPressed = false;
+        return 0;
+    }
+    
+    menuState(x, y, width, height, scaleX, scaleY) {
+        if ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .8 - 30 * scaleY) && y < (height * .8 + 30 * scaleY)) {
             this.soundManager.playGong();
             
             this.p5.textSize(20);

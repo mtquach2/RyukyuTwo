@@ -49,10 +49,6 @@ export class Instructions {
         this.p5.strokeWeight(1);
         this.p5.text("BEGIN GAME", width / 2.16, height * .92 + 5 * scaleY);
 
-        return 8;
-    }
-    
-    instructionsState(x, y, width, height, scaleX, scaleY) {
         if ((this.p5.keyIsPressed && this.p5.keyCode == 13)) {
             this.p5.keyCode = 0;
             this.soundManager.pauseMenuTheme();
@@ -60,8 +56,11 @@ export class Instructions {
             return 1;
         }
 
-        if (this.p5.mouseIsPressed == true && ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .92 - 25 * scaleY) && y < (height * .92 + 30 * scaleY))) {
-            this.p5.mouseIsPressed = false;
+        return 8;
+    }
+    
+    instructionsState(x, y, width, height, scaleX, scaleY) {
+        if ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .92 - 25 * scaleY) && y < (height * .92 + 30 * scaleY)) {
             this.soundManager.pauseMenuTheme();
             // If Enter pressed, start game    
             return 1;
