@@ -167,6 +167,24 @@ GM.draw = function (width, height) {
         state = instructions.instructionsScreen(width, height, scaleX, scaleY);
     }
 
+    switch (state) {
+        case 0:
+            state = menu.menuState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 2:
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
+            break;
+        case 7:
+            state = gameOver.gameOverState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            if (state == -1 ) {
+                resetGame(7);
+            }
+            break;
+        case 8:
+            state = instructions.instructionsState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+    }
+
     soundManager.render(width, height);
 }
 
@@ -174,25 +192,6 @@ GM.mouseClicked = function (x, y) {
     soundManager.playCardNoise(state);
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
-
-    switch (state) {
-        case 0:
-            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
-            break;
-        case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, x, y, scaleX, scaleY);
-            break;
-        case 7:
-            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
-            if (state == -1 ) {
-                resetGame(7);
-            }
-            break;
-        case 8:
-            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
-            break;
-    }
-
     soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
 }
 

@@ -54,11 +54,20 @@ export class Instructions {
     }
     
     instructionsState(x, y, width, height, scaleX, scaleY) {
-        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .92 - 25 * scaleY) && y < (height * .92 + 30 * scaleY))) {
+        if ((this.p5.keyIsPressed && this.p5.keyCode == 13)) {
+            this.p5.keyCode = 0;
             this.soundManager.pauseMenuTheme();
             // If Enter pressed, start game    
             return 1;
         }
+
+        if (this.p5.mouseIsPressed == true && ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .92 - 25 * scaleY) && y < (height * .92 + 30 * scaleY))) {
+            this.p5.mouseIsPressed = false;
+            this.soundManager.pauseMenuTheme();
+            // If Enter pressed, start game    
+            return 1;
+        }
+
         return 8;
     }
 }
