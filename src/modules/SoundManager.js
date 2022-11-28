@@ -138,6 +138,7 @@ export class SoundManager {
 
     playGameOver() {
         if (!this.isSoundMuted) {
+            this.gameOverSound.volume = 0.5;
             this.gameOverSound.play();
         }
     }
