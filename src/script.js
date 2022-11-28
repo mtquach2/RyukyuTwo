@@ -140,7 +140,7 @@ GM.draw = function (width, height) {
 
     // State is 4, leaderboard entry
     if (state == 4) {
-        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY, game.getLevel());
     }
 
     // State is 5, won

@@ -23,7 +23,7 @@ export class LeaderboardInput {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
     }
 
-    selectorKeypress() {
+    selectorKeypress(level) {
         if (this.p5.keyIsPressed && this.p5.frameCount % 5 == 0) {
             if (this.p5.keyCode == this.p5.LEFT_ARROW) {
                 this.soundManager.playLeaderboardClick();
@@ -91,7 +91,7 @@ export class LeaderboardInput {
                 else if (this.letterSelector == 26) {
                     this.soundManager.playLeaderboardConfirm();
                     if (this.name != "") {
-                        this.score.addLeaderboard(this.name);
+                        this.score.addLeaderboard(this.name, level);
                         this.score.getDataframe();
                         this.name = "";
                     }
@@ -114,7 +114,7 @@ export class LeaderboardInput {
         return 4;
     }
 
-    leaderboardEntry(width, height, scaleX, scaleY) {
+    leaderboardEntry(width, height, scaleX, scaleY, level) {
         this.p5.background(this.mainMenuBackground);
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         this.p5.textFont(this.jpFont, 32 * Math.min(scaleX, scaleY));
@@ -160,7 +160,7 @@ export class LeaderboardInput {
             this.p5.image(this.animatedSelector, width / 3 + 8 * 39.5 * scaleX, height / 2 + 115 * scaleY, 75 * scaleX, 75 * scaleY);
         }
 
-        return this.selectorKeypress();
+        return this.selectorKeypress(level);
     }
 
 }
