@@ -11,6 +11,10 @@ export class SoundManager {
         this.gameOverSound;
         this.omikujiTheme;
         this.omikujiSpinner;
+        this.musicButton;
+        this.noMusicButton;
+        this.soundButton;
+        this.noSoundButton;
 
         this.isSoundMuted = true;
         this.isMusicMuted = true;
@@ -18,14 +22,16 @@ export class SoundManager {
 
     render(width, height) {
         // Placeholder text emojis for reference to use an image
-        const soundMuted = this.isSoundMuted ? "🔇" : "🔊";
-        const musicMuted = this.isMusicMuted ? "🎼" : "🎵";
-        this.p5.textFont("Helvetica", 32);
-        this.p5.text(`${soundMuted}`, width * .95, height / 20.75);
-        this.p5.text(`${musicMuted}`, width * .91, height / 20.75);
+        this.isSoundMuted ? this.p5.image(this.noSoundButton, width * .95, height / 30, width / 35, height / 20) : this.p5.image(this.soundButton, width * .95, height / 30, width / 35, height / 20);
+        this.isMusicMuted ? this.p5.image(this.noMusicButton, width * .92, height / 30, width / 35, height / 20) : this.p5.image(this.musicButton, width * .92, height / 30, width / 35, height / 20);
     }
 
     load() {
+        this.musicButton = this.p5.loadImage("/static/UI/Buttons/MusicButton.png");
+        this.noMusicButton = this.p5.loadImage("/static/UI/Buttons/NoMusicButton.png");
+        this.soundButton = this.p5.loadImage("/static/UI/Buttons/SoundButton.png");
+        this.noSoundButton = this.p5.loadImage("/static/UI/Buttons/MuteButton.png");
+
         this.menuTheme = new Audio('/static/sounds/music/menuTheme.mp3');
         this.gongSound = new Audio('/static/sounds/gong.mp3');
         this.gameTheme = new Audio('/static/sounds/music/gameTheme.mp3')
@@ -55,11 +61,11 @@ export class SoundManager {
     }
 
     selectMute(x, y, width, height, scaleX, scaleY) {
-        if (width * .925 - 16 * scaleX < x && x < width * .925 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
+        if (width * .95 - 16 * scaleX < x && x < width * .95 + 16 * scaleX && height / 30 - 18 * scaleY < y && y < height / 30 + 20 * scaleY) {
             this.isSoundMuted = !this.isSoundMuted;
             this.muteSound();
         }
-        if (width * .95 - 16 * scaleX < x && x < width * .95 + 16 * scaleX && height / 21 - 32 * scaleY < y && y < height / 21 + 32 * scaleY) {
+        if (width * .92 - 16 * scaleX < x && x < width * .92 + 16 * scaleX && height / 30 - 18 * scaleY < y && y < height / 30 + 20 * scaleY) {
             this.isMusicMuted = !this.isMusicMuted;
             this.muteMusic();
         }
