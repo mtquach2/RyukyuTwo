@@ -22,8 +22,10 @@ export class SoundManager {
 
     render(width, height) {
         // Placeholder text emojis for reference to use an image
+        this.p5.imageMode(this.p5.CENTER);
         this.isSoundMuted ? this.p5.image(this.noSoundButton, width * .95, height / 30, width / 35, height / 20) : this.p5.image(this.soundButton, width * .95, height / 30, width / 35, height / 20);
         this.isMusicMuted ? this.p5.image(this.noMusicButton, width * .92, height / 30, width / 35, height / 20) : this.p5.image(this.musicButton, width * .92, height / 30, width / 35, height / 20);
+        this.p5.imageMode(this.p5.CORNER);
     }
 
     load() {
