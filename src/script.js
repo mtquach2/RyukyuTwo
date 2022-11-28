@@ -167,6 +167,14 @@ GM.draw = function (width, height) {
         state = instructions.instructionsScreen(width, height, scaleX, scaleY);
     }
 
+    soundManager.render(width, height);
+}
+
+GM.mouseClicked = function (x, y) {
+    soundManager.playCardNoise(state);
+    game.updateTopDisplay(x, y);
+    board.chooseCol(y, score);
+
     switch (state) {
         case 0:
             state = menu.menuState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
@@ -185,13 +193,6 @@ GM.draw = function (width, height) {
             break;
     }
 
-    soundManager.render(width, height);
-}
-
-GM.mouseClicked = function (x, y) {
-    soundManager.playCardNoise(state);
-    game.updateTopDisplay(x, y);
-    board.chooseCol(y, score);
     soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
 }
 
