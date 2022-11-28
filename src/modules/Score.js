@@ -1,4 +1,4 @@
-import { db } from '../src/FB';
+import { db } from '../FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Omikuji } from './Omikuji';
 
