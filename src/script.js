@@ -161,7 +161,7 @@ GM.draw = function (width, height) {
     if (state == 7) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
 
-        if (state == -1 ) {
+        if (state == -1) {
             resetGame(7);
         }
     }
