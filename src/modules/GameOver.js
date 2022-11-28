@@ -38,7 +38,7 @@ export class GameOver {
 
     gameOverState(x, y, width, height, scaleX, scaleY) {
         this.soundManager.playGameOver();
-        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 100 * scaleX) < x && x < (width / 2 + 200 * scaleX) && y > (height * .8 - 5 * scaleY) && y < (height * .8 + 50 * scaleY))) {
+        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 80 * scaleX) < x && x < (width / 2 + 80 * scaleX) && y > (height * .8 - 20 * scaleY) && y < (height * .8 + 25 * scaleY))) {
             this.p5.keyCode = 0;
 
             // Transition from the GameOver to Menu 7 --> 0
