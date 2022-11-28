@@ -149,16 +149,16 @@ export class Game {
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
 		this.p5.stroke(204, 97, 61);
-		this.p5.rect(w / 3, h / 8, 70 * scaleX, 80 * scaleY);
+		this.p5.rect(w / 3, h / 11, 70 * scaleX, 80 * scaleY);
 
 		this.p5.strokeWeight(1);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
 		this.p5.textSize(40 * Math.min(scaleX, scaleY));
-		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 8, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 11, 80 * scaleX, 80 * scaleY);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w / 3, h / 8 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`面`, w / 3, h / 11 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
 	updateTopDisplay(px, py) {
