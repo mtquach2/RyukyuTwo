@@ -59,7 +59,7 @@ export class Menu {
     }
     
     menuState(x, y, width, height, scaleX, scaleY) {
-        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 100 * scaleX) < x && x < (width / 2 + 200 * scaleX) && y > (height * .8 - 5 * scaleY) && y < (height * .8 + 50 * scaleY))) {
+        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .8 - 30 * scaleY) && y < (height * .8 + 30 * scaleY))) {
             this.soundManager.playGong();
             
             this.p5.textSize(20);

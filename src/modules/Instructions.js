@@ -48,13 +48,13 @@ export class Instructions {
         this.p5.fill(255);
         this.p5.textSize(20 * Math.min(scaleX, scaleY));
         this.p5.strokeWeight(1);
-        this.p5.text("BEGIN GAME", width / 2.14, height * .92 + 5 * scaleY);
+        this.p5.text("BEGIN GAME", width / 2.16, height * .92 + 5 * scaleY);
 
         return 8;
     }
     
     instructionsState(x, y, width, height, scaleX, scaleY) {
-        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 100 * scaleX) < x && x < (width / 2 + 200 * scaleX) && y > (height * .92 - 5 * scaleY) && y < (height * .92 + 50 * scaleY))) {
+        if ((this.p5.keyIsPressed && this.p5.keyCode == 13) || ((width / 2 - 95 * scaleX) < x && x < (width / 2 + 90 * scaleX) && y > (height * .92 - 25 * scaleY) && y < (height * .92 + 30 * scaleY))) {
             this.soundManager.pauseMenuTheme();
             // If Enter pressed, start game    
             return 1;
