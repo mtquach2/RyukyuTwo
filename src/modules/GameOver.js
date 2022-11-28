@@ -20,6 +20,7 @@ export class GameOver {
         //Displays leaderboard
         this.p5.textFont(this.jpFont, 96 * Math.min(scaleX, scaleY));
         this.p5.text("LEADERBOARD", width / 2, height / 10);
+        this.p5.textAlign(this.p5.LEFT);
         this.score.renderLeaderboard();
 
         // Main Menu
