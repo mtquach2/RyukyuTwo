@@ -196,7 +196,8 @@ export class Board {
 
     clicked(px, py, displayMap) {
         // Selects a card from 3x4 array 
-        if (py >= this.yPositions[0] + 5 && py < this.yPositions[0] + 97) { 
+        console.log(this.scaleY);
+        if (py >= this.yPositions[0] + 5 * this.scaleY && py < this.yPositions[0] + 80 * this.scaleY) { 
             if (this.currentCard != null) {
                 return;
             }
@@ -254,7 +255,7 @@ export class Board {
     chooseCol(py, score) {
         // Displays card in selected column in board
         this.cardSelected = true;
-        if (py >= this.boardY - 68 && py < this.boardY + 33) {
+        if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 80 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 80 * this.scaleX) {
                     this.col = col;
