@@ -205,12 +205,12 @@ export class Board {
             }
             for (let i = 0; i < 4; i++) {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
-                    console.log("IN CLICKED");
-                    this.cardSelected = true;
                     this.currentCard = displayMap.get(i)[this.counts[i]];
                     this.draggingColumn = i;
+                    console.log(this.draggingColumn);
                 }
             }
+            this.cardSelected = true;
         }
     }
 

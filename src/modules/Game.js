@@ -198,12 +198,14 @@ export class Game {
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			console.log("IN FIRST ELSE IF");
 			for(let i = 0; i <= 5; i++){
-				if(this.board.addCard(i, this.board.currentCard, this.score) != -1){
+				//let cardSelected = this.board.currentCard;
+				console.log("CARD:", this.board.currentCard);
+				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
 					console.log("CARD SELECTED BUT NOT DROPPED");
 					this.stateSaver();
 					this.board.currentCard = null;
+					this.board.counts[this.board.draggingColumn] -= 1
 					this.board.cardSelected = false;
-					this.board.columnSelected = false;
 					break; 
 				}
 			}
