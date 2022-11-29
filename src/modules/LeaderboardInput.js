@@ -170,18 +170,18 @@ export class LeaderboardInput {
         }
 
         // Arrow Buttons
-        this.p5.image(this.upButton, width * 0.77, height * 0.7, 40 * scaleX, 40 * scaleY);
-        this.p5.image(this.downButton, width * 0.77, height * 0.8, 40 * scaleX, 40 * scaleY);
-        this.p5.image(this.leftButton, width * 0.74, height * 0.75, 40 * scaleX, 40 * scaleY);
-        this.p5.image(this.rightButton, width * 0.8, height * 0.75, 40 * scaleX, 40 * scaleY);
-        this.p5.image(this.checkButton, width * 0.86, height * 0.75, 40 * scaleX, 40 * scaleY);
+        this.p5.image(this.upButton, width * 0.77, height * 0.7, 50 * scaleX, 50 * scaleY);
+        this.p5.image(this.downButton, width * 0.77, height * 0.8, 50 * scaleX, 50 * scaleY);
+        this.p5.image(this.leftButton, width * 0.74, height * 0.75, 50 * scaleX, 50 * scaleY);
+        this.p5.image(this.rightButton, width * 0.8, height * 0.75, 50 * scaleX, 50 * scaleY);
+        this.p5.image(this.checkButton, width * 0.86, height * 0.75, 50 * scaleX, 50 * scaleY);
 
         return this.selectorKeypress();
     }
 
     leaderboardState(x, y, width, height, scaleX, scaleY) {
         // Left Button
-        if ((width * 0.74) < x && x < (width * 0.74 + 40 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 40 * scaleY)) {
+        if ((width * 0.74) < x && x < (width * 0.74 + 50 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 50 * scaleY)) {
             this.soundManager.playLeaderboardClick();
             if (this.letterSelector == 0 || this.letterSelector == 13) {
                 // Loops the row at the start
@@ -193,7 +193,7 @@ export class LeaderboardInput {
             }
         }
         // Up Button
-        else if ((width * 0.77) < x && x < (width * 0.77 + 40 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 40 * scaleY)) {
+        else if ((width * 0.77) < x && x < (width * 0.77 + 50 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 50 * scaleY)) {
             this.soundManager.playLeaderboardClick();
             if (this.letterSelector < 13) {
                 // Goes down one row to the next character
@@ -213,7 +213,7 @@ export class LeaderboardInput {
             }
         }
         // Right Button
-        else if ((width * 0.8) < x && x < (width * 0.8 + 40 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 40 * scaleY)) {
+        else if ((width * 0.8) < x && x < (width * 0.8 + 50 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 50 * scaleY)) {
             this.soundManager.playLeaderboardClick();
             if (this.letterSelector == 12 || this.letterSelector == 25) {
                 // Loops the row at the end
@@ -229,7 +229,7 @@ export class LeaderboardInput {
             }
         }
         // Down Button
-        else if ((width * 0.77) < x && x < (width * 0.77 + 40 * scaleX) && y > (height * 0.8) && y < (height * 0.8 + 40 * scaleY)) {
+        else if ((width * 0.77) < x && x < (width * 0.77 + 50 * scaleX) && y > (height * 0.8) && y < (height * 0.8 + 50 * scaleY)) {
             this.soundManager.playLeaderboardClick();
             if (this.letterSelector < 13) {
                 // Goes down one row to the next character
@@ -241,7 +241,7 @@ export class LeaderboardInput {
             }
         }
 
-        if ((width * 0.86) < x && x < (width * 0.86 + 40 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 40 * scaleY)) {
+        if ((width * 0.86) < x && x < (width * 0.86 + 50 * scaleX) && y > (height * 0.75) && y < (height * 0.75 + 50 * scaleY)) {
             // Add Letter 
             if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
                 this.soundManager.playLeaderboardEnter(); 
