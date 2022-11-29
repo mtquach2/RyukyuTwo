@@ -187,7 +187,9 @@ export class Score {
             if (i == 10) {
                 break;
             }
-            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(i + 1, this.scoreX / 3, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(this.data[i].name + "\t\t\t", this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(this.data[i].score, this.scoreX * 0.6, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 

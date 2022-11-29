@@ -26,10 +26,12 @@ export class Omikuji {
         };
 
         this.jpFont;
+        this.stopButton;
     }
 
     load() {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
+        this.stopButton = this.p5.loadImage("/static/UI/Buttons/Icon_SquareStraight.png");
     }
 
     renderTitle(width, height, scaleX, scaleY) {
@@ -73,7 +75,7 @@ export class Omikuji {
         this.p5.textSize(58 * Math.min(scaleX, scaleY));
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
         this.p5.text("おみくじを引いてください。", width / 4, height / 3 + 90 * scaleY + 200 * scaleY);
-        this.p5.text("(Press Spacebar to Select)", width / 4, height / 3 + 90 * scaleY + 300 * scaleY);
+        this.p5.text("(Press Spacebar or Stop Button to Select)", width / 7.5, height / 3 + 90 * scaleY + 300 * scaleY);
     }
 
     omikuji(level, width, height, scaleX, scaleY) {
@@ -83,6 +85,11 @@ export class Omikuji {
         this.p5.textFont(this.jpFont);
         this.renderTitle(width, height, scaleX, scaleY);
         this.renderBoxes(width, height, scaleX, scaleY);
+
+        this.p5.image(this.stopButton, width * 0.8, height * 0.6, 80 * scaleX, 80 * scaleY);
+        this.p5.stroke(255, 0, 0);
+        this.p5.textSize(24 * Math.min(scaleX, scaleY));
+        this.p5.text("STOP", width * 0.83, height * 0.65);
 
         // Spacebar pressed, box was selected
         if (this.p5.keyIsPressed && this.p5.keyCode == 32 && this.selectedOmikuji < 16) {
@@ -141,5 +148,12 @@ export class Omikuji {
 
     static getBonus() {
         return this.blessingScore;
+    }
+
+    omikujiState(x, y, width, height, scaleX, scaleY) {
+        if (((width * 0.8) < x && x < (width * 0.8 + 80 * scaleX) && y > (height * 0.6) && y < (height * 0.6 + 80 * scaleY))) {
+            this.selected = true;
+            this.soundManager.pauseOmikujiSpinner();
+        } 
     }
 }
