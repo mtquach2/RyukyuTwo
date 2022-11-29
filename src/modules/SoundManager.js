@@ -101,7 +101,7 @@ export class SoundManager {
                 cardSound.play();
                 cardSound.volume = 0.10;
             }
-            else {
+            else if (state != 4) {
                 // Plays pop sound when not in play screen
                 const popSound = new Audio('/static/sounds/pop.wav');
                 popSound.play();
@@ -112,7 +112,7 @@ export class SoundManager {
 
     playGameTheme() {
         if (!this.isMusicMuted) {
-            this.gameTheme.volume = 0.1;
+            this.gameTheme.volume = 0.2;
             this.gameTheme.loop = true;
             this.gameTheme.play();
         }
