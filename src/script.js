@@ -181,7 +181,7 @@ GM.mouseClicked = function (x, y) {
 
     switch (state) {
         case 0:
-            state = menu.menuState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
@@ -193,13 +193,13 @@ GM.mouseClicked = function (x, y) {
             state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 7:
-            state = gameOver.gameOverState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             if (state == -1 ) {
                 resetGame(7);
             }
             break;
         case 8:
-            state = instructions.instructionsState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
     }
 
