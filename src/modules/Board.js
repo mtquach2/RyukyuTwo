@@ -191,7 +191,7 @@ export class Board {
     /**
      * Deselect a card after clicking on it 
      */
-    unChooseCard(){
+    unChooseCard() {
         // Resets variables
         this.draggingColumn = null
         this.currentCard = null
@@ -199,7 +199,8 @@ export class Board {
 
     clicked(px, py, displayMap) {
         // Selects a card from 3x4 array 
-        if (py >= this.yPositions[0] + 5 && py < this.yPositions[0] + 97) { 
+        console.log(this.scaleY);
+        if (py >= this.yPositions[0] + 5 * this.scaleY && py < this.yPositions[0] + 80 * this.scaleY) {
             if (this.currentCard != null) {
                 return;
             }
@@ -247,18 +248,19 @@ export class Board {
             this.p5.stroke(255, 0, 0);
             this.p5.textFont("Helvetica");
             for (let col = 0; col < 5; col++) {
-                this.p5.image(this.arrow, this.boardX + 35 + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 155 * this.scaleY);
+                this.p5.image(this.arrow, this.boardX + 30 * this.scaleX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 155 * this.scaleY, 30 * this.scaleX, 30 * this.scaleY);
             }
 
             // Highlights box/column where card was selected
-            this.p5.rect(this.xPositions[this.draggingColumn] + 12.75, this.yPositions[0], 80, 100);
+            this.p5.rect(this.xPositions[this.draggingColumn] + 12.75 * this.scaleX, this.yPositions[0], 55 * this.scaleX, 80 * this.scaleY);
         }
     }
 
     chooseCol(py, score) {
         // Displays card in selected column in board
-        //this.cardSelected = true;
-        if (py >= this.boardY - 68 && py < this.boardY + 33) {
+        this.cardSelected = true;
+        if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
+
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 80 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 80 * this.scaleX) {
                     this.col = col;
@@ -266,7 +268,7 @@ export class Board {
                 }
             }
             if (this.col !== -1 && !this.boardCols[this.col].isFull()) {
-                if(this.currentCard !== null){ // Checks to see that player isn't just clicking on the column
+                if (this.currentCard !== null) { // Checks to see that player isn't just clicking on the column
                     this.columnSelected = true;
                     if (this.timer.seconds !== 0) {
                         this.addCard(this.col, this.currentCard, score);
@@ -288,34 +290,34 @@ export class Board {
      * @param boardState The previous state of board to reenact 
      * @param deck the deck of all Card objects
      */
-    updateHands(boardState, deck){
+    updateHands(boardState, deck) {
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
 
-        for(var i = 0; i < boardState.board.length; i++){
-            for(var j = 0; j < boardState.board[i].length ; j++){
+        for (var i = 0; i < boardState.board.length; i++) {
+            for (var j = 0; j < boardState.board[i].length; j++) {
                 let card;
                 let tempScore = new Score();
-                if(boardState.board[i][j] !== ''){ 
+                if (boardState.board[i][j] !== '') {
                     let value = '';
                     let suit = '';
-                    if(boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1'){
-                       value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
-                       suit = boardState.board[i][j].charAt(2);
+                    if (boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1') {
+                        value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
+                        suit = boardState.board[i][j].charAt(2);
                     }
-                    else{
-                       value = boardState.board[i][j].charAt(0);
-                       suit = boardState.board[i][j].charAt(1);
+                    else {
+                        value = boardState.board[i][j].charAt(0);
+                        suit = boardState.board[i][j].charAt(1);
                     }
                     tempScore.currentScore = boardState.score;
                     card = this.findCard(deck, suit, value);
                     this.boardCols[i].addCard(card, tempScore);
                     this.boardRows[this.reverseIndices[j]].addCard(card, tempScore);
-                    if(i === j){
+                    if (i === j) {
                         this.boardDiag[1].addCard(card, tempScore);
                     }
-                    if(i === this.reverseIndices[j]){
+                    if (i === this.reverseIndices[j]) {
                         this.boardDiag[0].addCard(card, tempScore);
                     }
 
@@ -329,7 +331,7 @@ export class Board {
      * Updates the topDisplay and the cards left section after Cancel(backspace) is pressed
      * @param displayState the stateSaver
      */
-    updateTopDisplay(displayState){
+    updateTopDisplay(displayState) {
         this.counts = displayState.counts;
 
     }
@@ -341,11 +343,11 @@ export class Board {
      * @param value The value of the card to find
      * @returns the Card if match is found, null if no match is found
      */
-    findCard(deck, suit, value){
-        for(var i = 0; i < deck.length; i++){
+    findCard(deck, suit, value) {
+        for (var i = 0; i < deck.length; i++) {
             let deckValue = deck[i].getValue();
             let deckSuit = deck[i].getSuit();
-            if(deckValue === value && deckSuit === suit){
+            if (deckValue === value && deckSuit === suit) {
                 return deck[i];
             }
         }

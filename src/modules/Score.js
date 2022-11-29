@@ -1,4 +1,4 @@
-import { db } from '/src/FB';
+import { db } from '../FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Omikuji } from './Omikuji';
 
@@ -156,12 +156,12 @@ export class Score {
         this.fillScoreTable();
     }
 
-    async addLeaderboard(name) {
+    async addLeaderboard(name, level) {
         // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 name: name,
-                score: this.totalScore
+                score: level > 1 ? this.totalScore : this.currentScore
             });
 
             console.log("Document written with ID: ", docRef.id);
@@ -187,7 +187,9 @@ export class Score {
             if (i == 10) {
                 break;
             }
-            this.p5.text((i + 1) + "\t" + this.data[i].name + "\t\t\t" + this.data[i].score, this.scoreX / 2, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(i + 1, this.scoreX / 3, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(this.data[i].name + "\t\t\t", this.scoreX / 3 + this.scoreX / 20, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
+            this.p5.text(this.data[i].score, this.scoreX * 0.6, this.scoreY / 6 + (i + 1) * 50 * this.scaleY);
         }
     }
 
@@ -202,7 +204,7 @@ export class Score {
     getTotalScore() {
         return this.totalScore;
     }
-    
+
     getExtend() {
         return this.extendScore;
     }

@@ -12,7 +12,7 @@ export class GameOver {
         this.jpFont = this.p5.loadFont("/static/fonts/BestTen-DOT.otf");
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
     }
-    
+
     gameOver(width, height, scaleX, scaleY) {
         this.p5.stroke(0, 0, 0);
         this.p5.fill(255, 255, 255);
@@ -20,18 +20,19 @@ export class GameOver {
         //Displays leaderboard
         this.p5.textFont(this.jpFont, 96 * Math.min(scaleX, scaleY));
         this.p5.text("LEADERBOARD", width / 2, height / 10);
+        this.p5.textAlign(this.p5.LEFT);
         this.score.renderLeaderboard();
 
         // Main Menu
         this.p5.imageMode(this.p5.CENTER);
-        this.p5.image(this.buttonSelected, width / 2, height * .8);
+        this.p5.image(this.buttonSelected, width / 2, height * .9);
 
         this.p5.stroke(255, 255, 255);
         this.p5.fill(255, 255, 255);
         this.p5.textSize(16);
         this.p5.strokeWeight(1);
         this.p5.textAlign(this.p5.CENTER, this.p5.BASELINE);
-        this.p5.text("ENTER FOR MENU", width / 2, height * .8 + 5);
+        this.p5.text("ENTER FOR MENU", width / 2, height * .9 + 5);
 
         if ((this.p5.keyIsPressed && this.p5.keyCode == 13)) {
             this.soundManager.playGameOver();
@@ -45,7 +46,7 @@ export class GameOver {
     }
 
     gameOverState(x, y, width, height, scaleX, scaleY) {
-        if ((width / 2 - 80 * scaleX) < x && x < (width / 2 + 80 * scaleX) && y > (height * .8 - 20 * scaleY) && y < (height * .8 + 25 * scaleY)) {
+        if ((width / 2 - 80 * scaleX) < x && x < (width / 2 + 80 * scaleX) && y > (height * .9 - 20 * scaleY) && y < (height * .9 + 25 * scaleY)) {
             this.soundManager.playGameOver();
 
             // Transition from the GameOver to Menu 7 --> 0

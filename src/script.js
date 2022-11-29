@@ -68,6 +68,10 @@ const p = new p5(p => {
     p.keyPressed = function keyPressed() {
         GM.keyPressed(p.keyCode);
     }
+
+    p.touchStarted = function touchStarted() {
+        GM.touchStarted(p.touches[0].x, p.touches[0].y);
+    }
 });
 
 const soundManager = new SoundManager(p);
@@ -80,7 +84,7 @@ const game = new Game(p, board, score, timer, soundManager);
 const round = new Round(p, score, game);
 const continueScreen = new Continue(p, soundManager);
 const omikuji = new Omikuji(p, score, soundManager);
-const leaderboardInput = new LeaderboardInput(p, score);
+const leaderboardInput = new LeaderboardInput(p, score, soundManager);
 const gameOver = new GameOver(p, score, soundManager, soundManager);
 const instructions = new Instructions(p, soundManager);
 
@@ -140,7 +144,7 @@ GM.draw = function (width, height) {
 
     // State is 4, leaderboard entry
     if (state == 4) {
-        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY, game.getLevel());
     }
 
     // State is 5, won
@@ -161,7 +165,7 @@ GM.draw = function (width, height) {
     if (state == 7) {
         state = gameOver.gameOver(width, height, scaleX, scaleY);
 
-        if (state == -1 ) {
+        if (state == -1) {
             resetGame(7);
         }
     }
@@ -181,19 +185,57 @@ GM.mouseClicked = function (x, y) {
 
     switch (state) {
         case 0:
-            state = menu.menuState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
             break;
+        case 3: 
+            omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 4: 
+            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
         case 7:
-            state = gameOver.gameOverState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             if (state == -1 ) {
                 resetGame(7);
             }
             break;
         case 8:
-            state = instructions.instructionsState(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+    }
+
+    soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+}
+
+GM.touchStarted = function (x, y) {
+    soundManager.playCardNoise(state);
+    game.updateTopDisplay(x, y);
+    board.chooseCol(y, score);
+
+    switch (state) {
+        case 0:
+            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 2:
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
+            break;
+        case 3: 
+            omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 4: 
+            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 7:
+            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            if (state == -1 ) {
+                resetGame(7);
+            }
+            break;
+        case 8:
+            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
     }
 
