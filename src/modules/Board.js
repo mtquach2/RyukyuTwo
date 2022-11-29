@@ -246,7 +246,7 @@ export class Board {
             this.p5.stroke(255, 0, 0);
             this.p5.textFont("Helvetica");
             for (let col = 0; col < 5; col++) {
-                this.p5.image(this.arrow, this.boardX + 35 + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 155 * this.scaleY);
+                this.p5.image(this.arrow, this.boardX + 30 * this.scaleX + (col + 1) * 80 * this.scaleX, this.yPositions[0] + 155 * this.scaleY, 30 * this.scaleX, 30 * this.scaleY);
             }
 
             // Highlights box/column where card was selected
