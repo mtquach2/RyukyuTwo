@@ -190,18 +190,20 @@ export class Game {
 	}
   
 	timerTrigger() {
+		// console.log("CARDPLACED", this.board.cardPlaced);
+		// console.log("CARDSELECTED", this.board.cardSelected);
 		if (this.board.cardPlaced == true) { //card is dropped in general
-			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
+			this.stateSaver();
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
-					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.counts[this.board.draggingColumn] -= 1
 					this.board.cardSelected = false;
+					this.stateSaver();
 					break; 
 				}
 			}
@@ -212,8 +214,8 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard, this.score) != -1){
-						this.stateSaver();
 						this.board.currentCard = null;
+						this.stateSaver();
 						break;
 					}
 				}
