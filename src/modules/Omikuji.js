@@ -3,7 +3,7 @@ export class Omikuji {
         this.p5 = p;
         this.score = score;
         this.soundManager = soundManager;
-        
+
         this.selectedOmikuji = 0;
         this.selected = false;
         this.frameDelay = 300;
@@ -24,7 +24,7 @@ export class Omikuji {
             "吉": "Blessing,\n+1500 bonus points",
             "大吉": "Great Blessing,\n+2000 bonus points",
         };
-    
+
         this.jpFont;
         this.stopButton;
     }
@@ -129,6 +129,7 @@ export class Omikuji {
                 this.selected = false;
                 this.frameDelay = 300;
 
+                this.p5.shuffle(this.omikujiValues, true);
                 // Transition state
                 return 6;
             }

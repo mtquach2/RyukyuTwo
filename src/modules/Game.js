@@ -6,7 +6,7 @@ export class Game {
 		this.score = score;
 		this.timer = timer;
 		this.soundManager = soundManager;
-		
+
 		this.level = 1;
 		this.state = 0;
 
@@ -20,7 +20,7 @@ export class Game {
 
 		this.paperFrameLong;
 	}
-	
+
 	load() {
 		// Loads all static UI
 		const suits = ['diamonds', 'hearts', 'spades', 'clubs'];
@@ -31,6 +31,11 @@ export class Game {
 				this.deck.push(new Card(this.p5, `${suit[0]}`, `${value}`, this.p5.loadImage(`../../static/cards/card_${suit}_${value}.png`)));
 			}
 		}
+
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_black.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_black.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_red.png')));
+		this.deck.push(new Card(this.p5, "wild", "wild", this.p5.loadImage('../../static/cards/card_joker_red.png')));
 
 		this.board.load();
 		this.score.fillScoreTable();
@@ -79,7 +84,7 @@ export class Game {
 	/**
 	 * Saves the state of the board, score and counts after a card is dropped
 	 */
-	stateSaver(){
+	stateSaver() {
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
 				return `${c.value}${c.suit}`
@@ -87,19 +92,19 @@ export class Game {
 		})
 
 		let cardDisplay = [];
-		for(var i = 0; i < 4; i++){
+		for (var i = 0; i < 4; i++) {
 			cardDisplay.push(this.board.counts[i]);
 		}
 
 		const gameState = {
-			score : this.score.currentScore,
-			board : currBoard, 
-			counts : cardDisplay
+			score: this.score.currentScore,
+			board: currBoard,
+			counts: cardDisplay
 		}
 
 		this.gameStateSaver.push(gameState);
 
-		if(this.gameStateSaver.length > 4){
+		if (this.gameStateSaver.length > 4) {
 			this.gameStateSaver.shift();
 		}
 	}
@@ -176,7 +181,7 @@ export class Game {
 			x += 13;
 		}
 	}
-  
+
 	reShuffle() {
 		// Shuffles deck for reset 
 		for (let i = 0; i < 4; i++) {
@@ -184,7 +189,7 @@ export class Game {
 		}
 	}
 
-	 timerTrigger() {
+	timerTrigger() {
 		// Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
@@ -192,22 +197,22 @@ export class Game {
 			this.board.cardPlaced = false;
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
-			for(let i = 0; i <= 5; i++){
-				if(this.board.addCard(i, this.board.currentCard) != -1){
+			for (let i = 0; i <= 5; i++) {
+				if (this.board.addCard(i, this.board.currentCard) != -1) {
 					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.cardSelected = false;
 					this.board.columnSelected = false;
-					break; 
+					break;
 				}
 			}
 			this.timer.resetTimer();
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
-			for(let i = 0; i < 5; i++){ 
-				if(firstCard != null){
-					if(this.board.addCard(i, firstCard) != -1){
+			for (let i = 0; i < 5; i++) {
+				if (firstCard != null) {
+					if (this.board.addCard(i, firstCard) != -1) {
 						this.stateSaver();
 						this.board.currentCard = null;
 						break;

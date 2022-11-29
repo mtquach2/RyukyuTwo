@@ -96,7 +96,7 @@ export class SoundManager {
         if (!this.isSoundMuted) {
             // Randomly chooses a card sound to play when mouse/card is selected
             if (state == 1) {
-                const cardSoundIndex =  Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
+                const cardSoundIndex = Math.floor(Math.random() * 4) // random int between 0 and 4 (exclusive)
                 const cardSound = this.cardSounds[cardSoundIndex];
                 cardSound.play();
                 cardSound.volume = 0.10;
@@ -164,5 +164,37 @@ export class SoundManager {
 
     pauseOmikujiSpinner() {
         this.omikujiSpinner.pause();
+    }
+
+    playLeaderboardClick() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Click.wav');
+            sound.volume = 0.3;
+            sound.play();
+        }
+    }
+
+    playLeaderboardEnter() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Enter.wav');
+            sound.volume = 0.3;
+            sound.play();
+        }
+    }
+
+    playLeaderboardConfirm() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Confirm.wav');
+            sound.volume = 0.5;
+            sound.play();
+        }
+    }
+
+    playLeaderboardCancel() {
+        if (!this.isSoundMuted) {
+            const sound = new Audio('/static/sounds/Cancel.wav');
+            sound.volume = 0.5;
+            sound.play();
+        }
     }
 }

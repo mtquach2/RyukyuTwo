@@ -16,7 +16,7 @@ export class Continue {
     continueScreen(width, height, scaleX, scaleY) {
         this.p5.imageMode(this.p5.CORNER);
         this.p5.background(this.bg);
-    
+
         // Render Continue? screen after lost game 
         this.p5.strokeWeight(3);
         this.p5.stroke(0, 0, 0);
@@ -24,15 +24,15 @@ export class Continue {
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         this.p5.textFont(this.jpFont, 64 * Math.min(scaleX, scaleY));
         this.p5.text("CONTINUE?", width / 2, height / 3);
-    
+
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-    
+
         // NO button
         this.p5.image(this.buttonSelected, width / 2 + width / 10, height / 2, 200 * scaleX, 100 * scaleY);
-    
+
         // YES button
         this.p5.image(this.buttonSelected, width / 3 - width / 25, height / 2, 200 * scaleX, 100 * scaleY);
-    
+
         this.p5.stroke(0, 0, 0)
         this.p5.fill(255, 255, 255);
         this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
@@ -41,7 +41,7 @@ export class Continue {
 
         return 2;
     }
-    
+
     continueScreenStates(width, height, x, y, scaleX, scaleY) {
         // Function for P5 mouseClicked and cont()
         if ((width / 3 - width / 25 + 2 * scaleX) < x && x < (width / 3 - width / 25 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {

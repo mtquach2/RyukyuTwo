@@ -80,7 +80,7 @@ const game = new Game(p, board, score, timer, soundManager);
 const round = new Round(p, score, game);
 const continueScreen = new Continue(p, soundManager);
 const omikuji = new Omikuji(p, score, soundManager);
-const leaderboardInput = new LeaderboardInput(p, score);
+const leaderboardInput = new LeaderboardInput(p, score, soundManager);
 const gameOver = new GameOver(p, score, soundManager, soundManager);
 const instructions = new Instructions(p, soundManager);
 
@@ -140,7 +140,7 @@ GM.draw = function (width, height) {
 
     // State is 4, leaderboard entry
     if (state == 4) {
-        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY, game.getLevel());
     }
 
     // State is 5, won

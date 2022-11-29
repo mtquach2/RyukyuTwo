@@ -1,4 +1,4 @@
-import { db } from '/src/FB';
+import { db } from '../FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Omikuji } from './Omikuji';
 
@@ -156,12 +156,12 @@ export class Score {
         this.fillScoreTable();
     }
 
-    async addLeaderboard(name) {
+    async addLeaderboard(name, level) {
         // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 name: name,
-                score: this.totalScore
+                score: level > 1 ? this.totalScore : this.currentScore
             });
 
             console.log("Document written with ID: ", docRef.id);
@@ -202,7 +202,7 @@ export class Score {
     getTotalScore() {
         return this.totalScore;
     }
-    
+
     getExtend() {
         return this.extendScore;
     }
