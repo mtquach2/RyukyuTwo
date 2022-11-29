@@ -180,6 +180,7 @@ export class Board {
     }
 
     selectFont(rank) {
+        this.p5.textSize(24 * Math.min(this.scaleX, this.scaleY));
         if (rank == 0) {
             this.p5.textFont("Helvetica");
         }
