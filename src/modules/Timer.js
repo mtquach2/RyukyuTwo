@@ -51,9 +51,6 @@ export class Timer {
      */
     countDown() {
         this.seconds--;
-        if(this.seconds === 0){
-          console.log("TIME RAN OUT");
-        }
     }
 
     /**
