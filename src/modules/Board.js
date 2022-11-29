@@ -258,7 +258,7 @@ export class Board {
 
     chooseCol(py, score) {
         // Displays card in selected column in board
-        this.cardSelected = true;
+        //this.cardSelected = true;
         if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
 
             for (let col = 0; col < 5; col++) {

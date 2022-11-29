@@ -190,6 +190,8 @@ export class Game {
 	}
   
 	timerTrigger() {
+		// console.log("CARDPLACED", this.board.cardPlaced);
+		// console.log("CARDSELECTED", this.board.cardSelected);
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
