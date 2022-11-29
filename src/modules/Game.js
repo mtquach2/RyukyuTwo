@@ -188,31 +188,30 @@ export class Game {
 			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
 		}
 	}
-
+  
 	timerTrigger() {
-		// Triggers timer to reset if card is dropped, selected but not dropped, or no selection at all.
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
-			for (let i = 0; i <= 5; i++) {
-				if (this.board.addCard(i, this.board.currentCard) != -1) {
+			for(let i = 0; i <= 5; i++){
+				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
 					this.stateSaver();
 					this.board.currentCard = null;
+					this.board.counts[this.board.draggingColumn] -= 1
 					this.board.cardSelected = false;
-					this.board.columnSelected = false;
-					break;
+					break; 
 				}
 			}
 			this.timer.resetTimer();
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
-			for (let i = 0; i < 5; i++) {
-				if (firstCard != null) {
-					if (this.board.addCard(i, firstCard) != -1) {
+			for(let i = 0; i < 5; i++){ 
+				if(firstCard != null){
+					if(this.board.addCard(i, firstCard, this.score) != -1){
 						this.stateSaver();
 						this.board.currentCard = null;
 						break;

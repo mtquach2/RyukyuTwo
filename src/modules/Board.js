@@ -22,6 +22,7 @@ export class Board {
         this.marker;
         this.cardPlaced = false;
         this.cardSelected = false;
+        this.columnSelected = false;
 
         this.jpFont;
         this.arrow;
@@ -207,6 +208,7 @@ export class Board {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
                     this.draggingColumn = i;
+                    console.log(this.draggingColumn);
                 }
             }
             this.cardSelected = true;
@@ -258,6 +260,7 @@ export class Board {
         // Displays card in selected column in board
         this.cardSelected = true;
         if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
+
             for (let col = 0; col < 5; col++) {
                 if (this.p5.mouseX >= this.boardX + (col + 1) * 80 * this.scaleX && this.p5.mouseX < this.boardX + (col + 2) * 80 * this.scaleX) {
                     this.col = col;
@@ -371,6 +374,18 @@ export class Board {
         if (recentMoves.length > 3) {
             recentMoves.shift(); //removes first item from array
         }
+    }
+
+    boardIsEmpty(){
+        for(let i = 0; i < this.boardCols.length; i++){
+            if(this.boardCols[i].hand.length !== 0){
+                return false;
+            }
+            if(this.boardRows[i].hand.length !== 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     renderInstructions(w, h) {
