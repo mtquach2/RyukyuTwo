@@ -198,8 +198,7 @@ export class Board {
     }
 
     clicked(px, py, displayMap) {
-        // Selects a card from 3x4 array 
-        console.log(this.scaleY);
+        // Selects a card from 3x4 array
         if (py >= this.yPositions[0] + 5 * this.scaleY && py < this.yPositions[0] + 80 * this.scaleY) {
             if (this.currentCard != null) {
                 return;
@@ -208,7 +207,6 @@ export class Board {
                 if (px >= this.xPositions[i] && px < this.xPositions[i + 1] && this.counts[i] >= 0) {
                     this.currentCard = displayMap.get(i)[this.counts[i]];
                     this.draggingColumn = i;
-                    console.log(this.draggingColumn);
                 }
             }
             this.cardSelected = true;
