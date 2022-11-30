@@ -1,5 +1,8 @@
 # Controls when the action will run. 
-on: [push, pull_request]
+on:
+ push:
+ pull_request:
+  branches: main
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
