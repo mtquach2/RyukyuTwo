@@ -199,7 +199,7 @@ GM.mouseClicked = function (x, y) {
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY, game.level);
             break;
         case 7:
             state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
@@ -234,7 +234,7 @@ GM.touchStarted = function (x, y) {
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY, game.level);
             break;
         case 7:
             state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
