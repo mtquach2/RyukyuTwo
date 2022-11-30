@@ -80,13 +80,13 @@ export class Board {
         }
     }
 
-    render(displayMap, mouseWasClicked, w, h, scaleX, scaleY) {
+    render(displayMap, mouseWasClicked, width, height, scaleX, scaleY) {
         // Total display for main game/board
         this.scaleX = scaleX;
         this.scaleY = scaleY;
 
-        this.boardX = w / 3;
-        this.boardY = h / 3.5;
+        this.boardX = width / 3;
+        this.boardY = height / 3.5;
 
         for (let x = 4; x >= 0; x--) {
             this.xPositions[x] = this.boardX + 33 * this.scaleX + (x + 1) * 80 * this.scaleX;
@@ -100,10 +100,10 @@ export class Board {
         this.renderBoard();
         this.renderBoardCards();
         this.renderColumnDisplay();
-        this.renderCardsLeft(w, h);
+        this.renderCardsLeft(width, height);
         this.renderCardsTopDisplay(displayMap);
         this.displayCard(this.mouseWasClicked);
-        this.renderInstructions(w, h);
+        this.renderInstructions(width, height);
     }
 
     renderBoardCards() {
@@ -189,9 +189,6 @@ export class Board {
         }
     }
 
-    /**
-     * Deselect a card after clicking on it 
-     */
     unChooseCard() {
         // Resets variables
         this.draggingColumn = null
@@ -284,12 +281,8 @@ export class Board {
         }
     }
 
-    /**
-     * Redraws the board after cancel(backspace) is pressed
-     * @param boardState The previous state of board to reenact 
-     * @param deck the deck of all Card objects
-     */
     updateHands(boardState, deck) {
+        // Redraws the board after cancel(backspace) is pressed
         this.boardCols = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardRows = [new Hand(), new Hand(), new Hand(), new Hand(), new Hand()];
         this.boardDiag = [new Hand(), new Hand()];
@@ -330,23 +323,13 @@ export class Board {
         }
     }
 
-    /**
-     * Updates the topDisplay and the cards left section after Cancel(backspace) is pressed
-     * @param displayState the stateSaver
-     */
     updateTopDisplay(displayState) {
         this.counts = displayState.counts;
 
     }
 
-    /**
-     * Finds the corresponding Card object given the value and suit
-     * @param deck The deck with all the Card objects
-     * @param suit The suit of the card to find
-     * @param value The value of the card to find
-     * @returns the Card if match is found, null if no match is found
-     */
     findCard(deck, suit, value) {
+        // Finds the corresponding Card object given the value and suit
         for (var i = 0; i < deck.length; i++) {
             let deckValue = deck[i].getValue();
             let deckSuit = deck[i].getSuit();
@@ -391,12 +374,12 @@ export class Board {
         return true;
     }
 
-    renderInstructions(w, h) {
+    renderInstructions(width, height) {
         // Displays Japanese instructions
         let instrX = this.boardX * 2 + this.boardX / 3;
-        let instrY = this.boardY / 10 + this.boardY + h / 1.8
+        let instrY = this.boardY / 10 + this.boardY + height / 1.8
 
-        this.p5.image(this.paperFrameLong, instrX, instrY, w / 5, h / 8);
+        this.p5.image(this.paperFrameLong, instrX, instrY, width / 5, height / 8);
         this.p5.strokeWeight(3);
         this.p5.textFont(this.jpFont, 32 * Math.min(this.scaleX, this.scaleY));
         this.p5.stroke(0, 0, 0);
@@ -405,12 +388,12 @@ export class Board {
         this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
 
         if (!this.cardSelected || this.currentCard == null) {
-            this.p5.text("カードを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("カードを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, width / 5, height / 8);
         }
         else {
-            this.p5.text("ラインを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, w / 5, h / 8);
+            this.p5.text("ラインを", instrX + 10 * this.scaleX, instrY + 5 * this.scaleY, width / 5, height / 8);
         }
-        this.p5.text("選んでください。", instrX + 10 * this.scaleX, instrY + 40 * this.scaleY, w / 5, h / 8);
+        this.p5.text("選んでください。", instrX + 10 * this.scaleX, instrY + 40 * this.scaleY, width / 5, height / 8);
     }
 }
 

@@ -42,7 +42,7 @@ export class Continue {
         return 2;
     }
 
-    continueScreenStates(width, height, x, y, scaleX, scaleY, score, game) {
+    continueScreenStates(x, y, width, height, scaleX, scaleY, score, game) {
         // Function for P5 mouseClicked and cont()
         if ((width / 3 - width / 25 + 2 * scaleX) < x && x < (width / 3 - width / 25 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If YES button is clicked, omikuji

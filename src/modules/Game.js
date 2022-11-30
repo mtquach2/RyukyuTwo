@@ -73,6 +73,7 @@ export class Game {
 				this.score.setClearPoint(this.level, 0);
 
 				if (num == 0) {
+					// Random omikuji
 					return 3;
 				}
 				else {
@@ -89,10 +90,8 @@ export class Game {
 		return 1;
 	}
 
-	/**
-	 * Saves the state of the board, score and counts after a card is dropped
-	 */
 	stateSaver() {
+		// Saves the state of the board, score and counts after a card is dropped
 		let currBoard = this.board.boardCols.map(r => {
 			return r.hand.map(c => {
 				return `${c.value}${c.suit}`
@@ -157,21 +156,21 @@ export class Game {
 		return kanji;
 	}
 
-	renderLevel(w, h, scaleX, scaleY) {
+	renderLevel(width, height, scaleX, scaleY) {
 		// Displays level in Kanji
 		this.p5.strokeWeight(3);
 		this.p5.noFill();
 		this.p5.stroke(204, 97, 61);
-		this.p5.rect(w / 3, h / 11, 70 * scaleX, 80 * scaleY);
+		this.p5.rect(width / 3, height / 11, 70 * scaleX, 80 * scaleY);
 
 		this.p5.strokeWeight(1);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textAlign(this.p5.CENTER, this.p5.TOP);
 		this.p5.textSize(40 * Math.min(scaleX, scaleY));
-		this.p5.text(`${this.intToKanji(this.level)}`, w / 3, h / 11, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`${this.intToKanji(this.level)}`, width / 3, height / 11, 80 * scaleX, 80 * scaleY);
 		this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
-		this.p5.text(`面`, w / 3, h / 11 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
+		this.p5.text(`面`, width / 3, height / 11 + 10 * scaleY, 80 * scaleX, 80 * scaleY);
 	}
 
 	updateTopDisplay(px, py) {
@@ -196,58 +195,63 @@ export class Game {
 			this.displayMap.set(i, this.p5.shuffle(this.displayMap.get(i), true));
 		}
 	}
-  
+
 	timerTrigger() {
-		// console.log("CARDPLACED", this.board.cardPlaced);
-		// console.log("CARDSELECTED", this.board.cardSelected);
-		if (this.board.cardPlaced == true) { //card is dropped in general
+		// Drops card if timer is up 
+		if (this.board.cardPlaced == true) {
+			// Card has been placed by user 
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 			this.stateSaver();
 		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
-			for(let i = 0; i <= 5; i++){
-				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
-					this.board.currentCard = null;
-					this.board.counts[this.board.draggingColumn] -= 1
-					this.board.cardSelected = false;
-					this.stateSaver();
-					break; 
-				}
-			}
-			this.timer.resetTimer();
-		}
-		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
-			let firstCard = this.board.getFirstCard(this.displayMap);
-			for(let i = 0; i < 5; i++){ 
-				if(firstCard != null){
-					if(this.board.addCard(i, firstCard, this.score) != -1){
-						this.board.currentCard = null;
-						this.stateSaver();
-						break;
+		else {
+			if (this.timer.seconds == 0) {
+				// Drops card selected
+				if (this.board.cardSelected) {
+					for(let i = 0; i <= 5; i++){
+						if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
+							this.board.currentCard = null;
+							this.board.counts[this.board.draggingColumn] -= 1
+							this.board.cardSelected = false;
+							this.stateSaver();
+							break; 
+						}
 					}
 				}
+				else {
+					// Drops a card from 3x4 array
+					let firstCard = this.board.getFirstCard(this.displayMap);
+					for(let i = 0; i < 5; i++){ 
+						if(firstCard != null){
+							if(this.board.addCard(i, firstCard, this.score) != -1){
+								this.board.currentCard = null;
+								this.stateSaver();
+								break;
+							}
+						}
+					}
+				}
+				this.timer.resetTimer();
 			}
-			this.timer.resetTimer();
 		}
 	}
 
-	cancelDisplay(w, h, scaleX, scaleY) {
+	cancelDisplay(width, height, scaleX, scaleY) {
 		// Displays section for remaining cancels/undos
 		this.p5.textAlign(this.p5.LEFT, this.p5.CENTER);
-		this.p5.image(this.paperFrameLong, w - w / 4.5, h / 5, w / 5, h / 15);
+		this.p5.image(this.paperFrameLong, width - width / 4.5, height / 5, width / 5, height / 15);
 
 		this.p5.strokeWeight(3);
 		this.p5.stroke(0, 0, 0);
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
-		this.p5.text("CANCELS", w - w / 6, h / 4.25);
+		this.p5.text("CANCELS", width - width / 6, height / 4.25);
 
-		this.p5.image(this.cancelButton, w * 0.7, h / 12, 95 * scaleX, 80 * scaleY);
-		this.p5.text("CANCEL", w * 0.7 + 13 * scaleX, h / 12 + 40 * scaleY);
+		this.p5.image(this.cancelButton, width * 0.7, height / 12, 95 * scaleX, 80 * scaleY);
+		this.p5.text("CANCEL", width * 0.7 + 13 * scaleX, height / 12 + 40 * scaleY);
 
 		this.p5.textFont("Helvetica");
-		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
+		this.p5.text("🐉".repeat(this.cancelsLeft), width - width / 10, height / 4.25);
 	}
 
 	getRank(rank) {

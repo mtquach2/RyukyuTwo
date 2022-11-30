@@ -132,6 +132,7 @@ export class Omikuji {
                 this.p5.shuffle(this.omikujiValues, true);
                 // Transition state
                 if (num == 0) {
+                    // Random omikuji on win 
                     this.score.updateTotalScore(this.game.cancelsLeft, blessingScore);
                     return 5;
                 }
