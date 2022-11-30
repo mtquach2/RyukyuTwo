@@ -2,7 +2,7 @@
 on:
  pull_request:
   branches: master
-name: 🚀 Deploy website on push
+name: 🚀 Deploy website on PR
 jobs:
   web-deploy:
     name: 🎉 Deploy
