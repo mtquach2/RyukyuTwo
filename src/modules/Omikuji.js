@@ -104,7 +104,6 @@ export class Omikuji {
             const blessingScore = this.omikujiValues[this.selectedOmikuji];
             const blessingText = this.omikujiTable[blessingScore];
             this.blessingScore = blessingScore;
-
             this.p5.strokeWeight(8);
             this.p5.stroke(0, 0, 0);
             this.p5.textSize(36 * Math.min(scaleX, scaleY));

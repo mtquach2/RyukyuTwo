@@ -126,6 +126,7 @@ export class Score {
 
     updateTotalScore(cancelBonus, totalBonus) {
         // Calculates the totalScore if round has been won
+        console.log(this.currentScore);
         console.log(totalBonus);
         this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + totalBonus;
     }
