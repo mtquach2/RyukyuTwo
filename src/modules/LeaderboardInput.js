@@ -176,7 +176,7 @@ export class LeaderboardInput {
         this.p5.image(this.rightButton, width * 0.83, height * 0.7, 60 * scaleX, 60 * scaleY);
         this.p5.image(this.checkButton, width * 0.9, height * 0.7, 60 * scaleX, 60 * scaleY);
 
-        return this.selectorKeypress();
+        return this.selectorKeypress(level);
     }
 
     leaderboardState(x, y, width, height, scaleX, scaleY) {
