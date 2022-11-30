@@ -241,9 +241,10 @@ export class LeaderboardInput {
             }
         }
 
+        // Check Button
         if ((width * 0.9) < x && x < (width * 0.9 + 60 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 60 * scaleY)) {
-            // Add Letter 
-            if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
+             // Add Letter 
+             if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
                 this.soundManager.playLeaderboardEnter(); 
                 this.name += this.letters[this.letterSelector];
             }
@@ -251,13 +252,10 @@ export class LeaderboardInput {
             else if (this.letterSelector == 26) {
                 this.soundManager.playLeaderboardConfirm();
                 if (this.name != "") {
-                    this.score.addLeaderboard(this.name, level);
+                    this.score.addLeaderboard(this.name);
                     this.score.getDataframe();
                     this.name = "";
                 }
-
-                // Prevents keycode skipping the leaderboard view on next screen
-                this.p5.keyCode = 0;
 
                 // Progress to leaderboard/game over screen
                 return 7;
