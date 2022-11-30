@@ -1,7 +1,8 @@
 export class Omikuji {
-    constructor(p, score, soundManager) {
+    constructor(p, score, game, soundManager) {
         this.p5 = p;
         this.score = score;
+        this.game = game;
         this.soundManager = soundManager;
 
         this.selectedOmikuji = 0;
@@ -78,7 +79,7 @@ export class Omikuji {
         this.p5.text("(Press Spacebar or Stop Button to Select)", width / 7.5, height / 3 + 90 * scaleY + 300 * scaleY);
     }
 
-    omikuji(level, width, height, scaleX, scaleY) {
+    omikuji(level, width, height, scaleX, scaleY, num) {
         this.soundManager.playOmikujiTheme();
         this.soundManager.playOmikujiSpinner(this.selected);
 
@@ -131,6 +132,10 @@ export class Omikuji {
 
                 this.p5.shuffle(this.omikujiValues, true);
                 // Transition state
+                if (num == 0) {
+                    this.score.updateTotalScore(this.game.cancelsLeft, blessingScore);
+                    return 5;
+                }
                 return 6;
             }
         }
@@ -146,7 +151,7 @@ export class Omikuji {
         return 3;
     }
 
-    static getBonus() {
+    getBonus() {
         return this.blessingScore;
     }
 

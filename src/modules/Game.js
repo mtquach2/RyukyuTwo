@@ -44,7 +44,7 @@ export class Game {
 		this.cancelButton = this.p5.loadImage("/static/UI/Buttons/Icon_SquareStraight.png");
 	}
 
-	play(width, height, scaleX, scaleY) {
+	play(width, height, scaleX, scaleY, num) {
 		this.soundManager.playGameTheme();
 
 		// Render game elements
@@ -69,13 +69,17 @@ export class Game {
 			if (this.score.isWin()) {
 				this.soundManager.playWin();
 				this.level++;
-				this.score.updateTotalScore(this.cancelsLeft);
+				this.score.updateTotalScore(this.cancelsLeft, 0);
 				this.score.setExtend();
 				this.score.setClearPoint(this.level, 0);
+
+				if (num == 0) {
+					return 3;
+				}
 				return 5;
 			}
 			else {
-				this.score.updateTotalScore(this.cancelsLeft);
+				this.score.updateTotalScore(this.cancelsLeft, 0);
 				this.soundManager.playContinue();
 				return 2;
 			}

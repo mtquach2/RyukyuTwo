@@ -81,9 +81,9 @@ const board = new Board(p, timer);
 
 const menu = new Menu(p, soundManager);
 const game = new Game(p, board, score, timer, soundManager);
-const round = new Round(p, score, game);
+const omikuji = new Omikuji(p, score, game, soundManager);
+const round = new Round(p, score, game, omikuji);
 const continueScreen = new Continue(p, soundManager);
-const omikuji = new Omikuji(p, score, soundManager);
 const leaderboardInput = new LeaderboardInput(p, score, soundManager);
 const gameOver = new GameOver(p, score, soundManager, soundManager);
 const instructions = new Instructions(p, soundManager);
@@ -93,6 +93,8 @@ let scaleX;
 let scaleY;
 
 let frameDelay = 500; 
+
+let num = Math.floor(Math.random() * 2); // Random number 0-1
 
 function resetGame(currentState) {
     score.resetScore();
@@ -129,7 +131,7 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        state = game.play(width, height, scaleX, scaleY);
+        state = game.play(width, height, scaleX, scaleY, num);
     }
 
     // State is 2, continue screen
@@ -139,7 +141,7 @@ GM.draw = function (width, height) {
 
     // State is 3, omikuji
     if (state == 3) {
-        state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
+        state = omikuji.omikuji(game.level, width, height, scaleX, scaleY, num);
     }
 
     // State is 4, leaderboard entry
@@ -149,11 +151,6 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
-        let num = Math.floor(Math.random() * 2); // Random number 0-1
-        if (num == 0) {
-            state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
-            resetGame(5);        
-        }
         state = round.roundScreen(width, height, scaleX, scaleY);
         if (frameDelay-- <= 0) {
             frameDelay = 500;
