@@ -6,7 +6,7 @@ export class Continue {
         this.buttonSelected;
         this.jpFont;
     }
-
+ 
     load() {
         this.bg = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
@@ -58,4 +58,4 @@ export class Continue {
 
         return 2;
     }
-} //Testing
+}
