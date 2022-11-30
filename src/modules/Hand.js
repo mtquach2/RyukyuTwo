@@ -72,8 +72,8 @@ export class Hand {
         }
 
         // Take the values of each card as a letter and sort them alphabetically (Highest values first) and sort the suits alphabetically
-        const faces = this.hand.filter(card => card.getSuit() != "wild").map(card => value_format[card.getValue()]).sort();
-        const suits = this.hand.filter(card => card.getSuit() != "wild").map(card => card.getSuit()).sort();
+        const faces = this.hand.filter(card => card.getSuit() !== "wild").map(card => value_format[card.getValue()]).sort();
+        const suits = this.hand.filter(card => card.getSuit() !== "wild").map(card => card.getSuit()).sort();
         const wilds = this.hand.filter(card => card.getSuit() === "wild").length;
 
         if (wilds > 0) {

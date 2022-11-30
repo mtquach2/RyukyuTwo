@@ -302,7 +302,11 @@ export class Board {
                 if (boardState.board[i][j] !== '') {
                     let value = '';
                     let suit = '';
-                    if (boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1') {
+                    if(boardState.board[i][j].charAt(0) == 'w'){
+                        value = "wild";
+                        suit = "wild";
+                    }
+                    else if (boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1') {
                         value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
                         suit = boardState.board[i][j].charAt(2);
                     }
