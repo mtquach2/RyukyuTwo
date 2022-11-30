@@ -73,7 +73,7 @@ const p = new p5(p => {
         GM.touchStarted(p.touches[0].x, p.touches[0].y);
     }
 });
-
+//10100
 const soundManager = new SoundManager(p);
 const score = new Score(p);
 const timer = new Timer(p);
