@@ -6,7 +6,7 @@ export class Continue {
         this.buttonSelected;
         this.jpFont;
     }
- 
+
     load() {
         this.bg = this.p5.loadImage("/static/UI/screens/Sidebar/Screen Background Test.png");
         this.buttonSelected = this.p5.loadImage("/static/UI/Buttons/ButtonBlankSelected.png");
@@ -42,7 +42,7 @@ export class Continue {
         return 2;
     }
 
-    continueScreenStates(width, height, x, y, scaleX, scaleY) {
+    continueScreenStates(width, height, x, y, scaleX, scaleY, game) {
         // Function for P5 mouseClicked and cont()
         if ((width / 3 - width / 25 + 2 * scaleX) < x && x < (width / 3 - width / 25 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If YES button is clicked, omikuji
@@ -51,7 +51,7 @@ export class Continue {
         }
         if ((width / 2 + width / 10 + 5 * scaleX) < x && x < (width / 2 + width / 10 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If NO button is clicked, prompt to get name for leaderboard
-            this.score.updateTotalScore(this.cancelsLeft, 0);
+            this.score.updateTotalScore(game.cancelsLeft, 0);
             this.soundManager.resetGameTheme();
             return 4;
         }
