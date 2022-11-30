@@ -75,6 +75,7 @@ export class Game {
 				return 5;
 			}
 			else {
+				this.score.updateTotalScore(this.cancelsLeft);
 				this.soundManager.playContinue();
 				return 2;
 			}
