@@ -19,6 +19,7 @@ export class Game {
 		this.stateSaver();
 
 		this.paperFrameLong;
+		this.cancelButton;
 	}
 
 	load() {
@@ -40,6 +41,7 @@ export class Game {
 		this.board.load();
 		this.score.fillScoreTable();
 		this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
+		this.cancelButton = this.p5.loadImage("/static/UI/Buttons/Icon_SquareStraight.png");
 	}
 
 	play(width, height, scaleX, scaleY) {
@@ -73,6 +75,7 @@ export class Game {
 				return 5;
 			}
 			else {
+				this.score.updateTotalScore(this.cancelsLeft);
 				this.soundManager.playContinue();
 				return 2;
 			}
@@ -235,6 +238,9 @@ export class Game {
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
 		this.p5.text("CANCELS", w - w / 6, h / 4.25);
 
+		this.p5.image(this.cancelButton, w * 0.7, h / 12, 95 * scaleX, 80 * scaleY);
+		this.p5.text("CANCEL", w * 0.7 + 13 * scaleX, h / 12 + 40 * scaleY);
+
 		this.p5.textFont("Helvetica");
 		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
 	}
@@ -263,5 +269,26 @@ export class Game {
 
 	getCancels() {
 		return this.cancelsLeft;
+	}
+
+	cancelState(x, y, width, height, scaleX, scaleY) {
+		if((width * 0.7) < x && x < (width * 0.7 + 95 * scaleX) && y > (height / 12) && y < (height / 12 + 80 * scaleY)){ 
+			if(this.cancelsLeft > 0 && this.board.currentCard !== null){
+				this.board.unChooseCard();
+				this.timer.resetTimer();
+				this.cancelsLeft--;
+			}
+			else if(this.cancelsLeft > 0 && this.board.currentCard === null){
+				if(this.board.boardIsEmpty() === false){
+					let temp = this.gameStateSaver.splice(-2)[0];
+					this.board.updateHands(temp, this.deck);
+					this.board.updateTopDisplay(temp, this.displayMap);
+					this.score.currentScore = temp.score;
+					this.stateSaver();
+					this.timer.resetTimer();
+					this.cancelsLeft--;
+				}
+			}
+		} 
 	}
 };

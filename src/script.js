@@ -149,6 +149,11 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
+        let num = Math.floor(Math.random() * 2); // Random number 0-1
+        if (num == 0) {
+            state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
+            resetGame(5);        
+        }
         state = round.roundScreen(width, height, scaleX, scaleY);
         if (frameDelay-- <= 0) {
             frameDelay = 500;
@@ -187,6 +192,9 @@ GM.mouseClicked = function (x, y) {
         case 0:
             state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
+        case 1:
+            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
             break;
@@ -218,6 +226,9 @@ GM.touchStarted = function (x, y) {
     switch (state) {
         case 0:
             state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 1:
+            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
