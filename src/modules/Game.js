@@ -19,6 +19,7 @@ export class Game {
 		this.stateSaver();
 
 		this.paperFrameLong;
+		this.cancelButton;
 	}
 
 	load() {
@@ -40,6 +41,7 @@ export class Game {
 		this.board.load();
 		this.score.fillScoreTable();
 		this.paperFrameLong = this.p5.loadImage("/static/UI/paperStrip.png");
+		this.cancelButton = this.p5.loadImage("/static/UI/Buttons/Icon_SquareStraight.png");
 	}
 
 	play(width, height, scaleX, scaleY) {
@@ -190,18 +192,20 @@ export class Game {
 	}
   
 	timerTrigger() {
+		// console.log("CARDPLACED", this.board.cardPlaced);
+		// console.log("CARDSELECTED", this.board.cardSelected);
 		if (this.board.cardPlaced == true) { //card is dropped in general
-			this.stateSaver();
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
+			this.stateSaver();
 		}
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
-					this.stateSaver();
 					this.board.currentCard = null;
 					this.board.counts[this.board.draggingColumn] -= 1
 					this.board.cardSelected = false;
+					this.stateSaver();
 					break; 
 				}
 			}
@@ -212,8 +216,8 @@ export class Game {
 			for(let i = 0; i < 5; i++){ 
 				if(firstCard != null){
 					if(this.board.addCard(i, firstCard, this.score) != -1){
-						this.stateSaver();
 						this.board.currentCard = null;
+						this.stateSaver();
 						break;
 					}
 				}
@@ -232,6 +236,9 @@ export class Game {
 		this.p5.fill(255, 255, 255);
 		this.p5.textSize(20 * Math.min(scaleX, scaleY));
 		this.p5.text("CANCELS", w - w / 6, h / 4.25);
+
+		this.p5.image(this.cancelButton, w * 0.7, h / 12, 95 * scaleX, 80 * scaleY);
+		this.p5.text("CANCEL", w * 0.7 + 13 * scaleX, h / 12 + 40 * scaleY);
 
 		this.p5.textFont("Helvetica");
 		this.p5.text("🐉".repeat(this.cancelsLeft), w - w / 10, h / 4.25);
@@ -261,5 +268,26 @@ export class Game {
 
 	getCancels() {
 		return this.cancelsLeft;
+	}
+
+	cancelState(x, y, width, height, scaleX, scaleY) {
+		if((width * 0.7) < x && x < (width * 0.7 + 95 * scaleX) && y > (height / 12) && y < (height / 12 + 80 * scaleY)){ 
+			if(this.cancelsLeft > 0 && this.board.currentCard !== null){
+				this.board.unChooseCard();
+				this.timer.resetTimer();
+				this.cancelsLeft--;
+			}
+			else if(this.cancelsLeft > 0 && this.board.currentCard === null){
+				if(this.board.boardIsEmpty() === false){
+					let temp = this.gameStateSaver.splice(-2)[0];
+					this.board.updateHands(temp, this.deck);
+					this.board.updateTopDisplay(temp, this.displayMap);
+					this.score.currentScore = temp.score;
+					this.stateSaver();
+					this.timer.resetTimer();
+					this.cancelsLeft--;
+				}
+			}
+		} 
 	}
 };

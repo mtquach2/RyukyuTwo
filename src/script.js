@@ -187,6 +187,9 @@ GM.mouseClicked = function (x, y) {
         case 0:
             state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
+        case 1:
+            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
             break;
@@ -218,6 +221,9 @@ GM.touchStarted = function (x, y) {
     switch (state) {
         case 0:
             state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            break;
+        case 1:
+            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
             state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);

@@ -180,6 +180,7 @@ export class Board {
     }
 
     selectFont(rank) {
+        this.p5.textSize(24 * Math.min(this.scaleX, this.scaleY));
         if (rank == 0) {
             this.p5.textFont("Helvetica");
         }
@@ -256,7 +257,7 @@ export class Board {
 
     chooseCol(py, score) {
         // Displays card in selected column in board
-        this.cardSelected = true;
+        //this.cardSelected = true;
         if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
 
             for (let col = 0; col < 5; col++) {
