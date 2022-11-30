@@ -149,6 +149,11 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
+        let num = Math.floor(Math.random() * 2); // Random number 0-1
+        if (num == 0) {
+            state = omikuji.omikuji(game.level, width, height, scaleX, scaleY);
+            resetGame(5);        
+        }
         state = round.roundScreen(width, height, scaleX, scaleY);
         if (frameDelay-- <= 0) {
             frameDelay = 500;
