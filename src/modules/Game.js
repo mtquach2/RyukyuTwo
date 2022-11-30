@@ -69,7 +69,6 @@ export class Game {
 			if (this.score.isWin()) {
 				this.soundManager.playWin();
 				this.level++;
-				this.score.updateTotalScore(this.cancelsLeft, 0);
 				this.score.setExtend();
 				this.score.setClearPoint(this.level, 0);
 
@@ -79,7 +78,6 @@ export class Game {
 				return 5;
 			}
 			else {
-				this.score.updateTotalScore(this.cancelsLeft, 0);
 				this.soundManager.playContinue();
 				return 2;
 			}

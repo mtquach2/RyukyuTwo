@@ -51,6 +51,7 @@ export class Continue {
         }
         if ((width / 2 + width / 10 + 5 * scaleX) < x && x < (width / 2 + width / 10 + 200 * scaleX) && height / 2 < y && y < height / 2 + 100 * scaleY) {
             // If NO button is clicked, prompt to get name for leaderboard
+            this.score.updateTotalScore(this.cancelsLeft);
             this.soundManager.resetGameTheme();
             return 4;
         }

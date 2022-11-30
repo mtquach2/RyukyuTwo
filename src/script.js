@@ -95,6 +95,7 @@ let scaleY;
 let frameDelay = 500; 
 
 let num = Math.floor(Math.random() * 2); // Random number 0-1
+console.log(num);
 
 function resetGame(currentState) {
     score.resetScore();
