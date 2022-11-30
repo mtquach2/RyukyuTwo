@@ -251,7 +251,7 @@ export class LeaderboardInput {
             else if (this.letterSelector == 26) {
                 this.soundManager.playLeaderboardConfirm();
                 if (this.name != "") {
-                    this.score.addLeaderboard(this.name);
+                    this.score.addLeaderboard(this.name, level);
                     this.score.getDataframe();
                     this.name = "";
                 }
