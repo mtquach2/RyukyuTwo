@@ -58,7 +58,7 @@ const p = new p5(p => {
     };
 
     p.mouseClicked = function mouseClicked() {
-        GM.mouseClicked(p.mouseX, p.mouseY);
+        GM.mouseClicked(p.mouseX, p.mouseY, p.windowWidth, p.windowHeight);
     };
 
     p.windowResized = function windowResized() {
@@ -70,7 +70,7 @@ const p = new p5(p => {
     }
 
     p.touchStarted = function touchStarted() {
-        GM.touchStarted(p.touches[0].x, p.touches[0].y);
+        GM.touchStarted(p.touches[0].x, p.touches[0].y, p.windowWidth, p.windowHeight);
     }
 });
 
@@ -141,7 +141,7 @@ GM.draw = function (width, height) {
 
     // State is 3, omikuji
     if (state == 3) {
-        state = omikuji.omikuji(game.level, width, height, scaleX, scaleY, num);
+        state = omikuji.omikuji(game.getLevel(), width, height, scaleX, scaleY, num);
     }
 
     // State is 4, leaderboard entry
@@ -180,96 +180,95 @@ GM.draw = function (width, height) {
     soundManager.render(width, height);
 }
 
-GM.mouseClicked = function (x, y) {
+GM.mouseClicked = function (x, y, width, height) {
     soundManager.playCardNoise(state);
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
 
     switch (state) {
         case 0:
-            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = menu.menuState(x, y, width, height, scaleX, scaleY);
             break;
         case 1:
-            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            game.cancelState(x, y, width, height, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, score, game);
+            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
             break;
         case 3: 
-            omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY, game.level);
+            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
             break;
         case 7:
-            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
-            if (state == -1 ) {
+            state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);
+            if (state == -1) {
                 resetGame(7);
             }
             break;
         case 8:
-            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = instructions.instructionsState(x, y, width, height, scaleX, scaleY);
             break;
     }
 
-    soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+    soundManager.selectMute(x, y, width, height, scaleX, scaleY);
 }
 
-GM.touchStarted = function (x, y) {
+GM.touchStarted = function (x, y, width, height) {
     soundManager.playCardNoise(state);
     game.updateTopDisplay(x, y);
     board.chooseCol(y, score);
 
     switch (state) {
         case 0:
-            state = menu.menuState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = menu.menuState(x, y, width, height, scaleX, scaleY);
             break;
         case 1:
-            game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            game.cancelState(x, y, width, height, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, score, game);
+            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
             break;
         case 3: 
-            omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY, game.level);
+            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
             break;
         case 7:
-            state = gameOver.gameOverState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
-            if (state == -1 ) {
+            state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);
+            if (state == -1) {
                 resetGame(7);
             }
             break;
         case 8:
-            state = instructions.instructionsState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+            state = instructions.instructionsState(x, y, width, height, scaleX, scaleY);
             break;
     }
 
-    soundManager.selectMute(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
+    soundManager.selectMute(x, y, width, height, scaleX, scaleY);
 }
 
 GM.keyPressed = function (keyCode) {
-    if (keyCode == 32) {
-        stop.currentTime = 0;
-    }
-
-    if(keyCode === 8){ 
-        if(game.cancelsLeft > 0 && board.currentCard !== null){
-            board.unChooseCard();
-            timer.resetTimer();
-            game.cancelsLeft--;
-        }
-        else if(game.cancelsLeft > 0 && board.currentCard === null){
-            if(board.boardIsEmpty() === false){
-                let temp = game.gameStateSaver.splice(-2)[0];
-                board.updateHands(temp, game.deck);
-                board.updateTopDisplay(temp, game.displayMap);
-                score.currentScore = temp.score;
-                game.stateSaver();
+    if (keyCode == 8) {
+        // Backspace is pressed -> Undo/Cancel Card Dropped
+        if (game.cancelsLeft > 0) {
+            if (board.currentCard != null) {
+                board.unChooseCard();
                 timer.resetTimer();
                 game.cancelsLeft--;
+            }
+            else {
+                if (!board.boardIsEmpty()) {
+                    let temp = game.gameStateSaver.splice(-2)[0];
+                    board.updateHands(temp, game.deck);
+                    board.updateTopDisplay(temp, game.displayMap);
+                    score.currentScore = temp.score;
+                    game.stateSaver();
+                    timer.resetTimer();
+                    game.cancelsLeft--;
+                }
             }
         }
     }

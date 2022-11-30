@@ -1,6 +1,5 @@
 import { db } from '../FB';
 import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
-import { Omikuji } from './Omikuji';
 
 export class Score {
     constructor(p) {
@@ -56,12 +55,12 @@ export class Score {
         this.clearPoint = 5000 + (1000 * (level - 1)) - bonus;
     }
 
-    render(w, h, scaleX, scaleY) {
+    render(width, height, scaleX, scaleY) {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
 
-        this.scoreX = w;
-        this.scoreY = h;
+        this.scoreX = width;
+        this.scoreY = height;
 
         this.p5.textFont(this.jpFont);
         this.renderScore();

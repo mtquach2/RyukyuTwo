@@ -1,6 +1,3 @@
-/**
- * Creates an object for each card in a deck of cards
- */
 export class Card {
 
 	constructor(p5, suit, value, img) {
