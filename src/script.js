@@ -95,6 +95,7 @@ let scaleY;
 let frameDelay = 500; 
 
 let num = Math.floor(Math.random() * 2); // Random number 0-1
+console.log(num);
 
 function resetGame(currentState) {
     score.resetScore();
@@ -193,7 +194,7 @@ GM.mouseClicked = function (x, y) {
             game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, game);
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, score, game);
             break;
         case 3: 
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
@@ -228,7 +229,7 @@ GM.touchStarted = function (x, y) {
             game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, game);
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, score, game);
             break;
         case 3: 
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
