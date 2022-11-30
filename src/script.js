@@ -73,7 +73,7 @@ const p = new p5(p => {
         GM.touchStarted(p.touches[0].x, p.touches[0].y);
     }
 });
-//10100
+
 const soundManager = new SoundManager(p);
 const score = new Score(p);
 const timer = new Timer(p);
@@ -194,7 +194,7 @@ GM.mouseClicked = function (x, y) {
             game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, game);
             break;
         case 3: 
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
@@ -229,7 +229,7 @@ GM.touchStarted = function (x, y) {
             game.cancelState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY);
+            state = continueScreen.continueScreenStates(p.windowWidth, p.windowHeight, p.mouseX, p.mouseY, scaleX, scaleY, game);
             break;
         case 3: 
             omikuji.omikujiState(x, y, p.windowWidth, p.windowHeight, scaleX, scaleY);
