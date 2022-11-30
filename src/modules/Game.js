@@ -75,6 +75,7 @@ export class Game {
 				if (num == 0) {
 					return 3;
 				}
+				this.score.updateTotalScore(this.cancelsLeft, 0);
 				return 5;
 			}
 			else {
