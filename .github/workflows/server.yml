@@ -25,5 +25,5 @@ jobs:
         server: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         password: ${{ secrets.PASSWORD }}
-        local-dir: "/dist/*"
+        local-dir: "./dist/*"
         server-dir: "/var/www/html/ryukyu.pro/"
