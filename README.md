@@ -27,3 +27,7 @@
   
 # About: 
 This web-based game is created by Kenny Dong, Teresa Mei, and Michelle Quach with the supervision of Jon Rahoi (also creative director/sponsor of project). 
+
+# Extras:
+For Firebase access, please use email ryukyupro@gmail.com with password Ryukyu2022.
+For .env script, please contact owners. 
