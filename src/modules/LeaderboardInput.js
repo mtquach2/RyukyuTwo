@@ -179,7 +179,7 @@ export class LeaderboardInput {
         return this.selectorKeypress(level);
     }
 
-    leaderboardState(x, y, width, height, scaleX, scaleY) {
+    leaderboardState(x, y, width, height, scaleX, scaleY, level) {
         // Left Button
         if ((width * 0.71) < x && x < (width * 0.71 + 60 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 60 * scaleY)) {
             this.soundManager.playLeaderboardClick();
@@ -252,7 +252,7 @@ export class LeaderboardInput {
             else if (this.letterSelector == 26) {
                 this.soundManager.playLeaderboardConfirm();
                 if (this.name != "") {
-                    this.score.addLeaderboard(this.name);
+                    this.score.addLeaderboard(this.name, level);
                     this.score.getDataframe();
                     this.name = "";
                 }
