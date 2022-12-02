@@ -68,12 +68,13 @@ export class Game {
 
 		if (this.board.isBoardFull()) {
 			if (this.score.isWin()) {
-				this.soundManager.playWin();
 				this.level++;
 				this.score.setExtend();
 				this.score.setClearPoint(this.level, 0);
+				this.setRandomNum();
 				if (this.getRandomNum() == 0) {
 					// Random omikuji
+					this.soundManager.resetGameTheme();
 					return 3;
 				}
 				else {

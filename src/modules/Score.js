@@ -200,12 +200,12 @@ export class Score {
         this.totalScore = 0;
     }
 
-    setExtend() {
-        this.extendScore = this.currentScore - this.clearPoint;
-    }
-
     getTotalScore() {
         return this.totalScore;
+    }
+
+    setExtend() {
+        this.extendScore = this.currentScore - this.clearPoint;
     }
 
     getExtend() {

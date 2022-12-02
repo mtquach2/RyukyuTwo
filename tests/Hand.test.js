@@ -526,4 +526,13 @@ describe("Straight Gap", () => {
         const gap = hand.straightGap(faces);
         expect(gap).toEqual(3);
     });
+
+    test.each([
+        { handCards: [diamonds_two, spades_two, diamonds_three, diamonds_four, wild_one] },
+        { handCards: [diamonds_jack, spades_jack, hearts_king, clubs_queen, wild_one] }
+    ])("Evalute straight gap from near-straights to Infinity", ( { handCards }) => {
+        const faces = handCards.filter(card => card.getSuit() != "wild").map(card => value_format[card.getValue()]).sort();
+        const gap = hand.straightGap(faces);
+        expect(gap).toEqual(Infinity);
+    });
 });
