@@ -94,8 +94,6 @@ let scaleY;
 
 let frameDelay = 500; 
 
-let num = Math.floor(Math.random() * 2); // Random number 0-1
-
 function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
@@ -118,6 +116,7 @@ function resetGame(currentState) {
 
 GM.setup = function () {
     game.splitCards();
+    game.setRandomNum();
 }
 
 GM.draw = function (width, height) {
@@ -131,7 +130,7 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        state = game.play(width, height, scaleX, scaleY, num);
+        state = game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, continue screen
@@ -141,7 +140,7 @@ GM.draw = function (width, height) {
 
     // State is 3, omikuji
     if (state == 3) {
-        state = omikuji.omikuji(game.getLevel(), width, height, scaleX, scaleY, num);
+        state = omikuji.omikuji(game.getLevel(), width, height, scaleX, scaleY);
     }
 
     // State is 4, leaderboard entry

@@ -29,7 +29,7 @@ export class Instructions {
         this.p5.textFont(this.jpFont, 22 * Math.min(scaleX, scaleY));
         this.p5.text("Select a card from the bottom row of the 12 cards displayed at the top using the mouse. ", width / 2, height / 4.25);
         this.p5.text("Selected column will be traced in red.", width / 2, height / 3.65);
-        this.p5.text("Once card has been selected, choose a column numbered 1-5 using the mouse.", width / 2, height / 3.15);
+        this.p5.text("Once card has been selected, choose a column that contains an arrow using the mouse.", width / 2, height / 3.15);
         this.p5.text("Get best poker hands to obtain clearpoint!", width / 2, height / 2.75);
 
         this.p5.text("Left Mouse Click -> Select", width / 2, height / 1.95);

@@ -20,6 +20,7 @@ export class Game {
 
 		this.paperFrameLong;
 		this.cancelButton;
+		this.randomNum = 0;
 	}
 
 	load() {
@@ -44,7 +45,7 @@ export class Game {
 		this.cancelButton = this.p5.loadImage("/static/UI/Buttons/Icon_SquareStraight.png");
 	}
 
-	play(width, height, scaleX, scaleY, num) {
+	play(width, height, scaleX, scaleY) {
 		this.soundManager.playGameTheme();
 
 		// Render game elements
@@ -71,8 +72,7 @@ export class Game {
 				this.level++;
 				this.score.setExtend();
 				this.score.setClearPoint(this.level, 0);
-
-				if (num == 0) {
+				if (this.getRandomNum() == 0) {
 					// Random omikuji
 					return 3;
 				}
@@ -299,5 +299,13 @@ export class Game {
 				}
 			}
 		} 
+	}
+
+	getRandomNum() {
+		return this.randomNum;
+	}
+
+	setRandomNum() {
+		this.randomNum = Math.floor(Math.random() * 2); // Random number 0-1
 	}
 };
