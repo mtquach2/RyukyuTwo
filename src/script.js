@@ -145,7 +145,7 @@ GM.draw = function (width, height) {
 
     // State is 4, leaderboard entry
     if (state == 4) {
-        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY, game.getLevel());
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
     }
 
     // State is 5, won
@@ -192,13 +192,13 @@ GM.mouseClicked = function (x, y, width, height) {
             game.cancelState(x, y, width, height, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
+            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score);
             break;
         case 3: 
             omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY, game.getLevel());
+            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
             break;
         case 7:
             state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);
@@ -227,13 +227,13 @@ GM.touchStarted = function (x, y, width, height) {
             game.cancelState(x, y, width, height, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
+            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score);
             break;
         case 3: 
             omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
             break;
         case 4: 
-            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY, game.getLevel());
+            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
             break;
         case 7:
             state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);

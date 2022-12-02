@@ -79,7 +79,7 @@ export class Omikuji {
         this.p5.text("(Press Spacebar or Stop Button to Select)", width / 7.5, height / 3 + 90 * scaleY + 300 * scaleY);
     }
 
-    omikuji(level, width, height, scaleX, scaleY, num) {
+    omikuji(level, width, height, scaleX, scaleY) {
         this.soundManager.playOmikujiTheme();
         this.soundManager.playOmikujiSpinner(this.selected);
 
