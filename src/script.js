@@ -26,7 +26,8 @@ const GM = {
     preload: () => { },
     setup: () => { },
     draw: () => { },
-    mouseClicked: (x, y) => { },
+    mouseClicked: (x, y, width, height) => { },
+    touchStarted: (x, y, width, height) => { },
     keyPressed: (keyCode) => { }
 }
 
@@ -100,6 +101,7 @@ function resetGame(currentState) {
     game.gameStateSaver = [];
     score.resetData();
     board.resetBoard();
+    omikuji.resetBonus();
 
     if (currentState == 7) {
         score.setClearPoint(1, 0);
@@ -150,7 +152,12 @@ GM.draw = function (width, height) {
 
     // State is 5, won
     if (state == 5) {
+        if (frameDelay == 500) {
+            soundManager.playWin();
+        }
+
         state = round.roundScreen(width, height, scaleX, scaleY);
+
         if (frameDelay-- <= 0) {
             frameDelay = 500;
             resetGame(5);
@@ -215,38 +222,7 @@ GM.mouseClicked = function (x, y, width, height) {
 }
 
 GM.touchStarted = function (x, y, width, height) {
-    soundManager.playCardNoise(state);
-    game.updateTopDisplay(x, y);
-    board.chooseCol(y, score);
-
-    switch (state) {
-        case 0:
-            state = menu.menuState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 1:
-            game.cancelState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 2:
-            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score);
-            break;
-        case 3: 
-            omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 4: 
-            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 7:
-            state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);
-            if (state == -1) {
-                resetGame(7);
-            }
-            break;
-        case 8:
-            state = instructions.instructionsState(x, y, width, height, scaleX, scaleY);
-            break;
-    }
-
-    soundManager.selectMute(x, y, width, height, scaleX, scaleY);
+    GM.mouseClicked(x, y, width, height);
 }
 
 GM.keyPressed = function (keyCode) {

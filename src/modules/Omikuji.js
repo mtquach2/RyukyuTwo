@@ -124,20 +124,21 @@ export class Omikuji {
 
             if (this.frameDelay <= 0) {
                 this.soundManager.pauseOmikujiTheme();
-                this.score.setClearPoint(level, this.blessingScore);
                 this.selectedOmikuji = 0;
                 this.selected = false;
                 this.frameDelay = 300;
 
                 this.p5.shuffle(this.omikujiValues, true);
+
                 // Transition state
-                if (this.game.getRandomNum() == 0) {
+                if (this.score.isWin() && this.game.getRandomNum() == 0) {
                     // Random omikuji on win 
+                    this.score.setClearPoint(level, this.blessingScore);
                     this.score.updateTotalScore(this.game.cancelsLeft, this.blessingScore);
-                    this.game.setRandomNum();
-                    this.resetBonus();
                     return 5;
                 }
+                
+                this.score.setClearPoint(level, this.blessingScore);
                 this.resetBonus();
                 return 6;
             }

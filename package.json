@@ -5,6 +5,7 @@
   "main": "script.js",
   "type": "module",
   "dependencies": {
+    "@babel/preset-env": "^7.20.2",
     "dotenv": "^16.0.3",
     "firebase": "^9.14.0",
     "p5": "^1.4.2",
