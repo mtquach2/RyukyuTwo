@@ -29,7 +29,7 @@ export class Round {
         this.p5.text(" X 800 = ", width / 3 + width / 15 + width / 6, height / 2 + height / 30);
         this.p5.text(this.game.getCancels() * 800, width * .8, height / 2 + height / 30);
 
-        this.p5.text("Total Bonus", width / 10, height / 2 + height / 5);
+        this.p5.text("Omikuji Bonus", width / 10, height / 2 + height / 5);
         this.p5.text((this.omikuji.getBonus() || 0), width * .8, height / 2 + height / 5);
 
         this.p5.text(`[Score]\t${this.score.getTotalScore()}····`, width / 3, height / 2 + height / 3);
