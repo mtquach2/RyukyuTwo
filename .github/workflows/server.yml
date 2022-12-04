@@ -16,7 +16,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-      
+    - name: 🗑️ Remove files
+      uses: JesseTG/rm@v1.0.3
+      with:
+        path: "/var/www/html/ryukyu.pro/"
     - name: 🔨 Build Project
       run: |
         npm install
