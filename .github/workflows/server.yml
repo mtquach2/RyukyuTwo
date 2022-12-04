@@ -28,6 +28,7 @@ jobs:
        host: ${{ secrets.HOST }}
        user: ${{ secrets.USER }}
        pass: ${{ secrets.PASSWORD }}
+       args: "-tt"
     - name: 📂 Sync files
       uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
