@@ -209,22 +209,22 @@ export class Game {
 			if (this.timer.seconds == 0) {
 				// Drops card selected
 				if (this.board.cardSelected) {
-					for(let i = 0; i <= 5; i++){
-						if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
+					for (let i = 0; i <= 5; i++) {
+						if (this.board.addCard(i, this.board.currentCard, this.score) !== -1) {
 							this.board.currentCard = null;
 							this.board.counts[this.board.draggingColumn] -= 1
 							this.board.cardSelected = false;
 							this.stateSaver();
-							break; 
+							break;
 						}
 					}
 				}
 				else {
 					// Drops a card from 3x4 array
 					let firstCard = this.board.getFirstCard(this.displayMap);
-					for(let i = 0; i < 5; i++){ 
-						if(firstCard != null){
-							if(this.board.addCard(i, firstCard, this.score) != -1){
+					for (let i = 0; i < 5; i++) {
+						if (firstCard != null) {
+							if (this.board.addCard(i, firstCard, this.score) != -1) {
 								this.board.currentCard = null;
 								this.stateSaver();
 								break;
@@ -282,14 +282,14 @@ export class Game {
 	}
 
 	cancelState(x, y, width, height, scaleX, scaleY) {
-		if((width * 0.7) < x && x < (width * 0.7 + 95 * scaleX) && y > (height / 12) && y < (height / 12 + 80 * scaleY)){ 
-			if(this.cancelsLeft > 0 && this.board.currentCard !== null){
+		if ((width * 0.7) < x && x < (width * 0.7 + 95 * scaleX) && y > (height / 12) && y < (height / 12 + 80 * scaleY)) {
+			if (this.cancelsLeft > 0 && this.board.currentCard !== null) {
 				this.board.unChooseCard();
 				this.timer.resetTimer();
 				this.cancelsLeft--;
 			}
-			else if(this.cancelsLeft > 0 && this.board.currentCard === null){
-				if(this.board.boardIsEmpty() === false){
+			else if (this.cancelsLeft > 0 && this.board.currentCard === null) {
+				if (this.board.boardIsEmpty() === false) {
 					let temp = this.gameStateSaver.splice(-2)[0];
 					this.board.updateHands(temp, this.deck);
 					this.board.updateTopDisplay(temp, this.displayMap);
@@ -299,7 +299,7 @@ export class Game {
 					this.cancelsLeft--;
 				}
 			}
-		} 
+		}
 	}
 
 	getRandomNum() {

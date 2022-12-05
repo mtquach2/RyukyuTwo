@@ -20,4 +20,4 @@ const app = initializeApp(firebaseConfig);
 export const db = initializeFirestore(app, {
     experimentalForceLongPolling: true, // this line
     useFetchStreams: false, // and this line
-  });
+});
