@@ -225,7 +225,7 @@ export class LeaderboardInput {
             }
             else {
                 this.letterSelector += 1;
-         
+
             }
         }
         // Down Button
@@ -244,7 +244,7 @@ export class LeaderboardInput {
         if ((width * 0.9) < x && x < (width * 0.9 + 60 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 60 * scaleY)) {
             // Add Letter 
             if (this.letterSelector < 26 && this.name.length < this.lettersAccepted) {
-                this.soundManager.playLeaderboardEnter(); 
+                this.soundManager.playLeaderboardEnter();
                 this.name += this.letters[this.letterSelector];
             }
             // Enter Name
@@ -267,8 +267,8 @@ export class LeaderboardInput {
                 this.soundManager.playLeaderboardCancel();
                 this.name = this.name.slice(0, -1);
             }
-        } 
+        }
         return 4;
     }
-    
+
 }

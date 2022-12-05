@@ -93,7 +93,7 @@ let state = 0;
 let scaleX;
 let scaleY;
 
-let frameDelay = 500; 
+let frameDelay = 500;
 
 function resetGame(currentState) {
     score.resetScore();
@@ -201,10 +201,10 @@ GM.mouseClicked = function (x, y, width, height) {
         case 2:
             state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score);
             break;
-        case 3: 
+        case 3:
             omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
             break;
-        case 4: 
+        case 4:
             state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
             break;
         case 7:

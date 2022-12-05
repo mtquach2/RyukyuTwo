@@ -137,7 +137,7 @@ export class Omikuji {
                     this.score.updateTotalScore(this.game.cancelsLeft, this.blessingScore);
                     return 5;
                 }
-                
+
                 this.score.setClearPoint(level, this.blessingScore);
                 this.resetBonus();
                 return 6;
@@ -163,10 +163,10 @@ export class Omikuji {
         if (((width * 0.8) < x && x < (width * 0.8 + 80 * scaleX) && y > (height * 0.6) && y < (height * 0.6 + 80 * scaleY))) {
             this.selected = true;
             this.soundManager.pauseOmikujiSpinner();
-        } 
+        }
     }
 
     resetBonus() {
-        this.blessingScore = 0; 
+        this.blessingScore = 0;
     }
 }

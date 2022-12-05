@@ -294,7 +294,7 @@ export class Board {
                 if (boardState.board[i][j] !== '') {
                     let value = '';
                     let suit = '';
-                    if(boardState.board[i][j].charAt(0) == 'w'){
+                    if (boardState.board[i][j].charAt(0) == 'w') {
                         value = "wild";
                         suit = "wild";
                     }
@@ -325,7 +325,6 @@ export class Board {
 
     updateTopDisplay(displayState) {
         this.counts = displayState.counts;
-
     }
 
     findCard(deck, suit, value) {
@@ -362,12 +361,12 @@ export class Board {
         }
     }
 
-    boardIsEmpty(){
-        for(let i = 0; i < this.boardCols.length; i++){
-            if(this.boardCols[i].hand.length !== 0){
+    boardIsEmpty() {
+        for (let i = 0; i < this.boardCols.length; i++) {
+            if (this.boardCols[i].hand.length !== 0) {
                 return false;
             }
-            if(this.boardRows[i].hand.length !== 0){
+            if (this.boardRows[i].hand.length !== 0) {
                 return false;
             }
         }
