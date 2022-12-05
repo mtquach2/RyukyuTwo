@@ -128,6 +128,10 @@ export class Score {
         this.totalScore = this.totalScore + this.currentScore + (cancelBonus * 800 || 0) + totalBonus;
     }
 
+    updateLosingScore() {
+        this.totalScore += this.currentScore;
+    }
+
     getScore() {
         return this.currentScore;
     }
@@ -155,12 +159,12 @@ export class Score {
         this.fillScoreTable();
     }
 
-    async addLeaderboard(name, level) {
+    async addLeaderboard(name) {
         // Adds the username and their final score to the database
         try {
             const docRef = await addDoc(collection(db, "Leaderboard"), {
                 name: name,
-                score: level > 1 ? this.totalScore : this.currentScore
+                score: this.totalScore
             });
 
             console.log("Document written with ID: ", docRef.id);
@@ -196,12 +200,12 @@ export class Score {
         this.totalScore = 0;
     }
 
-    setExtend() {
-        this.extendScore = this.currentScore - this.clearPoint;
-    }
-
     getTotalScore() {
         return this.totalScore;
+    }
+
+    setExtend() {
+        this.extendScore = this.currentScore - this.clearPoint;
     }
 
     getExtend() {

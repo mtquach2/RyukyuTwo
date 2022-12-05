@@ -79,7 +79,7 @@ export class Omikuji {
         this.p5.text("(Press Spacebar or Stop Button to Select)", width / 7.5, height / 3 + 90 * scaleY + 300 * scaleY);
     }
 
-    omikuji(level, width, height, scaleX, scaleY, num) {
+    omikuji(level, width, height, scaleX, scaleY) {
         this.soundManager.playOmikujiTheme();
         this.soundManager.playOmikujiSpinner(this.selected);
 
@@ -124,18 +124,22 @@ export class Omikuji {
 
             if (this.frameDelay <= 0) {
                 this.soundManager.pauseOmikujiTheme();
-                this.score.setClearPoint(level, blessingScore);
                 this.selectedOmikuji = 0;
                 this.selected = false;
                 this.frameDelay = 300;
 
                 this.p5.shuffle(this.omikujiValues, true);
+
                 // Transition state
-                if (num == 0) {
+                if (this.score.isWin() && this.game.getRandomNum() == 0) {
                     // Random omikuji on win 
-                    this.score.updateTotalScore(this.game.cancelsLeft, blessingScore);
+                    this.score.setClearPoint(level, this.blessingScore);
+                    this.score.updateTotalScore(this.game.cancelsLeft, this.blessingScore);
                     return 5;
                 }
+                
+                this.score.setClearPoint(level, this.blessingScore);
+                this.resetBonus();
                 return 6;
             }
         }
@@ -160,5 +164,9 @@ export class Omikuji {
             this.selected = true;
             this.soundManager.pauseOmikujiSpinner();
         } 
+    }
+
+    resetBonus() {
+        this.blessingScore = 0; 
     }
 }

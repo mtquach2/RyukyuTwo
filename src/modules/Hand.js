@@ -119,9 +119,9 @@ export class Hand {
     straightGap(faces) {
         let gap = 0;
         for (let i = 0; i < faces.length - 1; i++) {
-            // Adds to gap if faces are the same to avoid undercounting
+            // If faces are the same, cannot form a straight by adding wilds
             if (String.fromCharCode((faces[i].charCodeAt(0))) == faces[i + 1]) {
-                gap += 1;
+                return Infinity;
             }
             else if (String.fromCharCode((faces[i].charCodeAt(0) + 1)) != faces[i + 1]) {
                 gap += faces[i + 1].charCodeAt(0) - faces[i].charCodeAt(0) - 1;

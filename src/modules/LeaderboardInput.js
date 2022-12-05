@@ -32,7 +32,7 @@ export class LeaderboardInput {
         this.checkButton = this.p5.loadImage("/static/UI/Buttons/Icon_Check.png");
     }
 
-    selectorKeypress(level) {
+    selectorKeypress() {
         if (this.p5.keyIsPressed && this.p5.frameCount % 5 == 0) {
             if (this.p5.keyCode == this.p5.LEFT_ARROW) {
                 this.soundManager.playLeaderboardClick();
@@ -100,7 +100,7 @@ export class LeaderboardInput {
                 else if (this.letterSelector == 26) {
                     this.soundManager.playLeaderboardConfirm();
                     if (this.name != "") {
-                        this.score.addLeaderboard(this.name, level);
+                        this.score.addLeaderboard(this.name);
                         this.score.getDataframe();
                         this.name = "";
                     }
@@ -123,7 +123,7 @@ export class LeaderboardInput {
         return 4;
     }
 
-    leaderboardEntry(width, height, scaleX, scaleY, level) {
+    leaderboardEntry(width, height, scaleX, scaleY) {
         this.p5.background(this.mainMenuBackground);
         this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
         this.p5.textFont(this.jpFont, 32 * Math.min(scaleX, scaleY));
@@ -176,10 +176,10 @@ export class LeaderboardInput {
         this.p5.image(this.rightButton, width * 0.83, height * 0.7, 60 * scaleX, 60 * scaleY);
         this.p5.image(this.checkButton, width * 0.9, height * 0.7, 60 * scaleX, 60 * scaleY);
 
-        return this.selectorKeypress(level);
+        return this.selectorKeypress();
     }
 
-    leaderboardState(x, y, width, height, scaleX, scaleY, level) {
+    leaderboardState(x, y, width, height, scaleX, scaleY) {
         // Left Button
         if ((width * 0.71) < x && x < (width * 0.71 + 60 * scaleX) && y > (height * 0.7) && y < (height * 0.7 + 60 * scaleY)) {
             this.soundManager.playLeaderboardClick();
@@ -251,7 +251,7 @@ export class LeaderboardInput {
             else if (this.letterSelector == 26) {
                 this.soundManager.playLeaderboardConfirm();
                 if (this.name != "") {
-                    this.score.addLeaderboard(this.name, level);
+                    this.score.addLeaderboard(this.name);
                     this.score.getDataframe();
                     this.name = "";
                 }

@@ -26,7 +26,8 @@ const GM = {
     preload: () => { },
     setup: () => { },
     draw: () => { },
-    mouseClicked: (x, y) => { },
+    mouseClicked: (x, y, width, height) => { },
+    touchStarted: (x, y, width, height) => { },
     keyPressed: (keyCode) => { }
 }
 
@@ -94,14 +95,13 @@ let scaleY;
 
 let frameDelay = 500; 
 
-let num = Math.floor(Math.random() * 2); // Random number 0-1
-
 function resetGame(currentState) {
     score.resetScore();
     game.cancelsLeft = 3;
     game.gameStateSaver = [];
     score.resetData();
     board.resetBoard();
+    omikuji.resetBonus();
 
     if (currentState == 7) {
         score.setClearPoint(1, 0);
@@ -118,6 +118,7 @@ function resetGame(currentState) {
 
 GM.setup = function () {
     game.splitCards();
+    game.setRandomNum();
 }
 
 GM.draw = function (width, height) {
@@ -131,7 +132,7 @@ GM.draw = function (width, height) {
 
     // State is 1, play game
     if (state == 1) {
-        state = game.play(width, height, scaleX, scaleY, num);
+        state = game.play(width, height, scaleX, scaleY);
     }
 
     // State is 2, continue screen
@@ -141,17 +142,22 @@ GM.draw = function (width, height) {
 
     // State is 3, omikuji
     if (state == 3) {
-        state = omikuji.omikuji(game.getLevel(), width, height, scaleX, scaleY, num);
+        state = omikuji.omikuji(game.getLevel(), width, height, scaleX, scaleY);
     }
 
     // State is 4, leaderboard entry
     if (state == 4) {
-        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY, game.getLevel());
+        state = leaderboardInput.leaderboardEntry(width, height, scaleX, scaleY);
     }
 
     // State is 5, won
     if (state == 5) {
+        if (frameDelay == 500) {
+            soundManager.playWin();
+        }
+
         state = round.roundScreen(width, height, scaleX, scaleY);
+
         if (frameDelay-- <= 0) {
             frameDelay = 500;
             resetGame(5);
@@ -193,7 +199,7 @@ GM.mouseClicked = function (x, y, width, height) {
             game.cancelState(x, y, width, height, scaleX, scaleY);
             break;
         case 2:
-            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
+            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score);
             break;
         case 3: 
             omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
@@ -216,38 +222,7 @@ GM.mouseClicked = function (x, y, width, height) {
 }
 
 GM.touchStarted = function (x, y, width, height) {
-    soundManager.playCardNoise(state);
-    game.updateTopDisplay(x, y);
-    board.chooseCol(y, score);
-
-    switch (state) {
-        case 0:
-            state = menu.menuState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 1:
-            game.cancelState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 2:
-            state = continueScreen.continueScreenStates(x, y, width, height, scaleX, scaleY, score, game);
-            break;
-        case 3: 
-            omikuji.omikujiState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 4: 
-            state = leaderboardInput.leaderboardState(x, y, width, height, scaleX, scaleY);
-            break;
-        case 7:
-            state = gameOver.gameOverState(x, y, width, height, scaleX, scaleY);
-            if (state == -1) {
-                resetGame(7);
-            }
-            break;
-        case 8:
-            state = instructions.instructionsState(x, y, width, height, scaleX, scaleY);
-            break;
-    }
-
-    soundManager.selectMute(x, y, width, height, scaleX, scaleY);
+    GM.mouseClicked(x, y, width, height);
 }
 
 GM.keyPressed = function (keyCode) {
