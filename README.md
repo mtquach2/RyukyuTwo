@@ -1,7 +1,6 @@
 # Ryukyu Two
 
 # Objective of Game: 
-  - Beat all 10 levels of the game to recieve the highest score! 
   - The game is a combination of poker and solitaire, where the player chooses from four piles to draw cards from then places them in one-of-five columns to form some sort of poker hand
   - To beat a level, players are required to have a certain amount of points which is done by getting the best hands possible vertically, horizontally, and/or diagonally 
   - If a player does not pass the level, they are allowed to add another credit to continue playing
@@ -21,8 +20,8 @@
   - 1P (Pair): 2 of the same number card
   
 # How to Play: 
-  - Move left and right to choose a card/column -> Drag Mouse
-    - To select a card/column use b button -> Left Mouse Click 
+  - To select a card/column use b button -> Left Mouse Click 
+    - Selected card will be highlighted in red then arrows below columns will be displayed for user to choose column
   - To cancel/undo a move use the y button -> Backspace
   
 # About: 
