@@ -1,4 +1,9 @@
 # Controls when the action will run. 
+# WARNING: May have security issues with Firebase with error 
+# Firestore (9.14.0): Could not reach Cloud Firestore backend. Connection failed 1 times.
+# Most recent error: FirebaseError: [code=permission-denied]: Permission denied: Consumer 'project:undefined' has been suspended.
+# This typically indicates that your device does not have a healthy Internet connection at the moment. 
+# The client will operate in offline mode until it is able to successfully connect to the backend
 on:
  push:
  pull_request:
