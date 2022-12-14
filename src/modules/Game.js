@@ -107,6 +107,7 @@ export class Game {
 
 		this.gameStateSaver.push(gameState);
 
+		//Only save the last 4 states of the game
 		if (this.gameStateSaver.length > 4) {
 			this.gameStateSaver.shift();
 		}
@@ -193,13 +194,12 @@ export class Game {
 	}
   
 	timerTrigger() {
-		// console.log("CARDPLACED", this.board.cardPlaced);
-		// console.log("CARDSELECTED", this.board.cardSelected);
 		if (this.board.cardPlaced == true) { //card is dropped in general
 			this.timer.resetTimer();
 			this.board.cardPlaced = false;
 			this.stateSaver();
 		}
+		//if card is selected but not dropped and timer is 0
 		else if (this.board.cardPlaced == false && this.board.cardSelected == true && this.board.columnSelected == false && this.timer.seconds == 0) {
 			for(let i = 0; i <= 5; i++){
 				if(this.board.addCard(i, this.board.currentCard, this.score) !== -1){
@@ -212,6 +212,7 @@ export class Game {
 			}
 			this.timer.resetTimer();
 		}
+		//if timer is 0 and no cards are selected
 		else if (this.board.cardPlaced == false && this.board.cardSelected == false && this.board.columnSelected == false && this.timer.seconds == 0) {
 			let firstCard = this.board.getFirstCard(this.displayMap);
 			for(let i = 0; i < 5; i++){ 

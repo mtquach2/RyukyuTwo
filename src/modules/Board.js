@@ -257,7 +257,6 @@ export class Board {
 
     chooseCol(py, score) {
         // Displays card in selected column in board
-        //this.cardSelected = true;
         if (py >= this.boardY - 68 * this.scaleY && py < this.boardY + 33 * this.scaleY) {
 
             for (let col = 0; col < 5; col++) {
@@ -301,11 +300,11 @@ export class Board {
                 if (boardState.board[i][j] !== '') {
                     let value = '';
                     let suit = '';
-                    if(boardState.board[i][j].charAt(0) == 'w'){
+                    if(boardState.board[i][j].charAt(0) == 'w'){ //to accomodate for the wild card
                         value = "wild";
                         suit = "wild";
                     }
-                    else if (boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1') {
+                    else if (boardState.board[i][j].charAt(0) === '0' || boardState.board[i][j].charAt(0) === '1') { //if the card is a number card
                         value = boardState.board[i][j].charAt(0) + boardState.board[i][j].charAt(1);
                         suit = boardState.board[i][j].charAt(2);
                     }
@@ -379,6 +378,7 @@ export class Board {
         }
     }
 
+    //Checks if the board is empty 
     boardIsEmpty(){
         for(let i = 0; i < this.boardCols.length; i++){
             if(this.boardCols[i].hand.length !== 0){
